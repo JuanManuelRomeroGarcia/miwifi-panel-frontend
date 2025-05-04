@@ -1,0 +1,26 @@
+{
+  "files": [
+    "panel-frontend.js",
+    "router.js",
+    "assets/logo.png",
+    "assets/icon_internet_on.png",
+    "assets/icon_internet.png",
+    "pages/status.js",
+    "pages/topologia.js",
+    "pages/mesh.js",
+    "pages/miwifi-devices.js",
+    "pages/settings.js",
+    "pages/utils.js",
+    "pages/error.js",
+    "components/miwifi-topologia.js",
+    "translations/localize.js",
+    "translations/es.json",
+    "translations/en.json",
+    "translations/de.json",
+    "translations/fr.json",
+    "translations/pt-BR.json",
+    "translations/ru.json",
+    "translations/tr.json"
+
+  ]
+}

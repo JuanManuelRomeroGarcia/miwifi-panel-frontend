@@ -1,24 +1,25 @@
-const MIWIFI_VERSION = "2.4";
+const MIWIFI_VERSION = "__MIWIFI_VERSION__";
 
 async function loadPage(module) {
   return (await import(`./pages/${module}.js?v=${MIWIFI_VERSION}`));
 }
 
 export const router = {
+  "/status": (hass) => loadPage("status").then((mod) => mod.renderStatus(hass)),
   "/topologia": (hass) => loadPage("topologia").then((mod) => mod.renderTopologia(hass)),
-  "/dispositivos": (hass) => loadPage("dispositivos").then((mod) => mod.renderDispositivos(hass)),
-  "/velocidades": (hass) => loadPage("velocidades").then((mod) => mod.renderVelocidades(hass)),
+  "/miwifi-devices": (hass) => loadPage("miwifi-devices").then((mod) => mod.rendermiwifidevices(hass)),
   "/mesh": (hass) => loadPage("mesh").then((mod) => mod.renderMesh(hass)),
   "/settings": (hass) => loadPage("settings").then((mod) => mod.renderSettings(hass)),
   "/error": (hass) => loadPage("error").then((mod) => mod.renderError(hass)),
 };
 
+let _currentPath = "/status";
+
 export function navigate(path) {
-  window.history.pushState({}, "", `/miwifi${path}`);
-  window.dispatchEvent(new Event("location-changed"));
+  _currentPath = path;
+  window.dispatchEvent(new CustomEvent("miwifi-navigate", { detail: { path } }));
 }
 
 export function currentPath() {
-  const path = window.location.pathname.replace("/miwifi", "");
-  return path || "/topologia";
+  return _currentPath;
 }
