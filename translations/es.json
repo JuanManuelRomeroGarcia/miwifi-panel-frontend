@@ -60,5 +60,13 @@
   "error_not_found": "Página no encontrada.",
   "error_suggestion": "Si tienes sugerencias, no dudes en abrir un issue en el repositorio.",
   "loading_panel": "Cargando MiWiFi...",
-  "loading_section": "Cargando sección..."
+  "loading_section": "Cargando sección...",
+  "section_LAN": "Dispositivos LAN",
+  "section_2.4G": "Dispositivos 2.4G",
+  "section_5G": "Dispositivos 5G",
+  "section_5G Game": "Dispositivos 5G Gaming",
+  "section_Guest": "Dispositivos invitados",
+  "section_Unknown": "Red desconocida",
+  "status_unavailable": "Red no disponible"
+
 }

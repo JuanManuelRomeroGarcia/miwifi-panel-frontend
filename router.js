@@ -7,7 +7,7 @@ async function loadPage(module) {
 export const router = {
   "/status": (hass) => loadPage("status").then((mod) => mod.renderStatus(hass)),
   "/topologia": (hass) => loadPage("topologia").then((mod) => mod.renderTopologia(hass)),
-  "/miwifi-devices": (hass) => loadPage("miwifi-devices").then((mod) => mod.rendermiwifidevices(hass)),
+  "/miwifi-devices": (hass) => loadPage("miwifi-devices").then((mod) => mod.renderDevicesCards(hass)),
   "/mesh": (hass) => loadPage("mesh").then((mod) => mod.renderMesh(hass)),
   "/settings": (hass) => loadPage("settings").then((mod) => mod.renderSettings(hass)),
   "/error": (hass) => loadPage("error").then((mod) => mod.renderError(hass)),

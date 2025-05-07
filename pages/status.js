@@ -79,16 +79,18 @@ export function renderStatus(hass) {
   const renderSection = (title, items) => html`
     <div class="section-title">${title}</div>
     <div class="status-grid">
-      ${items.map(
-        (item) => html`
+      ${items.map((item) => {
+        const isUnavailable = item.value.includes("unavailable");
+        const value = isUnavailable ? localize("status_unavailable") : item.value;
+        return html`
           <div class="status-card">
             <div class="status-label">${item.label}</div>
-            <div class="status-value ${item.value.includes('unavailable') ? 'unavailable' : ''}">
-              ${item.value}
+            <div class="status-value ${isUnavailable ? 'unavailable' : ''}">
+              ${value}
             </div>
           </div>
-        `
-      )}
+        `;
+      })}
     </div>
   `;
 

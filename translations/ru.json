@@ -60,5 +60,13 @@
   "error_not_found": "Страница не найдена.",
   "error_suggestion": "Если у вас есть предложения, не стесняйтесь открыть issue в репозитории.",
   "loading_panel": "Загрузка MiWiFi...",
-  "loading_section": "Загрузка раздела..."
+  "loading_section": "Загрузка раздела...",
+  "section_LAN": "LAN-устройства",
+  "section_2.4G": "Устройства 2.4G",
+  "section_5G": "Устройства 5G",
+  "section_5G Game": "Игровые устройства 5G",
+  "section_Guest": "Гостевые устройства",
+  "section_Unknown": "Неизвестная сеть",
+  "status_unavailable": "Сеть недоступна"
+
 }

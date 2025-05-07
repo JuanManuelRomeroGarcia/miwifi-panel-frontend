@@ -60,5 +60,12 @@
   "error_not_found": "Page introuvable.",
   "error_suggestion": "Si vous avez des suggestions, n'hésitez pas à ouvrir un ticket sur le dépôt.",
   "loading_panel": "Chargement de MiWiFi...",
-  "loading_section": "Chargement de la section..."
+  "loading_section": "Chargement de la section...",
+  "section_LAN": "Appareils LAN",
+  "section_2.4G": "Appareils 2.4G",
+  "section_5G": "Appareils 5G",
+  "section_5G Game": "Appareils 5G Gaming",
+  "section_Guest": "Appareils invités",
+  "section_Unknown": "Réseau inconnu",
+  "status_unavailable": "Réseau indisponible"
 }
