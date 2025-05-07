@@ -38,7 +38,7 @@ class MiWiFiDeviceCards extends LitElement {
       case "lan": return "LAN";
       case "2.4g": return "2.4G";
       case "5g": return "5G";
-      case "5G Game": return "5G Game";
+      case "5g game": return "5G Game";
       case "guest": return "Guest";
       default: return "Unknown";
     }
