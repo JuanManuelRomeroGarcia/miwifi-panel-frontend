@@ -38,7 +38,7 @@ class MiWiFiDeviceCards extends LitElement {
       case "lan": return "LAN";
       case "2.4g": return "2.4G";
       case "5g": return "5G";
-      case "5g_game": return "5G Game";
+      case "5G Game": return "5G Game";
       case "guest": return "Guest";
       default: return "Unknown";
     }
@@ -63,8 +63,8 @@ class MiWiFiDeviceCards extends LitElement {
         <div class="device-info">MAC: ${a.mac || "-"}</div>
         <div class="device-info">${localize("status_connected")}: ${!isOffline ? "Sí" : "No"}</div>
         <div class="device-info">Señal: ${a.signal ?? "N/D"}</div>
-        <div class="device-info">↓ ${a.down_speed ?? "0 B/s"}</div>
         <div class="device-info">↑ ${a.up_speed ?? "0 B/s"}</div>
+        <div class="device-info">↓ ${a.down_speed ?? "0 B/s"}</div>
         <div class="device-info">Última actividad: ${a.last_activity ?? "-"}</div>
         <div class="device-status ${isOffline ? "offline" : "online"}">
           ${isOffline ? localize("status_disconnected") : localize("status_connected")}
