@@ -613,7 +613,7 @@ class MiWiFiPanel extends LitElement {
 
 
   .mesh-card:hover {
-    transform: scale(1.05);
+    transform: scale(1.01);
     box-shadow: 0px 6px 14px rgba(0,0,0,0.5);
   }
 

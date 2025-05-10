@@ -22,7 +22,18 @@ export function renderTopologia(hass) {
       e.state === "home"
   );
 
+  const meshSensors = Object.values(hass.states).filter(
+    (s) =>
+      s.entity_id.startsWith("sensor.topologia_miwifi") &&
+      s.attributes?.graph?.mode === 3
+  );
+  
   return html`
-    <miwifi-topologia .data=${mainGraph} .devices=${connectedDevices}></miwifi-topologia>
+    <miwifi-topologia
+      .data=${mainGraph}
+      .devices=${connectedDevices}
+      .nodes=${meshSensors}
+      .hass=${hass}
+    ></miwifi-topologia>
   `;
 }
