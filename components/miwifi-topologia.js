@@ -1,3 +1,4 @@
+// ✅ miwifi-topologia.js actualizado
 import { LitElement, html, css } from "https://unpkg.com/lit@2.7.5/index.js?module";
 import { localize } from "../translations/localize.js?v=__MIWIFI_VERSION__";
 
@@ -7,8 +8,15 @@ const DEFAULT_MESH_ICON = "https://cdn-icons-png.flaticon.com/512/1946/1946488.p
 
 export class MiwifiTopologia extends LitElement {
   static properties = {
-    data: { type: Object }
+    data: { type: Object },
+    devices: { type: Array },
   };
+
+  _getDeviceCount(mac) {
+    return this.devices?.filter(
+      (dev) => dev.attributes.router_mac?.toLowerCase() === mac?.toLowerCase()
+    ).length ?? 0;
+  }
 
   static styles = css`
     :host {
@@ -153,6 +161,24 @@ export class MiwifiTopologia extends LitElement {
         animation: pulse 2s infinite;
     }
 
+    .topo-icon-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .device-count-badge {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        background: red;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        border-radius: 50%;
+        padding: 4px 7px;
+        box-shadow: 0 0 4px rgba(0,0,0,0.3);
+    }
+
     @keyframes pulse {
         0%, 100% {
         background-color: #0f3;
@@ -176,7 +202,7 @@ export class MiwifiTopologia extends LitElement {
         transform: scale(0.85);
         }
     }
-    `;
+  `;
 
   render() {
     if (!this.data) {
@@ -204,7 +230,10 @@ export class MiwifiTopologia extends LitElement {
             <ul>
               <li>
                 <div class="topo-box">
-                  <img src="${routerIcon}" class="topo-icon-lg" />
+                  <div class="topo-icon-container">
+                    <img src="${routerIcon}" class="topo-icon-lg" />
+                    <div class="device-count-badge">${this._getDeviceCount(this.data.mac)}</div>
+                  </div>
                   <div class="topo-name">${this.data.name} (Gateway)</div>
                   <div class="topo-ip">${this.data.ip}</div>
                 </div>
@@ -232,7 +261,10 @@ export class MiwifiTopologia extends LitElement {
     return html`
       <li>
         <div class="topo-box">
-          <img src="${icon}" class="topo-icon" />
+          <div class="topo-icon-container">
+            <img src="${icon}" class="topo-icon" />
+            <div class="device-count-badge">${this._getDeviceCount(node.mac)}</div>
+          </div>
           <div class="topo-name">${node.name}</div>
           <div class="topo-ip">${node.ip}</div>
         </div>

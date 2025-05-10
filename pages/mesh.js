@@ -6,6 +6,17 @@ const REPOSITORY = "JuanManuelRomeroGarcia/hass-miwifi";
 const REPOSITORY_PANEL = "JuanManuelRomeroGarcia/miwifi-panel-frontend";
 const DEFAULT_MESH_ICON = "https://cdn-icons-png.flaticon.com/512/1946/1946488.png";
 
+function getConnectionLabel(connection) {
+  switch ((connection || "").toLowerCase()) {
+    case "lan": return "LAN";
+    case "2.4g": return "2.4G";
+    case "5g": return "5G";
+    case "5g game": return "5G Game";
+    case "guest": return "Guest";
+    default: return "Unknown";
+  }
+}
+
 export function renderMesh(hass) {
   const sensorIds = Object.keys(hass.states).filter((id) =>
     id.startsWith("sensor.topologia_miwifi")
@@ -61,6 +72,20 @@ export function renderMesh(hass) {
           const led = mac ? hass.states[`light.miwifi_${mac}_led`] : null;
           const reboot = mac ? hass.states[`button.miwifi_${mac}_reboot`] : null;
 
+          const connectedDevices = Object.values(hass.states).filter(
+            (e) =>
+              e.entity_id.startsWith("device_tracker.miwifi_") &&
+              e.state === "home" &&
+              e.attributes.router_mac?.toLowerCase() === leaf.mac?.toLowerCase()
+          );
+
+          const groupedDevices = {};
+          connectedDevices.forEach((device) => {
+            const conn = getConnectionLabel(device.attributes.connection);
+            if (!groupedDevices[conn]) groupedDevices[conn] = [];
+            groupedDevices[conn].push(device);
+          });
+
           return html`
             <div class="mesh-card">
               <img src="${icon}" class="topo-icon" alt="Nodo Mesh" />
@@ -100,6 +125,33 @@ export function renderMesh(hass) {
                           `
                         : ""}
                     </div>
+
+                    ${connectedDevices.length > 0
+                      ? html`
+                          <div class="section">
+                            <h3>📶 ${localize("devices_connected_title")}</h3>
+                            ${Object.entries(groupedDevices).map(
+                              ([type, devs]) => html`
+                                <div class="section-title">
+                                  ${localize("section_" + type) || type}
+                                </div>
+                                <div class="device-grid">
+                                  ${devs.map((device) => html`
+                                    <div class="device-card">
+                                      <div class="device-name">${device.attributes.friendly_name}</div>
+                                      <div class="device-info">IP: ${device.attributes.ip}</div>
+                                      <div class="device-info">MAC: ${device.attributes.mac}</div>
+                                      <div class="device-info">Señal: ${device.attributes.signal ?? "N/D"}</div>
+                                      <div class="device-info">↓ ${device.attributes.down_speed ?? "0 B/s"}</div>
+                                      <div class="device-info">↑ ${device.attributes.up_speed ?? "0 B/s"}</div>
+                                    </div>
+                                  `)}
+                                </div>
+                              `
+                            )}
+                          </div>
+                        `
+                      : ""}
                   `
                 : html`
                     <div class="section">

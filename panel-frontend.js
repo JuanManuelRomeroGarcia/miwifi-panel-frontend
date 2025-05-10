@@ -108,6 +108,23 @@ class MiWiFiPanel extends LitElement {
     `;
   }
 
+  _renderVersionWarning() {
+    const expectedVersion = MIWIFI_VERSION;
+    const actualVersion = window.miwifiPanelVersion || "";
+  
+    if (actualVersion && actualVersion !== expectedVersion) {
+      return html`
+        <ha-alert alert-type="warning" title="⚠️ Panel Version Mismatch">
+          A new version of the MiWiFi Panel is available.<br />
+          <b>Installed:</b> ${actualVersion} — <b>Expected:</b> ${expectedVersion}<br />
+          Please <b>press Ctrl+F5</b> to refresh your browser and load the latest version.
+        </ha-alert>
+      `;
+    }
+  
+    return html``;
+  }
+
   _startAutoRefresh() {
     this._refreshInterval = setInterval(() => {
       const root = this.shadowRoot?.querySelector(".content");
@@ -144,6 +161,7 @@ class MiWiFiPanel extends LitElement {
         </ha-top-app-bar>
 
         <div slot="content" class="content">
+        ${this._renderVersionWarning()}
           <div class="miwifi-button-group">
             <button class="miwifi-button" @click=${() => this._navigate("/status")}>${localize("nav_status")}</button>
             <button class="miwifi-button" @click=${() => this._navigate("/topologia")}>${localize("nav_topology")}</button>

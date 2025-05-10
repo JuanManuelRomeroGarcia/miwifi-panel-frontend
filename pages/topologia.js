@@ -16,7 +16,13 @@ export function renderTopologia(hass) {
     }
   }
 
+  const connectedDevices = Object.values(hass.states).filter(
+    (e) =>
+      e.entity_id.startsWith("device_tracker.miwifi_") &&
+      e.state === "home"
+  );
+
   return html`
-    <miwifi-topologia .data=${mainGraph}></miwifi-topologia>
+    <miwifi-topologia .data=${mainGraph} .devices=${connectedDevices}></miwifi-topologia>
   `;
 }
