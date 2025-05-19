@@ -67,5 +67,12 @@
   "section_5G Game": "5G Gaming Devices",
   "section_Guest": "Guest Devices",
   "section_Unknown": "Unknown Network",
-  "status_unavailable": "Network unavailable"
+  "status_unavailable": "Network unavailable",
+  "notification.connection_lost": "Connection lost. Reloading panel...",
+  "notification.reload_failed": "⚠️ Failed to reload view. Please press Ctrl+F5.",
+  "log.autorefresh_cancelled": "⛔ AutoRefresh canceled: hass or router not available.",
+  "log.websocket_lost": "❌ WebSocket connection lost. Notifying and reloading...",
+  "log.panel_frozen": "⚠️ Panel frozen or blank. Reloading section...",
+  "log.refreshing_section": "⟳ Refreshing current section...",
+  "log.page_reload_error": "❌ Error while reloading section:"
 }

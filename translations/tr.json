@@ -67,5 +67,12 @@
   "section_5G Game": "5G Oyun Cihazları",
   "section_Guest": "Misafir Cihazları",
   "section_Unknown": "Bilinmeyen Ağ",
-  "status_unavailable": "Ağ kullanılamıyor"
+  "status_unavailable": "Ağ kullanılamıyor",
+  "notification.connection_lost": "Bağlantı kaybedildi. Panel yeniden yükleniyor...",
+  "notification.reload_failed": "⚠️ Görünüm yeniden yüklenemedi. Lütfen Ctrl+F5 tuşlarına basın.",
+  "log.autorefresh_cancelled": "⛔ Otomatik yenileme iptal edildi: hass veya yönlendirici kullanılamıyor.",
+  "log.websocket_lost": "❌ WebSocket bağlantısı kesildi. Bildirim gösteriliyor ve yeniden yükleniyor...",
+  "log.panel_frozen": "⚠️ Panel donmuş veya boş. Bölüm yeniden yükleniyor...",
+  "log.refreshing_section": "⟳ Mevcut bölüm yenileniyor...",
+  "log.page_reload_error": "❌ Bölüm yeniden yüklenirken hata oluştu:"
 }

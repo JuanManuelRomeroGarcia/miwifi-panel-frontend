@@ -67,5 +67,12 @@
   "section_5G Game": "Dispositivos 5G Gaming",
   "section_Guest": "Dispositivos convidados",
   "section_Unknown": "Rede desconhecida",
-  "status_unavailable": "Rede indisponível"
+  "status_unavailable": "Rede indisponível",
+  "notification.connection_lost": "Conexão perdida. Recarregando o painel...",
+  "notification.reload_failed": "⚠️ Erro ao recarregar a visualização. Pressione Ctrl+F5.",
+  "log.autorefresh_cancelled": "⛔ Autoatualização cancelada: hass ou roteador não disponível.",
+  "log.websocket_lost": "❌ Conexão WebSocket perdida. Notificando e recarregando...",
+  "log.panel_frozen": "⚠️ Painel congelado ou em branco. Recarregando seção...",
+  "log.refreshing_section": "⟳ Atualizando seção atual...",
+  "log.page_reload_error": "❌ Erro ao recarregar a seção:"
 }

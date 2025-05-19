@@ -130,17 +130,45 @@ class MiWiFiPanel extends LitElement {
       const root = this.shadowRoot?.querySelector(".content");
       const isEmpty = !root || root.offsetHeight === 0;
 
-      if (isEmpty) {
-        console.warn("⚠️ Panel frozen or blank. Reloading section...");
-        this._pagePromise = null;
-        this._loadPage(this._currentPage);
-      } else {
-        console.log("⟳ Refreshing current section...");
-        this._pagePromise = null;
-        this._loadPage(this._currentPage);
+      if (!this.hass || !this._router || !this._currentPage) {
+        console.warn(localize("log.autorefresh_cancelled"));
+        return;
       }
-    }, 5 * 60 * 1000);
+
+      // 🔌 Si la conexión WebSocket está caída, notificar y recargar
+      if (!this.hass.connection?.connected) {
+        console.warn(localize("log.websocket_lost"));
+
+        this.hass.callService("persistent_notification", "create", {
+          title: "⚠️ MiWiFi",
+          message: localize("notification.connection_lost"),
+          notification_id: "miwifi_connection_lost"
+        });
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+
+        return;
+      }
+
+      if (isEmpty) {
+        console.warn(localize("log.panel_frozen"));
+      } else {
+        console.log(localize("log.refreshing_section"));
+      }
+
+      this._pagePromise = null;
+      this.requestUpdate();
+
+      this._loadPage(this._currentPage).catch((err) => {
+        console.error(localize("log.page_reload_error"), err);
+        this._showToast(localize("notification.reload_failed"));
+      });
+    }, 5 * 60 * 1000); // cada 5 minutos
   }
+
+
 
   disconnectedCallback() {
     super.disconnectedCallback();

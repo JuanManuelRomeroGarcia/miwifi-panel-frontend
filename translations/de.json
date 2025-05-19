@@ -67,5 +67,12 @@
   "section_5G Game": "5G-Gaming-Geräte",
   "section_Guest": "Gastgeräte",
   "section_Unknown": "Unbekanntes Netzwerk",
-  "status_unavailable": "Netzwerk nicht verfügbar"
+  "status_unavailable": "Netzwerk nicht verfügbar",
+  "notification.connection_lost": "Verbindung verloren. Panel wird neu geladen...",
+  "notification.reload_failed": "⚠️ Fehler beim Neuladen der Ansicht. Bitte drücken Sie Strg+F5.",
+  "log.autorefresh_cancelled": "⛔ Auto-Refresh abgebrochen: hass oder Router nicht verfügbar.",
+  "log.websocket_lost": "❌ WebSocket-Verbindung verloren. Benachrichtigung wird angezeigt und neu geladen...",
+  "log.panel_frozen": "⚠️ Panel eingefroren oder leer. Abschnitt wird neu geladen...",
+  "log.refreshing_section": "⟳ Aktueller Abschnitt wird aktualisiert...",
+  "log.page_reload_error": "❌ Fehler beim Neuladen des Abschnitts:"
 }

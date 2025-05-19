@@ -9,7 +9,9 @@ class MiWiFiNodeDeviceCard extends LitElement {
 
   render() {
     const connected = this.devices?.filter((d) => d.state === "home") ?? [];
-    if (!connected.length) return html``;
+    const disconnected = this.devices?.filter((d) => d.state !== "home") ?? [];
+
+    if (!connected.length && !disconnected.length) return html``;
 
     const grouped = {};
     connected.forEach((device) => {
@@ -21,12 +23,22 @@ class MiWiFiNodeDeviceCard extends LitElement {
     return html`
       <div class="section">
         <h3>📶 ${localize("devices_connected_title")}</h3>
+
         ${Object.entries(grouped).map(([type, devs]) => html`
           <div class="section-title">${localize("section_" + type) || type}</div>
           <div class="device-grid">
             ${devs.map((d) => this._renderCard(d))}
           </div>
         `)}
+
+        ${disconnected.length > 0 ? html`
+          <div class="section-title" style="margin-top: 32px;">
+            🔴 ${localize("toggle_offline_show")}
+          </div>
+          <div class="device-grid">
+            ${disconnected.map((d) => this._renderCard(d))}
+          </div>
+        ` : ""}
       </div>
     `;
   }
@@ -44,15 +56,31 @@ class MiWiFiNodeDeviceCard extends LitElement {
 
   _renderCard(device) {
     const a = device.attributes;
+    const isOffline = device.state !== "home";
+
+    if (isOffline) {
+      return html`
+        <div class="device-card disconnected">
+          <div class="device-name">${a.friendly_name}</div>
+          <div class="device-info">IP: ${a.ip}</div>
+          <div class="device-status offline">${localize("status_disconnected")}</div>
+        </div>
+      `;
+    }
+
     return html`
       <div class="device-card">
         <div class="device-name">${a.friendly_name}</div>
         <div class="device-info">IP: ${a.ip}</div>
         <div class="device-info">MAC: ${a.mac}</div>
+        <div class="device-info">
+          <span style="color: lightgreen;">🟢</span> ${localize("status_connected")}: Sí
+        </div>
         <div class="device-info">Señal: ${a.signal ?? "N/D"}</div>
         <div class="device-info">↑ ${a.up_speed ?? "0 B/s"}</div>
         <div class="device-info">↓ ${a.down_speed ?? "0 B/s"}</div>
-        <div class="device-info">Última actividad: ${a.last_activity ?? "-"}</div>
+        <div class="device-info">${localize("label_uptime")}: ${a.last_activity ?? "-"}</div>
+        <div class="device-status online">${localize("status_connected")}</div>
       </div>
     `;
   }
@@ -92,6 +120,22 @@ class MiWiFiNodeDeviceCard extends LitElement {
     .device-info {
       font-size: 14px;
       margin-bottom: 4px;
+    }
+
+    .device-card.disconnected {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #bbb;
+      filter: grayscale(100%);
+    }
+
+    .device-status.offline {
+      color: #ff4d4d;
+      font-weight: bold;
+    }
+
+    .device-status.online {
+      color: #00ff00;
+      font-weight: bold;
     }
 
     @keyframes fadeIn {

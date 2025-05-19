@@ -67,5 +67,12 @@
   "section_5G Game": "Appareils 5G Gaming",
   "section_Guest": "Appareils invités",
   "section_Unknown": "Réseau inconnu",
-  "status_unavailable": "Réseau indisponible"
+  "status_unavailable": "Réseau indisponible",
+  "notification.connection_lost": "Connexion perdue. Rechargement du panneau...",
+  "notification.reload_failed": "⚠️ Erreur lors du rechargement de la vue. Appuyez sur Ctrl+F5.",
+  "log.autorefresh_cancelled": "⛔ Rafraîchissement automatique annulé : hass ou routeur non disponible.",
+  "log.websocket_lost": "❌ Connexion WebSocket perdue. Notification affichée et rechargement...",
+  "log.panel_frozen": "⚠️ Panneau figé ou vide. Rechargement de la section...",
+  "log.refreshing_section": "⟳ Actualisation de la section en cours...",
+  "log.page_reload_error": "❌ Erreur lors du rechargement de la section :"
 }

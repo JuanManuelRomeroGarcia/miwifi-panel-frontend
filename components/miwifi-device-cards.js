@@ -11,8 +11,11 @@ class MiWiFiDeviceCards extends LitElement {
       state.entity_id.startsWith("device_tracker.miwifi_")
     );
 
+    const connected = devices.filter((d) => d.state === "home");
+    const disconnected = devices.filter((d) => d.state !== "home");
+
     const grouped = {};
-    devices.forEach((device) => {
+    connected.forEach((device) => {
       const conn = this._getConnectionLabel(device.attributes.connection);
       if (!grouped[conn]) grouped[conn] = [];
       grouped[conn].push(device);
@@ -23,12 +26,23 @@ class MiWiFiDeviceCards extends LitElement {
         <h2>${localize("devices_connected_title")}</h2>
         <p>
           ${localize("devices_total_connected")}: ${devices.length} |
-          ${localize("devices_connected")}: ${devices.filter(d => d.state === "home").length}
+          ${localize("devices_connected")}: ${connected.length}
         </p>
 
+        <!-- Conectados agrupados -->
         ${Object.entries(grouped).map(([type, devs]) =>
           html`${this._renderGroup(type, devs)}`
         )}
+
+        <!-- Desconectados no agrupados -->
+        ${disconnected.length > 0 ? html`
+          <div class="section-title" style="margin-top: 32px;">
+            🔴 ${localize("toggle_offline_show")}
+          </div>
+          <div class="device-grid">
+            ${disconnected.map((device) => this._renderCard(device))}
+          </div>
+        ` : ""}
       </div>
     `;
   }
@@ -56,19 +70,30 @@ class MiWiFiDeviceCards extends LitElement {
   _renderCard(device) {
     const isOffline = device.state !== "home";
     const a = device.attributes;
+
+    if (isOffline) {
+      return html`
+        <div class="device-card disconnected">
+          <div class="device-name">${a.friendly_name || device.entity_id}</div>
+          <div class="device-info">IP: ${a.ip || "-"}</div>
+          <div class="device-status offline">
+            ${localize("status_disconnected")}
+          </div>
+        </div>
+      `;
+    }
+
     return html`
-      <div class="device-card ${isOffline ? "disconnected" : ""}">
+      <div class="device-card">
         <div class="device-name">${a.friendly_name || device.entity_id}</div>
         <div class="device-info">IP: ${a.ip || "-"}</div>
         <div class="device-info">MAC: ${a.mac || "-"}</div>
-        <div class="device-info">${localize("status_connected")}: ${!isOffline ? "Sí" : "No"}</div>
+        <div class="device-info">${localize("status_connected")}: Sí</div>
         <div class="device-info">Señal: ${a.signal ?? "N/D"}</div>
         <div class="device-info">↑ ${a.up_speed ?? "0 B/s"}</div>
         <div class="device-info">↓ ${a.down_speed ?? "0 B/s"}</div>
         <div class="device-info">Última actividad: ${a.last_activity ?? "-"}</div>
-        <div class="device-status ${isOffline ? "offline" : "online"}">
-          ${isOffline ? localize("status_disconnected") : localize("status_connected")}
-        </div>
+        <div class="device-status online">${localize("status_connected")}</div>
       </div>
     `;
   }

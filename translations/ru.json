@@ -67,6 +67,13 @@
   "section_5G Game": "Игровые устройства 5G",
   "section_Guest": "Гостевые устройства",
   "section_Unknown": "Неизвестная сеть",
-  "status_unavailable": "Сеть недоступна"
+  "status_unavailable": "Сеть недоступна",
+  "notification.connection_lost": "Соединение потеряно. Перезагрузка панели...",
+  "notification.reload_failed": "⚠️ Ошибка при перезагрузке. Нажмите Ctrl+F5.",
+  "log.autorefresh_cancelled": "⛔ Автообновление отменено: hass или маршрутизатор недоступны.",
+  "log.websocket_lost": "❌ WebSocket-соединение потеряно. Отображение уведомления и перезагрузка...",
+  "log.panel_frozen": "⚠️ Панель зависла или пустая. Перезагрузка раздела...",
+  "log.refreshing_section": "⟳ Обновление текущего раздела...",
+  "log.page_reload_error": "❌ Ошибка при перезагрузке раздела:"
 
 }
