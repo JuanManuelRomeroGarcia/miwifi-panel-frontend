@@ -1,4 +1,5 @@
 import { loadTranslations, localize } from "./translations/localize.js?v=__MIWIFI_VERSION__";
+import { navigate, goBack } from "./router.js?v=__MIWIFI_VERSION__";
 import { html, css, LitElement } from "https://unpkg.com/lit@2.7.5/index.js?module";
 import { until } from "https://unpkg.com/lit-html@2.7.5/directives/until.js?module";
 
@@ -50,8 +51,11 @@ class MiWiFiPanel extends LitElement {
   _navigate(path) {
     if (!this._router) return;
     if (path === this._currentPage && this._pagePromise) return;
+
     this._currentPage = path;
     this._loadPage(path);
+
+    this._router.navigate(path);
   }
 
   _applySettings() {
@@ -125,48 +129,55 @@ class MiWiFiPanel extends LitElement {
     return html``;
   }
 
-  _startAutoRefresh() {
-    this._refreshInterval = setInterval(() => {
-      const root = this.shadowRoot?.querySelector(".content");
-      const isEmpty = !root || root.offsetHeight === 0;
+_startAutoRefresh() {
+  this._refreshInterval = setInterval(() => {
+    const root = this.shadowRoot?.querySelector(".content");
+    const isEmpty = !root || root.offsetHeight === 0;
 
-      if (!this.hass || !this._router || !this._currentPage) {
-        console.warn(localize("log.autorefresh_cancelled"));
-        return;
-      }
+    if (!this.hass || !this._router || !this._currentPage) {
+      console.warn(localize("log.autorefresh_cancelled"));
+      return;
+    }
 
-      // 🔌 Si la conexión WebSocket está caída, notificar y recargar
-      if (!this.hass.connection?.connected) {
-        console.warn(localize("log.websocket_lost"));
+    // 🔌 Si la conexión WebSocket está caída, notificar y recargar
+    if (!this.hass.connection?.connected) {
+      console.warn(localize("log.websocket_lost"));
 
-        this.hass.callService("persistent_notification", "create", {
-          title: "⚠️ MiWiFi",
-          message: localize("notification.connection_lost"),
-          notification_id: "miwifi_connection_lost"
-        });
-
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-
-        return;
-      }
-
-      if (isEmpty) {
-        console.warn(localize("log.panel_frozen"));
-      } else {
-        console.log(localize("log.refreshing_section"));
-      }
-
-      this._pagePromise = null;
-      this.requestUpdate();
-
-      this._loadPage(this._currentPage).catch((err) => {
-        console.error(localize("log.page_reload_error"), err);
-        this._showToast(localize("notification.reload_failed"));
+      this.hass.callService("persistent_notification", "create", {
+        title: "⚠️ MiWiFi",
+        message: localize("notification.connection_lost"),
+        notification_id: "miwifi_connection_lost"
       });
-    }, 5 * 60 * 1000); // cada 5 minutos
-  }
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+
+      return;
+    }
+
+    if (isEmpty) {
+      console.warn(localize("log.panel_frozen"));
+
+      // 🔁 Forzar navegación para recargar correctamente
+      const current = this._currentPage;
+      this._navigate("/error");
+      setTimeout(() => this._navigate(current), 300);
+      return;
+    } else {
+      console.log(localize("log.refreshing_section"));
+    }
+
+    this._pagePromise = null;
+    this.requestUpdate();
+
+    this._loadPage(this._currentPage).catch((err) => {
+      console.error(localize("log.page_reload_error"), err);
+      this._navigate("/error");
+    });
+  }, 5 * 60 * 1000); // cada 5 minutos
+}
+
 
 
 
@@ -199,6 +210,15 @@ class MiWiFiPanel extends LitElement {
           </div>
 
           ${until(this._pagePromise, this.renderLoading(localize("loading_section")))}
+
+          <div style="text-align: center; margin-top: 40px;">
+            <button class="miwifi-button" @click=${() => goBack()}>
+              ⬅️ ${localize("button_back") || "Back"}
+            </button>
+            <button class="miwifi-button" @click=${() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              ⬆️ ${localize("button_scroll_top")}
+            </button>
+          </div>
         </div>
       </ha-app-layout>
     `;
@@ -242,6 +262,14 @@ class MiWiFiPanel extends LitElement {
     display: flex;
     align-items: center;
   }
+  
+  ha-top-app-bar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: var(--miwifi-primary-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  }
 
   .miwifi-button-group {
     display: flex;
@@ -274,6 +302,17 @@ class MiWiFiPanel extends LitElement {
   .miwifi-button:active {
     transform: scale(0.98);
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  button.back-button {
+    background: #1a73e8;
+    color: white;
+    padding: 8px 16px;
+    border: 1px solid white;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 30px;
   }
 
   .loading-container {

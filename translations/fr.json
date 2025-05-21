@@ -61,6 +61,8 @@
   "error_suggestion": "Si vous avez des suggestions, n'hésitez pas à ouvrir un ticket sur le dépôt.",
   "loading_panel": "Chargement de MiWiFi...",
   "loading_section": "Chargement de la section...",
+  "button_back": "Retour",
+  "button_scroll_top": "Faire défiler vers le haut",
   "section_LAN": "Appareils LAN",
   "section_2.4G": "Appareils 2.4G",
   "section_5G": "Appareils 5G",

@@ -62,6 +62,8 @@
   "loading_panel": "Загрузка MiWiFi...",
   "loading_section": "Загрузка раздела...",
   "section_LAN": "LAN-устройства",
+  "button_back": "Назад",
+  "button_scroll_top": "Наверх",
   "section_2.4G": "Устройства 2.4G",
   "section_5G": "Устройства 5G",
   "section_5G Game": "Игровые устройства 5G",

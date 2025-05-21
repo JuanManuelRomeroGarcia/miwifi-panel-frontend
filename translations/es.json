@@ -61,6 +61,8 @@
   "error_suggestion": "Si tienes sugerencias, no dudes en abrir un issue en el repositorio.",
   "loading_panel": "Cargando MiWiFi...",
   "loading_section": "Cargando sección...",
+  "button_back": "Volver atrás",
+  "button_scroll_top": "Subir",
   "section_LAN": "Dispositivos LAN",
   "section_2.4G": "Dispositivos 2.4G",
   "section_5G": "Dispositivos 5G",

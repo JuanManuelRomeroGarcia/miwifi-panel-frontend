@@ -14,10 +14,25 @@ export const router = {
 };
 
 let _currentPath = "/status";
+const _history = ["/status"];
 
 export function navigate(path) {
+  if (_currentPath !== path) {
+    _history.push(path);
+  }
   _currentPath = path;
   window.dispatchEvent(new CustomEvent("miwifi-navigate", { detail: { path } }));
+}
+
+export function goBack() {
+  if (_history.length <= 1) {
+    // No hay historial interno: salir del panel
+    window.history.back();
+  } else {
+    _history.pop(); // quita la actual
+    const previous = _history.pop() || "/status"; // vuelve atrás uno más
+    navigate(previous);
+  }
 }
 
 export function currentPath() {

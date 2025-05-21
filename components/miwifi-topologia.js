@@ -1,6 +1,7 @@
 // ✅ miwifi-topologia.js actualizado con conteo desde sensores
 import { LitElement, html, css } from "https://unpkg.com/lit@2.7.5/index.js?module";
 import { localize } from "../translations/localize.js?v=__MIWIFI_VERSION__";
+import { navigate } from "../router.js?v=__MIWIFI_VERSION__";
 
 const REPOSITORY = "JuanManuelRomeroGarcia/hass-miwifi";
 const REPOSITORY_PANEL = "JuanManuelRomeroGarcia/miwifi-panel-frontend";
@@ -186,7 +187,7 @@ export class MiwifiTopologia extends LitElement {
             <div class="line-pulse-vertical"></div>
             <ul>
               <li>
-                <div class="topo-box">
+                <div class="topo-box" style="cursor: pointer;" @click=${() => navigate("/settings")}>
                   <div class="topo-icon-container">
                     <img src="${routerIcon}" class="topo-icon-lg" />
                     <div class="device-count-badge">
@@ -217,7 +218,7 @@ export class MiwifiTopologia extends LitElement {
 
     return html`
       <li>
-        <div class="topo-box">
+        <div class="topo-box" style="cursor: pointer;" @click=${() => navigate("/mesh")}>
           <div class="topo-icon-container">
             <img src="${icon}" class="topo-icon" />
             <div class="device-count-badge">

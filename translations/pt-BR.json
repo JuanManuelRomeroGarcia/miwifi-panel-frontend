@@ -62,6 +62,8 @@
   "loading_panel": "Carregando MiWiFi...",
   "loading_section": "Carregando seção...",
   "section_LAN": "Dispositivos LAN",
+  "button_back": "Voltar",
+  "button_scroll_top": "Subir",
   "section_2.4G": "Dispositivos 2.4G",
   "section_5G": "Dispositivos 5G",
   "section_5G Game": "Dispositivos 5G Gaming",
