@@ -1,3 +1,5 @@
+import { logToBackend } from "./pages/utils.js?v=__MIWIFI_VERSION__";
+
 const MIWIFI_VERSION = "__MIWIFI_VERSION__";
 
 async function loadPage(module) {
@@ -22,16 +24,19 @@ export function navigate(path) {
   }
   _currentPath = path;
   window.dispatchEvent(new CustomEvent("miwifi-navigate", { detail: { path } }));
+  logToBackend(window?.hass, "debug", `➡️ [router.js] Navigated to: ${path}`);
+
 }
 
 export function goBack() {
   if (_history.length <= 1) {
-    // No hay historial interno: salir del panel
+    logToBackend(window?.hass, "warning", "🔙 [router.js] goBack() called with no internal history. Using browser back.");
     window.history.back();
   } else {
-    _history.pop(); // quita la actual
-    const previous = _history.pop() || "/status"; // vuelve atrás uno más
+    _history.pop(); 
+    const previous = _history.pop() || "/status"; 
     navigate(previous);
+    logToBackend(window?.hass, "debug", `🔙 [router.js] Going back to previous route: ${previous}`);
   }
 }
 

@@ -1,5 +1,6 @@
 import { loadTranslations, localize } from "./translations/localize.js?v=__MIWIFI_VERSION__";
 import { navigate, goBack } from "./router.js?v=__MIWIFI_VERSION__";
+import { logToBackend } from "./pages/utils.js?v=__MIWIFI_VERSION__";
 import { html, css, LitElement } from "https://unpkg.com/lit@2.7.5/index.js?module";
 import { until } from "https://unpkg.com/lit-html@2.7.5/directives/until.js?module";
 
@@ -24,6 +25,8 @@ class MiWiFiPanel extends LitElement {
     this._translationsLoaded = false;
     this._startAutoRefresh();
     window.addEventListener("miwifi-apply-settings", () => this._applySettings());
+    logToBackend(this.hass, "info", "🚀 [panel-frontend.js] MiWiFi panel loaded.");
+
   }
 
   updated(changedProperties) {
@@ -80,11 +83,15 @@ class MiWiFiPanel extends LitElement {
       log_level: logLevel,
     }).then(() => {
       this._showToast(localize("settings.success"));
+      logToBackend(this.hass, "info", "✅ [panel-frontend.js] Settings applied successfully.");
+
       setTimeout(() => {
         this._loadPage("/settings");
       }, 4000);
     }).catch((err) => {
       console.error("❌ Error applying settings:", err);
+      logToBackend(this.hass, "error", `❌ [panel-frontend.js] Failed to apply settings: ${err.message}`);
+
       this._showToast(localize("settings.error"));
     });
   }
@@ -143,6 +150,8 @@ _startAutoRefresh() {
     if (!this.hass.connection?.connected) {
       console.warn(localize("log.websocket_lost"));
 
+      logToBackend(this.hass, "warning", "❌ [panel-frontend.js] WebSocket lost. Triggering forced reload.");
+
       this.hass.callService("persistent_notification", "create", {
         title: "⚠️ MiWiFi",
         message: localize("notification.connection_lost"),
@@ -157,6 +166,7 @@ _startAutoRefresh() {
     }
 
     if (isEmpty) {
+      logToBackend(this.hass, "warning", "⚠️ [panel-frontend.js] Panel content is empty – attempting reload.");
       console.warn(localize("log.panel_frozen"));
 
       // 🔁 Forzar navegación para recargar correctamente
@@ -173,6 +183,7 @@ _startAutoRefresh() {
 
     this._loadPage(this._currentPage).catch((err) => {
       console.error(localize("log.page_reload_error"), err);
+      logToBackend(this.hass, "error", `❌ [panel-frontend.js] Error loading page '${this._currentPage}': ${err.message}`);
       this._navigate("/error");
     });
   }, 5 * 60 * 1000); // cada 5 minutos

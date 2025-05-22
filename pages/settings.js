@@ -1,6 +1,7 @@
 import { html } from "https://unpkg.com/lit@2.7.5/index.js?module";
 import { renderToggle, renderSelects } from "./utils.js?v=__MIWIFI_VERSION__";
 import { localize } from "../translations/localize.js?v=__MIWIFI_VERSION__";
+import { logToBackend } from "./utils.js?v=__MIWIFI_VERSION__";
 
 const MIWIFI_VERSION = "__MIWIFI_VERSION__";
 const REPOSITORY = "JuanManuelRomeroGarcia/hass-miwifi";
@@ -10,11 +11,27 @@ export function renderSettings(hass) {
   const version = MIWIFI_VERSION || "?.?.?";
   const config = hass.states["sensor.miwifi_config"]?.attributes || {};
 
-  const routerSensor = Object.values(hass.states).find(
-    (s) =>
-      s.entity_id.startsWith("sensor.topologia_miwifi") &&
-      s.attributes?.graph?.mode === 0
-  );
+  const routerSensor = Object.values(hass.states).find((s) => {
+    const g = s.attributes?.graph;
+    if (g?.is_main === true) {
+      logToBackend(hass, "debug", `✅ [settings.js] Main router detected: ${g.name} (${g.mac})`);
+      return true;
+    }
+    if (g?.show === 1 && g?.assoc === 1) {
+      logToBackend(hass, "debug", `🧠 [settings.js] Fallback router by show+assoc: ${g.name} (${g.mac})`);
+      return true;
+    }
+    if (g?.mode === 0) {
+      logToBackend(hass, "debug", `⚠️ [settings.js] Fallback router by mode=0 only: ${g.name}`);
+      return true;
+    }
+    return false;
+  });
+
+  if (!routerSensor) {
+    logToBackend(hass, "warning", "❌ [settings.js] No router found with is_main or fallback logic.");
+  }
+
 
   if (!routerSensor) {
     return html`
@@ -44,6 +61,7 @@ export function renderSettings(hass) {
     hass.callService("button", "press", { entity_id: reboot.entity_id }).catch((err) =>
       console.error("callService error:", err)
     );
+    logToBackend(hass, "info", `🔄 [settings.js] Reboot requested for router: ${mainGraph.name} (${mainGraph.mac})`);
     hass.callService("persistent_notification", "create", {
       title: localize("settings_restart_router"),
       message: "El router principal ha sido reiniciado correctamente.",
@@ -134,6 +152,7 @@ export function renderSettings(hass) {
                   composed: true,
                 });
                 window.dispatchEvent(event);
+                logToBackend(hass, "info", "⚙️ [settings.js] User clicked 'Apply changes' in panel.");
               }
             }}>
               💾 ${localize("settings_apply_changes") || "Apply changes"}

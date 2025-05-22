@@ -1,5 +1,5 @@
 import { html } from "https://unpkg.com/lit@2.7.5/index.js?module";
-import { getMainRouterMac, formatSignal } from "./utils.js?v=__MIWIFI_VERSION__";
+import { getMainRouterMac, formatSignal, logToBackend } from "./utils.js?v=__MIWIFI_VERSION__";
 import { localize } from "../translations/localize.js?v=__MIWIFI_VERSION__";
 
 const SENSOR_SUFFIXES = {
@@ -27,6 +27,7 @@ const SENSOR_SUFFIXES = {
 export function renderStatus(hass) {
   const mac = getMainRouterMac(hass);
   if (!mac) {
+    logToBackend(hass, "warning", "❌ No main router MAC found – fallback not resolved (status.js)");
     return html`<div style="text-align:center; padding:24px; color:white">❌ ${localize("topology_main_not_found")}</div>`;
   }
 
@@ -41,10 +42,19 @@ export function renderStatus(hass) {
   };
 
   const topoSensor = Object.values(hass.states).find((s) =>
-    s.entity_id.startsWith("sensor.topologia_miwifi") && s.attributes?.graph?.mode === 0
+    s.entity_id.startsWith("sensor.topologia_miwifi") && s.attributes?.graph?.is_main === true
   );
 
+  if (!topoSensor) {
+    logToBackend(hass, "debug", "⚠️ topoSensor is null – no sensor.topologia_miwifi marked as is_main (status.js)");
+  }
+  
   const graph = topoSensor?.attributes?.graph ?? {};
+
+  if (topoSensor && graph?.mac) {
+    logToBackend(hass, "debug", `✅ Main router detected: ${graph.name} (${graph.mac})`);
+  }
+
 
   const systemItems = [
     { label: localize("label_model"), value: graph.hardware || "unknown" },

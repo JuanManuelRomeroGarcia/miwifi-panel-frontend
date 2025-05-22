@@ -1,6 +1,7 @@
 import { html } from "https://unpkg.com/lit@2.7.5/index.js?module";
 import { renderToggle, renderSelects } from "./utils.js?v=__MIWIFI_VERSION__";
 import { localize } from "../translations/localize.js?v=__MIWIFI_VERSION__";
+import { logToBackend } from "./utils.js?v=__MIWIFI_VERSION__";
 import "../components/miwifi-device-node-card.js?v=__MIWIFI_VERSION__";
 
 const REPOSITORY = "JuanManuelRomeroGarcia/hass-miwifi";
@@ -16,11 +17,31 @@ export function renderMesh(hass) {
 
   for (const id of sensorIds) {
     const sensor = hass.states[id];
-    if (sensor && sensor.attributes?.graph && Number(sensor.attributes.graph.mode) === 0) {
-      mainGraph = sensor.attributes.graph;
+    const graph = sensor?.attributes?.graph;
+
+    if (graph?.is_main === true) {
+      mainGraph = graph;
+      logToBackend(hass, "debug", `✅ [mesh.js] Main router detected: ${graph.name} (${graph.mac})`);
+      break;
+    }
+
+    if (graph?.show === 1 && graph?.assoc === 1) {
+      mainGraph = graph;
+      logToBackend(hass, "debug", `🧠 [mesh.js] Fallback router by show+assoc: ${graph.name} (${graph.mac})`);
+      break;
+    }
+
+    if (graph?.mode === 0) {
+      mainGraph = graph;
+      logToBackend(hass, "debug", `⚠️ [mesh.js] Fallback router by mode=0 only: ${graph.name || id}`);
       break;
     }
   }
+
+  if (!mainGraph) {
+    logToBackend(hass, "warning", "❌ [mesh.js] No router found with is_main or fallback logic.");
+  }
+
 
   if (!mainGraph) {
     return html`
@@ -123,7 +144,7 @@ export function renderMesh(hass) {
               </div>
             `;
           } catch (err) {
-            console.warn(`[MiWiFi] Error rendering mesh node '${leaf.name}':`, err);
+            logToBackend(hass, "error", `❌ [mesh.js] Error rendering mesh node '${leaf.name}': ${err.message}`);
             return html`
               <div class="mesh-card">
                 <div class="mesh-name">${leaf.name}</div>

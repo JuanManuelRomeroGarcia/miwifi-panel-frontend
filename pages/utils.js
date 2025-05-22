@@ -65,3 +65,17 @@ export function formatSignal(value) {
   };
   return map[value?.toLowerCase()] ?? value + "%";
 }
+
+export function logToBackend(hass, level, message) {
+  if (!hass || !hass.callService) {
+    console.warn("⚠️ [logToBackend] Home Assistant instance not ready.");
+    return;
+  }
+
+  hass.callService("miwifi", "log_panel", {
+    level,
+    message,
+  }).catch((err) => {
+    console.warn("🛑 [logToBackend] Error sending log to backend:", err);
+  });
+}
