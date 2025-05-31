@@ -37,7 +37,8 @@
   "status_disconnected": "🔴 Nicht verbunden",
   "topology_router_network": "Router-Netzwerk",
   "topology_internet": "Internet",
-  "topology_main_not_found": "Hauptrouter nicht gefunden. Stelle sicher, dass die Topologie korrekt geladen wurde.",
+  "topology_main_not_found": "Kein Hauptrouter in Ihrem Netzwerk gefunden. Sie können einen manuell auswählen.",
+  "select_main_router": "Hauptrouter auswählen",
   "mesh_node_not_found": "❗ Keine Konfiguration für diesen Knoten gefunden.",
   "mesh_node_restart": "🔁 Mesh-Knoten neu starten",
   "settings_router_config": "⚙️ Hauptrouter-Einstellungen",
@@ -56,6 +57,12 @@
   "settings_feedback_button": "Panelverbesserung vorschlagen / Fehler melden",
   "settings.success" : "Einstellungen erfolgreich gespeichert.",
   "settings.applying": "Konfiguration wird angewendet...",
+  "settings_force_refresh": "🔄 Topologie-Zwangsaktualisierung",
+  "settings_manual_main": "🖱️ Hauptrouter manuell auswählen",
+  "settings_clear_main": "🧹 Hauptrouter-Auswahl löschen",
+  "settings_confirm_clear": "Möchten Sie die manuelle Hauptrouter-Auswahl wirklich löschen?",
+  "settings_clear_success": "Manuelle Hauptrouter-Auswahl erfolgreich gelöscht.",
+  "settings_clear_failed": "❌ Fehler beim Löschen der manuellen Hauptrouter-Auswahl.",
   "error_title": "❌ Fehler",
   "error_not_found": "Seite nicht gefunden.",
   "error_suggestion": "Wenn du Vorschläge hast, eröffne gerne ein Issue im Repository.",
@@ -76,5 +83,8 @@
   "log.websocket_lost": "❌ WebSocket-Verbindung verloren. Benachrichtigung wird angezeigt und neu geladen...",
   "log.panel_frozen": "⚠️ Panel eingefroren oder leer. Abschnitt wird neu geladen...",
   "log.refreshing_section": "⟳ Aktueller Abschnitt wird aktualisiert...",
-  "log.page_reload_error": "❌ Fehler beim Neuladen des Abschnitts:"
+  "log.page_reload_error": "❌ Fehler beim Neuladen des Abschnitts:",
+  "log.manual_router_set": "Manueller Router ausgewählt: {mac}",
+  "log.manual_router_cleared": "Manuelle Router-Auswahl gelöscht.",
+  "button_selected": "ausgewählt"
 }

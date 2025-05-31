@@ -37,7 +37,8 @@
   "status_disconnected": "🔴 Déconnecté",
   "topology_router_network": "Réseau du routeur",
   "topology_internet": "Internet",
-  "topology_main_not_found": "Routeur principal introuvable. Assurez-vous que la topologie est correctement chargée.",
+  "topology_main_not_found": "Aucun routeur principal trouvé dans votre réseau. Vous pouvez",
+  "select_main_router": "Sélectionner le routeur principal",
   "mesh_node_not_found": "❗ Aucune configuration trouvée pour ce nœud.",
   "mesh_node_restart": "🔁 Redémarrer le nœud mesh",
   "settings_router_config": "⚙️ Paramètres du routeur principal",
@@ -56,6 +57,12 @@
   "settings_feedback_button": "Suggérer une amélioration du panneau / signaler un bug",
   "settings.success" :  "Paramètres enregistrés avec succès.",
   "settings.applying": "Application de la configuration...",
+  "settings_force_refresh": "🔄 Forcer la mise à jour de la topologie",
+  "settings_manual_main": "🖱️ Sélectionner le routeur principal manuellement",
+  "settings_clear_main": "🧹 Effacer la sélection du routeur principal",
+  "settings_confirm_clear": "Êtes-vous sûr de vouloir effacer la sélection manuelle du routeur principal ?",
+  "settings_clear_success": "Sélection manuelle du routeur principal effacée avec succès.",
+  "settings_clear_failed": "Error clearing manual main router selection.",
   "error_title": "❌ Erreur",
   "error_not_found": "Page introuvable.",
   "error_suggestion": "Si vous avez des suggestions, n'hésitez pas à ouvrir un ticket sur le dépôt.",
@@ -76,5 +83,8 @@
   "log.websocket_lost": "❌ Connexion WebSocket perdue. Notification affichée et rechargement...",
   "log.panel_frozen": "⚠️ Panneau figé ou vide. Rechargement de la section...",
   "log.refreshing_section": "⟳ Actualisation de la section en cours...",
-  "log.page_reload_error": "❌ Erreur lors du rechargement de la section :"
+  "log.page_reload_error": "❌ Erreur lors du rechargement de la section :",
+  "log.manual_router_set": "Routeur principal sélectionné : {mac}",
+  "log.manual_router_cleared": "Sélection manuelle du routeur effacée.",
+  "button_selected": "sélectionné"
 }

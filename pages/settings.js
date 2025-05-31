@@ -13,27 +13,11 @@ export function renderSettings(hass) {
 
   const routerSensor = Object.values(hass.states).find((s) => {
     const g = s.attributes?.graph;
-    if (g?.is_main === true) {
-      logToBackend(hass, "debug", `✅ [settings.js] Main router detected: ${g.name} (${g.mac})`);
-      return true;
-    }
-    if (g?.show === 1 && g?.assoc === 1) {
-      logToBackend(hass, "debug", `🧠 [settings.js] Fallback router by show+assoc: ${g.name} (${g.mac})`);
-      return true;
-    }
-    if (g?.mode === 0) {
-      logToBackend(hass, "debug", `⚠️ [settings.js] Fallback router by mode=0 only: ${g.name}`);
-      return true;
-    }
-    return false;
+    return g?.is_main === true;
   });
 
   if (!routerSensor) {
     logToBackend(hass, "warning", "❌ [settings.js] No router found with is_main or fallback logic.");
-  }
-
-
-  if (!routerSensor) {
     return html`
       <div class="content" style="text-align:center; margin-top:20px;">
         <p style="font-size: 16px;">❗ ${localize("topology_main_not_found")}</p>
@@ -69,6 +53,15 @@ export function renderSettings(hass) {
     }).catch((err) => console.error("callService error:", err));
   };
 
+  const clearMain = () => {
+    const confirmMsg = localize("settings_confirm_clear_main") || "Do you want to clear manual main router selection?";
+    if (confirm(confirmMsg)) {
+      hass.callService("miwifi", "select_main_router", { mac: "" })
+        .then(() => location.reload())
+        .catch((err) => console.error("Failed to clear main router:", err));
+    }
+  };
+
   const currentPanel = config.panel_activo ?? true;
   const currentUnit = config.speed_unit || "MB";
   const currentLog = config.log_level || "info";
@@ -85,6 +78,9 @@ export function renderSettings(hass) {
           <img src="${routerIcon}" class="topo-icon-lg" />
           <div class="topo-name">${mainGraph.name} (Gateway)</div>
           <div class="topo-ip">${mainGraph.ip}</div>
+          <button class="reboot-btn" style="margin-top:8px" @click=${clearMain}>
+            🔄 ${localize("settings_clear_main_router")}
+          </button>
         </div>
       </div>
 
@@ -169,7 +165,7 @@ export function renderSettings(hass) {
             target="_blank"
             rel="noopener"
           >
-            💬 ${localize("settings_feedback_button") || "Sugerir mejora del panel / Reportar error"}
+            💬 ${localize("settings_feedback_button")}
           </a>
         </div>
       </div>

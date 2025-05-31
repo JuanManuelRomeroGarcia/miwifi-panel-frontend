@@ -58,11 +58,12 @@ export function renderMesh(hass) {
   );
 
   const normalizeMac = (mac) => mac?.toLowerCase().replace(/[:\-]/g, "");
+  const leafs = Array.isArray(mainGraph.leafs) ? mainGraph.leafs : [];
 
   return html`
     <div class="content">
       <div class="miwifi-mesh-group">
-        ${mainGraph.leafs.map((leaf) => {
+        ${leafs.map((leaf) => {
           try {
             const sensor = meshSensors.find((s) => s.attributes.graph.ip === leaf.ip);
             const leafMac = leaf.mac || sensor?.attributes.graph.mac || "";

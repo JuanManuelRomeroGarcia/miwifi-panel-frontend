@@ -37,7 +37,8 @@
   "status_disconnected": "🔴 Desconectado",
   "topology_router_network": "Red del router",
   "topology_internet": "Internet",
-  "topology_main_not_found": "No se encontró router principal. Asegúrate de que la topología ha sido cargada correctamente.",
+  "topology_main_not_found": "No se encontró el router principal en tu red. Puedes seleccionar uno manualmente.",
+  "select_main_router": "Seleccionar router principal",
   "mesh_node_not_found": "❗ No se encontró configuración para este nodo.",
   "mesh_node_restart": "🔁 Reiniciar nodo mesh",
   "settings_router_config": "⚙️ Configuración Router Principal",
@@ -56,6 +57,12 @@
   "settings_feedback_button": " Sugerir mejora del panel / reportar error",
   "settings.success" : "Configuración guardada correctamente.",
   "settings.applying":  "Aplicando configuración...",
+  "settings_force_refresh": "🔄 Forzar actualización de topología",
+  "settings_manual_main": "🖱️ Seleccionar router principal manualmente",
+  "settings_clear_main": "🧹 Borrar selección de router principal",
+  "settings_confirm_clear": "¿Estás seguro de borrar la selección manual del router principal?",
+  "settings_clear_success":  "Selección manual del router principal borrada correctamente.",
+  "settings_clear_failed": "Error al borrar la selección manual del router principal.",
   "error_title": "❌ Error",
   "error_not_found": "Página no encontrada.",
   "error_suggestion": "Si tienes sugerencias, no dudes en abrir un issue en el repositorio.",
@@ -76,5 +83,8 @@
   "log.websocket_lost": "❌ Conexión WebSocket perdida. Mostrando aviso y recargando...",
   "log.panel_frozen": "⚠️ Panel congelado o en blanco. Recargando sección...",
   "log.refreshing_section": "⟳ Refrescando sección actual...",
-  "log.page_reload_error": "❌ Error al recargar la sección:"
+  "log.page_reload_error": "❌ Error al recargar la sección:",
+  "log.manual_router_set": "Router principal manual seleccionado.",
+  "log.manual_router_cleared": "Selección de router manual borrada.",
+  "button_selected": "seleccionado"
 }

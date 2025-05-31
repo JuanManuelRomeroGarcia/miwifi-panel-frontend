@@ -50,8 +50,10 @@ export function renderSelects(hass, selects) {
 
 export function getMainRouterMac(hass) {
   const mainGraph = Object.values(hass.states)
-    .find((s) => s.entity_id.startsWith("sensor.topologia_miwifi") && s.attributes?.graph?.mode === 0)
-    ?.attributes?.graph;
+    .find((s) =>
+      s.entity_id.startsWith("sensor.topologia_miwifi") &&
+      s.attributes?.graph?.is_main === true
+    )?.attributes?.graph;
 
   return mainGraph?.mac?.toLowerCase()?.replaceAll(":", "_") ?? null;
 }

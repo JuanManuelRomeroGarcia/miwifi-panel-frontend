@@ -18,25 +18,26 @@ export const router = {
 let _currentPath = "/status";
 const _history = ["/status"];
 
-export function navigate(path) {
+export function navigate(path, hass) {
   if (_currentPath !== path) {
     _history.push(path);
   }
   _currentPath = path;
-  window.dispatchEvent(new CustomEvent("miwifi-navigate", { detail: { path } }));
-  logToBackend(window?.hass, "debug", `➡️ [router.js] Navigated to: ${path}`);
-
+  window.dispatchEvent(new CustomEvent("miwifi-navigate", { detail: { path, hass } }));
+  if (hass) {
+    logToBackend(hass, "debug", `➡️ [router.js] Navigated to: ${path}`);
+  }
 }
 
-export function goBack() {
+export function goBack(hass) {
   if (_history.length <= 1) {
-    logToBackend(window?.hass, "warning", "🔙 [router.js] goBack() called with no internal history. Using browser back.");
+    logToBackend(hass, "warning", "🔙 [router.js] goBack() called with no internal history. Using browser back.");
     window.history.back();
   } else {
-    _history.pop(); 
-    const previous = _history.pop() || "/status"; 
-    navigate(previous);
-    logToBackend(window?.hass, "debug", `🔙 [router.js] Going back to previous route: ${previous}`);
+    _history.pop();
+    const previous = _history.pop() || "/status";
+    navigate(previous, hass);
+    logToBackend(hass, "debug", `🔙 [router.js] Going back to previous route: ${previous}`);
   }
 }
 

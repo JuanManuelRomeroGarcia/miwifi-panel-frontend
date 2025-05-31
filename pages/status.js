@@ -1,6 +1,8 @@
 import { html } from "https://unpkg.com/lit@2.7.5/index.js?module";
 import { getMainRouterMac, formatSignal, logToBackend } from "./utils.js?v=__MIWIFI_VERSION__";
 import { localize } from "../translations/localize.js?v=__MIWIFI_VERSION__";
+import { showDialog } from "../dialogs.js?v=__MIWIFI_VERSION__";
+
 
 const SENSOR_SUFFIXES = {
   temperature: "temperature",
@@ -24,11 +26,48 @@ const SENSOR_SUFFIXES = {
   devices_5g_game: "devices_5g_game",
 };
 
+export function showRouterSelectionDialog(hass) {
+  const candidates = Object.values(hass.states).filter(
+    (s) =>
+      s.entity_id.startsWith("sensor.topologia_miwifi") &&
+      s.attributes?.graph?.mac
+  );
+
+  if (!candidates.length) {
+    logToBackend(hass, "warning", "❌ No router candidates found for manual selection.");
+    return;
+  }
+
+  const options = candidates.map((s) => {
+    const mac = s.attributes.graph.mac;
+    const name = s.attributes.graph.name || mac;
+    return { name, mac };
+  });
+
+  showDialog(hass, {
+    title: localize("select_main_router"),
+    options,
+    onSelect: async (mac) => {
+      await hass.callService("miwifi", "select_main_router", { mac });
+      location.reload();
+    },
+  });
+}
+
 export function renderStatus(hass) {
   const mac = getMainRouterMac(hass);
-  if (!mac) {
+    if (!mac) {
     logToBackend(hass, "warning", "❌ No main router MAC found – fallback not resolved (status.js)");
-    return html`<div style="text-align:center; padding:24px; color:white">❌ ${localize("topology_main_not_found")}</div>`;
+    return html`
+      <div style="text-align:center; padding:24px; color:white">
+        ❌ ${localize("topology_main_not_found")}<br />
+        <mwc-button
+          raised
+          label="${localize("select_main_router")}"
+          @click=${() => showRouterSelectionDialog(hass)}
+        ></mwc-button>
+      </div>
+    `;
   }
 
   const getSensorValue = (suffix) => {
@@ -47,7 +86,20 @@ export function renderStatus(hass) {
 
   if (!topoSensor) {
     logToBackend(hass, "debug", "⚠️ topoSensor is null – no sensor.topologia_miwifi marked as is_main (status.js)");
+    
+    // Mostramos el mismo mensaje de selección manual como cuando no hay MAC detectada
+    return html`
+      <div style="text-align:center; padding:24px; color:white">
+        ❌ ${localize("topology_main_not_found")}<br />
+        <mwc-button
+          raised
+          label="${localize("select_main_router")}"
+          @click=${() => showRouterSelectionDialog(hass)}
+        ></mwc-button>
+      </div>
+    `;
   }
+
   
   const graph = topoSensor?.attributes?.graph ?? {};
 

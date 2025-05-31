@@ -37,7 +37,8 @@
   "status_disconnected": "🔴 Desconectado",
   "topology_router_network": "Rede do roteador",
   "topology_internet": "Internet",
-  "topology_main_not_found": "Roteador principal não encontrado. Certifique-se de que a topologia foi carregada corretamente.",
+  "topology_main_not_found": "Nenhum roteador principal encontrado na sua rede. Você pode selecionar um manualmente.",
+  "select_main_router": "Selecionar roteador principal",
   "mesh_node_not_found": "❗ Nenhuma configuração encontrada para este nó.",
   "mesh_node_restart": "🔁 Reiniciar nó mesh",
   "settings_router_config": "⚙️ Configuração do Roteador Principal",
@@ -56,6 +57,12 @@
   "settings_feedback_button": "Sugerir melhoria do painel / reportar bug",
   "settings.success" : "Configurações salvas com sucesso.",
   "settings.applying": "Aplicando configuração...",
+  "settings_force_refresh": "🔄 Forçar atualização da topologia",
+  "settings_manual_main": "🖱️ Selecionar roteador principal manualmente",
+  "settings_clear_main": "🧹 Limpar seleção de roteador principal",
+  "settings_confirm_clear": "Tem certeza de que deseja limpar a seleção manual do roteador principal?",
+  "settings_clear_success": "Seleção manual do roteador principal limpa com sucesso.",
+  "settings_clear_failed": "Erro ao limpar a seleção manual do roteador principal.",
   "error_title": "❌ Erro",
   "error_not_found": "Página não encontrada.",
   "error_suggestion": "Se tiver sugestões, sinta-se à vontade para abrir um issue no repositório.",
@@ -76,5 +83,8 @@
   "log.websocket_lost": "❌ Conexão WebSocket perdida. Notificando e recarregando...",
   "log.panel_frozen": "⚠️ Painel congelado ou em branco. Recarregando seção...",
   "log.refreshing_section": "⟳ Atualizando seção atual...",
-  "log.page_reload_error": "❌ Erro ao recarregar a seção:"
+  "log.page_reload_error": "❌ Erro ao recarregar a seção:",
+   "log.manual_router_set": "Roteador principal manual selecionado",
+  "log.manual_router_cleared": "Seleção manual do roteador principal limpa",
+  "button_selected": "selecionado"
 }

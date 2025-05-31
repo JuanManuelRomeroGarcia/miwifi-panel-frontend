@@ -37,7 +37,8 @@
   "status_disconnected": "🔴 Disconnected",
   "topology_router_network": "Router Network",
   "topology_internet": "Internet",
-  "topology_main_not_found": "Main router not found. Make sure topology has been loaded correctly.",
+  "topology_main_not_found": "No main router found in your network. You can select one manually.",
+  "select_main_router": "Select Main Router",
   "mesh_node_not_found": "❗ No config found for this node.",
   "mesh_node_restart": "🔁 Restart mesh node",
   "settings_router_config": "⚙️ Main Router Settings",
@@ -56,6 +57,12 @@
   "settings_feedback_button": "Suggest panel improvement / report bug",
   "settings.success" : "Settings saved successfully.",
   "settings.applying": "Applying configuration...",
+  "settings_force_refresh": "🔄 Force topology refresh",
+  "settings_manual_main": "🖱️ Select main router manually",
+  "settings_clear_main": "🧹 Clear main router selection",
+  "settings_confirm_clear": "Are you sure you want to clear the manual main router selection?",
+  "settings_clear_success": "Manual main router selection cleared.",
+  "settings_clear_failed": "Error clearing manual main router selection.",
   "error_title": "❌ Error",
   "error_not_found": "Page not found.",
   "error_suggestion": "If you have suggestions, feel free to open an issue on the repository.",
@@ -76,5 +83,10 @@
   "log.websocket_lost": "❌ WebSocket connection lost. Notifying and reloading...",
   "log.panel_frozen": "⚠️ Panel frozen or blank. Reloading section...",
   "log.refreshing_section": "⟳ Refreshing current section...",
-  "log.page_reload_error": "❌ Error while reloading section:"
+  "log.page_reload_error": "❌ Error while reloading section:",
+  "log.manual_router_set": "Manual router selected: {mac}",
+  "log.manual_router_cleared": "Manual router selection cleared",
+  "button_selected": "selected"
+
+  
 }

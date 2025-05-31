@@ -37,7 +37,8 @@
   "status_disconnected": "🔴 Bağlı Değil",
   "topology_router_network": "Yönlendirici Ağı",
   "topology_internet": "İnternet",
-  "topology_main_not_found": "Ana yönlendirici bulunamadı. Topolojinin doğru yüklendiğinden emin olun.",
+  "topology_main_not_found": "Ağınızda ana yönlendirici bulunamadı. Birini manuel olarak seçebilirsiniz.",
+  "select_main_router": "Ana Yönlendiriciyi Seç",
   "mesh_node_not_found": "❗ Bu düğüm için yapılandırma bulunamadı.",
   "mesh_node_restart": "🔁 Mesh düğümünü yeniden başlat",
   "settings_router_config": "⚙️ Ana Yönlendirici Ayarları",
@@ -56,6 +57,12 @@
   "settings_feedback_button": "Panel iyileştirmesi öner / hata bildir",
   "settings.success" : "Ayarlar başarıyla kaydedildi.",
   "settings.applying":  "Yapılandırma uygulanıyor...",
+  "settings_force_refresh": "🔄 Topoloji yenilemesini zorla",
+  "settings_manual_main": "🖱️ Ana yönlendiriciyi manuel olarak seç",
+  "settings_clear_main": "🧹 Ana yönlendirici seçimini temizle",
+  "settings_confirm_clear": "Manuel ana yönlendirici seçimini temizlemek istediğinizden emin misiniz?",
+  "settings_clear_success": "Ana yönlendirici seçimi başarıyla temizlendi.",
+  "settings_clear_failed": "Manuel ana yönlendirici seçimi temizlenemedi. Lütfen yönlendiriciyi kontrol edin.",
   "error_title": "❌ Hata",
   "error_not_found": "Sayfa bulunamadı.",
   "error_suggestion": "Öneriniz varsa, lütfen repoya bir issue açın.",
@@ -76,5 +83,8 @@
   "log.websocket_lost": "❌ WebSocket bağlantısı kesildi. Bildirim gösteriliyor ve yeniden yükleniyor...",
   "log.panel_frozen": "⚠️ Panel donmuş veya boş. Bölüm yeniden yükleniyor...",
   "log.refreshing_section": "⟳ Mevcut bölüm yenileniyor...",
-  "log.page_reload_error": "❌ Bölüm yeniden yüklenirken hata oluştu:"
+  "log.page_reload_error": "❌ Bölüm yeniden yüklenirken hata oluştu:",
+    "log.manual_router_set": "Manuel yönlendirici seçildi",
+  "log.manual_router_cleared": "Manuel yönlendirici seçimi temizlendi",
+  "button_selected": "seçildi"
 }

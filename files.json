@@ -2,6 +2,7 @@
   "files": [
     "panel-frontend.js",
     "router.js",
+    "dialogs.js",
     "assets/logo.png",
     "assets/icon_internet_on.png",
     "assets/icon_internet.png",
