@@ -59,7 +59,7 @@
   "settings.applying":  "Aplicando configuración...",
   "settings_force_refresh": "🔄 Forzar actualización de topología",
   "settings_manual_main": "🖱️ Seleccionar router principal manualmente",
-  "settings_clear_main": "🧹 Borrar selección de router principal",
+  "settings_clear_main_router": "🧹 Borrar selección de router principal",
   "settings_confirm_clear": "¿Estás seguro de borrar la selección manual del router principal?",
   "settings_clear_success":  "Selección manual del router principal borrada correctamente.",
   "settings_clear_failed": "Error al borrar la selección manual del router principal.",
@@ -86,5 +86,10 @@
   "log.page_reload_error": "❌ Error al recargar la sección:",
   "log.manual_router_set": "Router principal manual seleccionado.",
   "log.manual_router_cleared": "Selección de router manual borrada.",
-  "button_selected": "seleccionado"
+  "button_selected": "seleccionado",
+  "wan_access": "Acceso WAN",
+  "wan_blocked": "Bloqueado",
+  "wan_allowed": "Permitido",
+  "wan_block_button": "Bloquear WAN",
+  "wan_unblock_button": "Desbloquear WAN"
 }

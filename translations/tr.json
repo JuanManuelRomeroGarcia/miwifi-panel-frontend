@@ -59,7 +59,7 @@
   "settings.applying":  "Yapılandırma uygulanıyor...",
   "settings_force_refresh": "🔄 Topoloji yenilemesini zorla",
   "settings_manual_main": "🖱️ Ana yönlendiriciyi manuel olarak seç",
-  "settings_clear_main": "🧹 Ana yönlendirici seçimini temizle",
+  "settings_clear_main_router": "🧹 Ana yönlendirici seçimini temizle",
   "settings_confirm_clear": "Manuel ana yönlendirici seçimini temizlemek istediğinizden emin misiniz?",
   "settings_clear_success": "Ana yönlendirici seçimi başarıyla temizlendi.",
   "settings_clear_failed": "Manuel ana yönlendirici seçimi temizlenemedi. Lütfen yönlendiriciyi kontrol edin.",
@@ -86,5 +86,10 @@
   "log.page_reload_error": "❌ Bölüm yeniden yüklenirken hata oluştu:",
     "log.manual_router_set": "Manuel yönlendirici seçildi",
   "log.manual_router_cleared": "Manuel yönlendirici seçimi temizlendi",
-  "button_selected": "seçildi"
+  "button_selected": "seçildi",
+  "wan_access": "WAN Erişimi",
+  "wan_blocked": "Engellendi",
+  "wan_allowed": "İzin Verildi",
+  "wan_block_button": "WAN'ı Engelle",
+  "wan_unblock_button": "WAN'ı Engelleme"
 }

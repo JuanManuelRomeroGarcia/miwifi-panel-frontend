@@ -59,7 +59,7 @@
   "settings.applying": "Application de la configuration...",
   "settings_force_refresh": "🔄 Forcer la mise à jour de la topologie",
   "settings_manual_main": "🖱️ Sélectionner le routeur principal manuellement",
-  "settings_clear_main": "🧹 Effacer la sélection du routeur principal",
+  "settings_clear_main_router": "🧹 Effacer la sélection du routeur principal",
   "settings_confirm_clear": "Êtes-vous sûr de vouloir effacer la sélection manuelle du routeur principal ?",
   "settings_clear_success": "Sélection manuelle du routeur principal effacée avec succès.",
   "settings_clear_failed": "Error clearing manual main router selection.",
@@ -86,5 +86,10 @@
   "log.page_reload_error": "❌ Erreur lors du rechargement de la section :",
   "log.manual_router_set": "Routeur principal sélectionné : {mac}",
   "log.manual_router_cleared": "Sélection manuelle du routeur effacée.",
-  "button_selected": "sélectionné"
+  "button_selected": "sélectionné",
+  "wan_access": "Accès WAN",
+  "wan_blocked": "Bloqué",
+  "wan_allowed": "Autorisé",
+  "wan_block_button": "Bloquer WAN",
+  "wan_unblock_button": "Débloquer WAN"
 }

@@ -59,7 +59,7 @@
   "settings.applying": "Applying configuration...",
   "settings_force_refresh": "🔄 Force topology refresh",
   "settings_manual_main": "🖱️ Select main router manually",
-  "settings_clear_main": "🧹 Clear main router selection",
+  "settings_clear_main_router": "🧹 Clear main router selection",
   "settings_confirm_clear": "Are you sure you want to clear the manual main router selection?",
   "settings_clear_success": "Manual main router selection cleared.",
   "settings_clear_failed": "Error clearing manual main router selection.",
@@ -86,7 +86,10 @@
   "log.page_reload_error": "❌ Error while reloading section:",
   "log.manual_router_set": "Manual router selected: {mac}",
   "log.manual_router_cleared": "Manual router selection cleared",
-  "button_selected": "selected"
-
-  
+  "button_selected": "selected",
+  "wan_access": "WAN Access",
+  "wan_blocked": "Blocked",
+  "wan_allowed": "Allowed",
+  "wan_block_button": "Block WAN",
+  "wan_unblock_button": "Unblock WAN"
 }

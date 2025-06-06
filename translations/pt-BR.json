@@ -59,7 +59,7 @@
   "settings.applying": "Aplicando configuração...",
   "settings_force_refresh": "🔄 Forçar atualização da topologia",
   "settings_manual_main": "🖱️ Selecionar roteador principal manualmente",
-  "settings_clear_main": "🧹 Limpar seleção de roteador principal",
+  "settings_clear_main_router": "🧹 Limpar seleção de roteador principal",
   "settings_confirm_clear": "Tem certeza de que deseja limpar a seleção manual do roteador principal?",
   "settings_clear_success": "Seleção manual do roteador principal limpa com sucesso.",
   "settings_clear_failed": "Erro ao limpar a seleção manual do roteador principal.",
@@ -86,5 +86,10 @@
   "log.page_reload_error": "❌ Erro ao recarregar a seção:",
    "log.manual_router_set": "Roteador principal manual selecionado",
   "log.manual_router_cleared": "Seleção manual do roteador principal limpa",
-  "button_selected": "selecionado"
+  "button_selected": "selecionado",
+  "wan_access": "Acesso WAN",
+  "wan_blocked": "Bloqueado",
+  "wan_allowed": "Permitido",
+  "wan_block_button": "Bloquear WAN",
+  "wan_unblock_button": "Desbloquear WAN"
 }

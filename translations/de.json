@@ -59,7 +59,7 @@
   "settings.applying": "Konfiguration wird angewendet...",
   "settings_force_refresh": "🔄 Topologie-Zwangsaktualisierung",
   "settings_manual_main": "🖱️ Hauptrouter manuell auswählen",
-  "settings_clear_main": "🧹 Hauptrouter-Auswahl löschen",
+  "settings_clear_main_router": "🧹 Hauptrouter-Auswahl löschen",
   "settings_confirm_clear": "Möchten Sie die manuelle Hauptrouter-Auswahl wirklich löschen?",
   "settings_clear_success": "Manuelle Hauptrouter-Auswahl erfolgreich gelöscht.",
   "settings_clear_failed": "❌ Fehler beim Löschen der manuellen Hauptrouter-Auswahl.",
@@ -86,5 +86,10 @@
   "log.page_reload_error": "❌ Fehler beim Neuladen des Abschnitts:",
   "log.manual_router_set": "Manueller Router ausgewählt: {mac}",
   "log.manual_router_cleared": "Manuelle Router-Auswahl gelöscht.",
-  "button_selected": "ausgewählt"
+  "button_selected": "ausgewählt",
+  "wan_access": "WAN-Zugriff",
+  "wan_blocked": "Blockiert",
+  "wan_allowed": "Erlaubt",
+  "wan_block_button": "WAN blockieren",
+  "wan_unblock_button": "WAN entsperren"
 }

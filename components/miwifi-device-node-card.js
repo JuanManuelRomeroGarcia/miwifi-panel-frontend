@@ -80,10 +80,41 @@ class MiWiFiNodeDeviceCard extends LitElement {
         <div class="device-info">↑ ${a.up_speed ?? "0 B/s"}</div>
         <div class="device-info">↓ ${a.down_speed ?? "0 B/s"}</div>
         <div class="device-info">${localize("label_uptime")}: ${a.last_activity ?? "-"}</div>
+
+        <div class="device-info">
+          ${localize("wan_access")}: 
+          ${a.internet_blocked 
+            ? html`<span style="color:red;">${localize("wan_blocked")}</span>` 
+            : html`<span style="color:lightgreen;">${localize("wan_allowed")}</span>`}
+        </div>
+
+        <div class="device-info" style="display: flex; align-items: center; gap: 10px;">
+          <span>${localize("wan_unblocked_label")}</span>
+          <ha-switch
+            .checked=${a.internet_blocked}
+            @change=${(ev) => this._toggleWAN(device, ev.target.checked)}
+          ></ha-switch>
+          <span>${localize("wan_blocked_label")}</span>
+        </div>
+
+
         <div class="device-status online">${localize("status_connected")}</div>
       </div>
     `;
   }
+
+  _toggleWAN(device, checked) {
+    const entityId = device.entity_id;
+    const deviceEntry = this.hass.entities[entityId]?.device_id || device.device_id;
+  
+    const allow = checked;
+  
+    this.hass.callService("miwifi", "block_device", {
+      device_id: deviceEntry,
+      allow: allow
+    });
+  }
+  
 
   static styles = css`
     .section-title {
