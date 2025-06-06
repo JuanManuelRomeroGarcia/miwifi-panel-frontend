@@ -100,12 +100,12 @@ class MiWiFiDeviceCards extends LitElement {
         </div>
 
         <div class="device-info" style="display: flex; align-items: center; gap: 10px;">
-          <span>${localize("wan_unblocked_label")}</span>
+          <span>${localize("wan_unblock_button")}</span>
           <ha-switch
             .checked=${a.internet_blocked}
             @change=${(ev) => this._toggleWAN(device, ev.target.checked)}
           ></ha-switch>
-          <span>${localize("wan_blocked_label")}</span>
+          <span>${localize("wan_block_button")}</span>
         </div>
 
     `;
