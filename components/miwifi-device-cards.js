@@ -100,8 +100,8 @@ class MiWiFiDeviceCards extends LitElement {
         <div class="device-info" style="display: flex; align-items: center; gap: 10px;">
           <span>${localize("wan_unblock_button")}</span>
           <ha-switch
-            .checked=${!a.internet_blocked}
-            @change=${(ev) => this._toggleWAN(device, !ev.target.checked)}
+            .checked=${a.internet_blocked}
+            @change=${(ev) => this._toggleWAN(device, ev.target.checked)}
           ></ha-switch>
           <span>${localize("wan_block_button")}</span>
         </div>
@@ -109,13 +109,15 @@ class MiWiFiDeviceCards extends LitElement {
     `;
   }
 
-  _toggleWAN(device, blocked) {
+  _toggleWAN(device, checked) {
     const entityId = device.entity_id;
-    const deviceEntry = this.hass.entities?.[entityId]?.device_id || device.device_id;
-
+    const deviceEntry = this.hass.entities[entityId]?.device_id || device.device_id;
+  
+    const allow = checked;
+  
     this.hass.callService("miwifi", "block_device", {
       device_id: deviceEntry,
-      allow: !blocked
+      allow: allow
     });
   }
 
