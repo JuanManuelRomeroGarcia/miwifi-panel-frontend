@@ -29,12 +29,10 @@ class MiWiFiDeviceCards extends LitElement {
           ${localize("devices_connected")}: ${connected.length}
         </p>
 
-        <!-- Conectados agrupados -->
         ${Object.entries(grouped).map(([type, devs]) =>
           html`${this._renderGroup(type, devs)}`
         )}
 
-        <!-- Desconectados no agrupados -->
         ${disconnected.length > 0 ? html`
           <div class="section-title" style="margin-top: 32px;">
             🔴 ${localize("toggle_offline_show")}
@@ -84,13 +82,13 @@ class MiWiFiDeviceCards extends LitElement {
     return html`
       <div class="device-card">
         <div class="device-name">${a.friendly_name || device.entity_id}</div>
-        <div class="device-info">IP: ${a.ip || "-"}</div>
-        <div class="device-info">MAC: ${a.mac || "-"}</div>
-        <div class="device-info">${localize("status_connected")}: Sí</div>
-        <div class="device-info">Señal: ${a.signal ?? "N/D"}</div>
+        <div class="device-info">${localize("ip")}: ${a.ip || "-"}</div>
+        <div class="device-info">${localize("mac_address")}: ${a.mac || "-"}</div>
+        <div class="device-info">${localize("status_connected")}: ${localize("status_connected_yes")}</div>
+        <div class="device-info">${localize("signal")}: ${a.signal ?? "N/D"}</div>
         <div class="device-info">↑ ${a.up_speed ?? "0 B/s"}</div>
         <div class="device-info">↓ ${a.down_speed ?? "0 B/s"}</div>
-        <div class="device-info">Última actividad: ${a.last_activity ?? "-"}</div>
+        <div class="device-info">${localize("last_activity")}: ${a.last_activity ?? "-"}</div>
 
         <div class="device-info">
           ${localize("wan_access")}: 
@@ -102,26 +100,24 @@ class MiWiFiDeviceCards extends LitElement {
         <div class="device-info" style="display: flex; align-items: center; gap: 10px;">
           <span>${localize("wan_unblock_button")}</span>
           <ha-switch
-            .checked=${a.internet_blocked}
-            @change=${(ev) => this._toggleWAN(device, ev.target.checked)}
+            .checked=${!a.internet_blocked}
+            @change=${(ev) => this._toggleWAN(device, !ev.target.checked)}
           ></ha-switch>
           <span>${localize("wan_block_button")}</span>
         </div>
-
+      </div>
     `;
   }
 
-    _toggleWAN(device, checked) {
-      const entityId = device.entity_id;
-      const deviceEntry = this.hass.entities[entityId]?.device_id || device.device_id;
-    
-      const allow = checked;
-    
-      this.hass.callService("miwifi", "block_device", {
-        device_id: deviceEntry,
-        allow: allow
-      });
-    }
+  _toggleWAN(device, blocked) {
+    const entityId = device.entity_id;
+    const deviceEntry = this.hass.entities?.[entityId]?.device_id || device.device_id;
+
+    this.hass.callService("miwifi", "block_device", {
+      device_id: deviceEntry,
+      allow: !blocked
+    });
+  }
 
   static styles = css`
     .content {

@@ -100,9 +100,9 @@ export function renderMesh(hass) {
                 <img src="${icon}" class="topo-icon" alt="Nodo Mesh" />
                 <div class="mesh-name">${leaf.name}</div>
                 <div class="mesh-info">
-                  IP: ${leaf.ip}<br />
-                  Modelo: ${leaf.hardware}<br />
-                  Estado: 🟢 Online
+                  ${localize("ip")}: ${leaf.ip}<br />
+                  ${localize("modelo")}: ${leaf.hardware}<br />
+                  ${localize("estado")}: ${localize("🟢 status_connected")}
                 </div>
 
                 ${mac
@@ -119,7 +119,7 @@ export function renderMesh(hass) {
 
                       <div class="section">
                         <h3>${localize("settings_extra")}</h3>
-                        ${led ? renderToggle(hass, led) : ""}
+                        ${led ? html`<div>${localize("label_led")} ${renderToggle(hass, led)}</div>` : ""}
                         ${reboot
                           ? html`
                               <button

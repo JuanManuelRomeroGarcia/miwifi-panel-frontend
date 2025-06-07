@@ -76,7 +76,7 @@ export function renderSettings(hass) {
         <h2>${localize("settings_router_config")}</h2>
         <div class="topo-box">
           <img src="${routerIcon}" class="topo-icon-lg" />
-          <div class="topo-name">${mainGraph.name} (Gateway)</div>
+          <div class="topo-name">${mainGraph.name} (${localize("gateway")})</div>
           <div class="topo-ip">${mainGraph.ip}</div>
           <button class="reboot-btn" style="margin-top:8px" @click=${clearMain}>
             🔄 ${localize("settings_clear_main_router")}
@@ -96,7 +96,7 @@ export function renderSettings(hass) {
 
       <div class="section">
         <h3>${localize("settings_extra")}</h3>
-        ${led ? renderToggle(hass, led) : ""}
+        ${led ? html`<div>${localize("label_led")} ${renderToggle(hass, led)}</div>` : ""}
         ${reboot
           ? html`
               <button class="reboot-btn" @click=${handleReboot}>

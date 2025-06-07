@@ -25,6 +25,75 @@ export class MiwifiTopologia extends LitElement {
     return this.hass?.states?.[id]?.state ?? "0";
   }
 
+
+  render() {
+    if (!this.data) {
+      return html`<div class="message">❗ ${localize("topology_main_not_found")}</div>`;
+    }
+
+    const routerIcon = this.data.hardware
+      ? `https://raw.githubusercontent.com/${REPOSITORY}/main/images/${this.data.hardware}.png`
+      : DEFAULT_MESH_ICON;
+
+    const internetIcon = `https://raw.githubusercontent.com/${REPOSITORY_PANEL}/main/assets/icon_internet.png`;
+
+    return html`
+      <h2>${localize("topology_router_network")}</h2>
+      <div class="tree">
+        <ul>
+          <li>
+            <div class="topo-box">
+              <img src="${internetIcon}" class="topo-icon" />
+              <div class="topo-name">${localize("network")}</div>
+            </div>
+            <div class="line-pulse-vertical"></div>
+            <ul>
+              <li>
+                <div class="topo-box" style="cursor: pointer;" @click=${() => navigate("/settings")}>
+                  <div class="topo-icon-container">
+                    <img src="${routerIcon}" class="topo-icon-lg" />
+                    <div class="device-count-badge">
+                      ${this._getDeviceCountFromSensor(this.data.mac)}
+                    </div>
+                  </div>
+                  <div class="topo-name">${this.data.name} ${localize("gateway")}</div>
+                  <div class="topo-ip">${this.data.ip}</div>
+                </div>
+                <div class="line-pulse-vertical"></div>
+                ${this.data.leafs?.length
+                  ? html`<ul>
+                      ${this.data.leafs.map((child) => this._renderNode(child))}
+                    </ul>`
+                  : ""}
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    `;
+  }
+
+  _renderNode(node) {
+    const icon = node.hardware
+      ? `https://raw.githubusercontent.com/${REPOSITORY}/main/images/${node.hardware}.png`
+      : DEFAULT_MESH_ICON;
+
+    return html`
+      <li>
+        <div class="topo-box" style="cursor: pointer;" @click=${() => navigate("/mesh")}>
+          <div class="topo-icon-container">
+            <img src="${icon}" class="topo-icon" />
+            <div class="device-count-badge">
+              ${this._getDeviceCountFromSensor(this._getMacForNode(node.ip))}
+            </div>
+          </div>
+          <div class="topo-name">${node.name}</div>
+          <div class="topo-ip">${node.ip}</div>
+        </div>
+      </li>
+    `;
+  }
+
   static styles = css`
     :host {
       display: block;
@@ -163,74 +232,6 @@ export class MiwifiTopologia extends LitElement {
       }
     }
   `;
-
-  render() {
-    if (!this.data) {
-      return html`<div class="message">❗ ${localize("topology_main_not_found")}</div>`;
-    }
-
-    const routerIcon = this.data.hardware
-      ? `https://raw.githubusercontent.com/${REPOSITORY}/main/images/${this.data.hardware}.png`
-      : DEFAULT_MESH_ICON;
-
-    const internetIcon = `https://raw.githubusercontent.com/${REPOSITORY_PANEL}/main/assets/icon_internet.png`;
-
-    return html`
-      <h2>${localize("topology_router_network")}</h2>
-      <div class="tree">
-        <ul>
-          <li>
-            <div class="topo-box">
-              <img src="${internetIcon}" class="topo-icon" />
-              <div class="topo-name">Internet</div>
-            </div>
-            <div class="line-pulse-vertical"></div>
-            <ul>
-              <li>
-                <div class="topo-box" style="cursor: pointer;" @click=${() => navigate("/settings")}>
-                  <div class="topo-icon-container">
-                    <img src="${routerIcon}" class="topo-icon-lg" />
-                    <div class="device-count-badge">
-                      ${this._getDeviceCountFromSensor(this.data.mac)}
-                    </div>
-                  </div>
-                  <div class="topo-name">${this.data.name} (Gateway)</div>
-                  <div class="topo-ip">${this.data.ip}</div>
-                </div>
-                <div class="line-pulse-vertical"></div>
-                ${this.data.leafs?.length
-                  ? html`<ul>
-                      ${this.data.leafs.map((child) => this._renderNode(child))}
-                    </ul>`
-                  : ""}
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    `;
-  }
-
-  _renderNode(node) {
-    const icon = node.hardware
-      ? `https://raw.githubusercontent.com/${REPOSITORY}/main/images/${node.hardware}.png`
-      : DEFAULT_MESH_ICON;
-
-    return html`
-      <li>
-        <div class="topo-box" style="cursor: pointer;" @click=${() => navigate("/mesh")}>
-          <div class="topo-icon-container">
-            <img src="${icon}" class="topo-icon" />
-            <div class="device-count-badge">
-              ${this._getDeviceCountFromSensor(this._getMacForNode(node.ip))}
-            </div>
-          </div>
-          <div class="topo-name">${node.name}</div>
-          <div class="topo-ip">${node.ip}</div>
-        </div>
-      </li>
-    `;
-  }
 }
 
 customElements.define("miwifi-topologia", MiwifiTopologia);
