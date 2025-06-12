@@ -55,6 +55,14 @@
   "ip": "IP",
   "mac_address": "Adresse MAC",
   "signal": "Signal",
+  "signal_quality": "Qualité du signal",
+  "signal_quality_very_strong": "Très fort",
+  "signal_quality_strong": "Fort",
+  "signal_quality_medium": "Moyen",
+  "signal_quality_weak": "Faible",
+  "signal_quality_very_weak": "Très faible",
+  "signal_quality_unknown": "Inconnu",
+
   "modelo": "Modèle",
   "estado": "État",
 
@@ -94,6 +102,8 @@
   "settings_confirm_clear": "Confirmer l'effacement de la sélection manuelle ?",
   "settings_clear_success": "Sélection manuelle effacée.",
   "settings_clear_failed": "Erreur lors de l'effacement de la sélection manuelle.",
+  "settings_restart_router_done": "Le routeur principal a été redémarré avec succès.",
+  "settings_restart_mesh_done": "{name} a été redémarré avec succès.",
 
   "error_title": "❌ Erreur",
   "error_not_found": "Page introuvable.",

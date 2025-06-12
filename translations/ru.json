@@ -55,6 +55,13 @@
   "ip": "IP",
   "mac_address": "MAC адрес",
   "signal": "Сигнал",
+  "signal_quality": "Качество сигнала",
+  "signal_quality_very_strong": "Очень сильный",
+  "signal_quality_strong": "Сильный",
+  "signal_quality_medium": "Средний",
+  "signal_quality_weak": "Слабый",
+  "signal_quality_very_weak": "Очень слабый",
+  "signal_quality_unknown": "Неизвестно",
   "modelo": "Модель",
   "estado": "Статус",
 
@@ -94,6 +101,8 @@
   "settings_confirm_clear": "Вы уверены, что хотите очистить ручной выбор?",
   "settings_clear_success": "Ручной выбор очищен.",
   "settings_clear_failed": "Ошибка при очистке ручного выбора.",
+  "settings_restart_router_done": "Основной роутер был успешно перезапущен.",
+  "settings_restart_mesh_done": "{name} был успешно перезапущен.",
 
   "error_title": "❌ Ошибка",
   "error_not_found": "Страница не найдена.",

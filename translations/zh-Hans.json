@@ -55,6 +55,13 @@
   "ip": "IP",
   "mac_address": "MAC 地址",
   "signal": "信号",
+  "signal_quality": "信号质量",
+  "signal_quality_very_strong": "非常强",
+  "signal_quality_strong": "强",
+  "signal_quality_medium": "中等",
+  "signal_quality_weak": "弱",
+  "signal_quality_very_weak": "非常弱",
+  "signal_quality_unknown": "未知",
   "modelo": "型号",
   "estado": "状态",
 
@@ -94,6 +101,8 @@
   "settings_confirm_clear": "确定要清除手动选择吗？",
   "settings_clear_success": "手动选择已清除。",
   "settings_clear_failed": "清除手动选择时出错。",
+  "settings_restart_router_done": "主路由器已成功重启。",
+  "settings_restart_mesh_done": "{name} 已成功重启。",
 
   "error_title": "❌ 错误",
   "error_not_found": "页面未找到。",

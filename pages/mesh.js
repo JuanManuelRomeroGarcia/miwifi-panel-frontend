@@ -42,6 +42,20 @@ export function renderMesh(hass) {
     logToBackend(hass, "warning", "❌ [mesh.js] No router found with is_main or fallback logic.");
   }
 
+  function handleMeshReboot(hass, name, mac, entity_id) {
+    hass.callService("button", "press", { entity_id }).catch((err) =>
+      console.error("callService error:", err)
+    );
+
+    logToBackend(hass, "info", `🔄 [mesh.js] Reboot requested for mesh node: ${name} (${mac})`);
+
+    hass.callService("persistent_notification", "create", {
+      title: localize("settings_restart_router"),
+      message: localize("settings_restart_mesh_done").replace("{name}", name),
+      notification_id: `miwifi_reboot_${mac.replace(/:/g, "_").toLowerCase()}`,
+    }).catch((err) => console.error("callService error:", err));
+  }
+
 
   if (!mainGraph) {
     return html`
@@ -125,12 +139,11 @@ export function renderMesh(hass) {
                               <button
                                 class="reboot-btn"
                                 @click=${() =>
-                                  hass.callService("button", "press", {
-                                    entity_id: reboot.entity_id,
-                                  })}
+                                  handleMeshReboot(hass, node.name, node.mac, reboot.entity_id)}
                               >
                                 ${localize("mesh_node_restart")}
                               </button>
+
                             `
                           : ""}
                       </div>

@@ -55,6 +55,13 @@
   "ip": "IP",
   "mac_address": "MAC Adresi",
   "signal": "Sinyal",
+  "signal_quality": "Sinyal Kalitesi",
+  "signal_quality_very_strong": "Çok Güçlü",
+  "signal_quality_strong": "Güçlü",
+  "signal_quality_medium": "Orta",
+  "signal_quality_weak": "Zayıf",
+  "signal_quality_very_weak": "Çok Zayıf",
+  "signal_quality_unknown": "Bilinmiyor",
   "modelo": "Model",
   "estado": "Durum",
 
@@ -94,6 +101,8 @@
   "settings_confirm_clear": "Manuel seçimi temizlemek istediğinize emin misiniz?",
   "settings_clear_success": "Manuel seçim temizlendi.",
   "settings_clear_failed": "Manuel seçim temizlenirken hata oluştu.",
+  "settings_restart_router_done": "Ana router başarıyla yeniden başlatıldı.",
+  "settings_restart_mesh_done": "{name} başarıyla yeniden başlatıldı.",
 
   "error_title": "❌ Hata",
   "error_not_found": "Sayfa bulunamadı.",

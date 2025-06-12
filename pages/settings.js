@@ -48,7 +48,7 @@ export function renderSettings(hass) {
     logToBackend(hass, "info", `🔄 [settings.js] Reboot requested for router: ${mainGraph.name} (${mainGraph.mac})`);
     hass.callService("persistent_notification", "create", {
       title: localize("settings_restart_router"),
-      message: "El router principal ha sido reiniciado correctamente.",
+      message: localize("settings_restart_router_done"),
       notification_id: "miwifi_reboot_done",
     }).catch((err) => console.error("callService error:", err));
   };
@@ -78,9 +78,11 @@ export function renderSettings(hass) {
           <img src="${routerIcon}" class="topo-icon-lg" />
           <div class="topo-name">${mainGraph.name} (${localize("gateway")})</div>
           <div class="topo-ip">${mainGraph.ip}</div>
-          <button class="reboot-btn" style="margin-top:8px" @click=${clearMain}>
-            🔄 ${localize("settings_clear_main_router")}
-          </button>
+          ${!mainGraph.is_main_auto ? html`
+            <button class="reboot-btn" style="margin-top:8px" @click=${clearMain}>
+              🔄 ${localize("settings_clear_main_router")}
+            </button>
+          ` : ""}
         </div>
       </div>
 

@@ -56,6 +56,18 @@ class MiWiFiDeviceCards extends LitElement {
     }
   }
 
+  _translateSignalQuality(quality) {
+    switch (quality) {
+      case "very_strong": return localize("signal_quality_very_strong");
+      case "strong": return localize("signal_quality_strong");
+      case "medium": return localize("signal_quality_medium");
+      case "weak": return localize("signal_quality_weak");
+      case "very_weak": return localize("signal_quality_very_weak");
+      default: return localize("signal_quality_unknown");
+    }
+  }
+
+
   _renderGroup(type, devices) {
     return html`
       <div class="section-title">${localize("section_" + type) || type}</div>
@@ -75,6 +87,20 @@ class MiWiFiDeviceCards extends LitElement {
           <div class="device-name">${a.friendly_name || device.entity_id}</div>
           <div class="device-info">IP: ${a.ip || "-"}</div>
           <div class="device-status offline">${localize("status_disconnected")}</div>
+          <div class="device-info">
+            ${localize("wan_access")}: 
+            ${a.internet_blocked 
+              ? html`<span style="color:red;">${localize("wan_blocked")}</span>` 
+              : html`<span style="color:lightgreen;">${localize("wan_allowed")}</span>`}
+          </div>
+          <div class="device-info-wan">
+            <span>${localize("wan_unblock_button")}</span>
+            <ha-switch
+              .checked=${a.internet_blocked}
+              @change=${(ev) => this._toggleWAN(device, ev.target.checked)}
+            ></ha-switch>
+            <span>${localize("wan_block_button")}</span>
+          </div>
         </div>
       `;
     }
@@ -85,7 +111,10 @@ class MiWiFiDeviceCards extends LitElement {
         <div class="device-info">${localize("ip")}: ${a.ip || "-"}</div>
         <div class="device-info">${localize("mac_address")}: ${a.mac || "-"}</div>
         <div class="device-info">${localize("status_connected")}: ${localize("status_connected_yes")}</div>
-        <div class="device-info">${localize("signal")}: ${a.signal ?? "N/D"}</div>
+        ${a.connection?.toLowerCase() !== "lan" ? html`
+          <div class="device-info">${localize("signal")}: ${a.signal ?? "N/D"}</div>
+          <div class="device-info">${localize("signal_quality")}: ${this._translateSignalQuality(a.signal_quality)}</div>
+        ` : ""}
         <div class="device-info">↑ ${a.up_speed ?? "0 B/s"}</div>
         <div class="device-info">↓ ${a.down_speed ?? "0 B/s"}</div>
         <div class="device-info">${localize("last_activity")}: ${a.last_activity ?? "-"}</div>
@@ -97,7 +126,7 @@ class MiWiFiDeviceCards extends LitElement {
             : html`<span style="color:lightgreen;">${localize("wan_allowed")}</span>`}
         </div>
 
-        <div class="device-info" style="display: flex; align-items: center; gap: 10px;">
+        <div class="device-info-wan">
           <span>${localize("wan_unblock_button")}</span>
           <ha-switch
             .checked=${a.internet_blocked}
@@ -167,6 +196,16 @@ class MiWiFiDeviceCards extends LitElement {
     .device-info {
       font-size: 14px;
       margin-bottom: 4px;
+    }
+    
+    .device-info-wan {
+      font-size: 14px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      align-content: center;
+      justify-content: center;
     }
 
     .device-status {

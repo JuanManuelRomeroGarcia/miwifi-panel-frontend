@@ -55,6 +55,13 @@
   "ip": "IP",
   "mac_address": "Endereço MAC",
   "signal": "Sinal",
+  "signal_quality": "Qualidade do Sinal",
+  "signal_quality_very_strong": "Muito Forte",
+  "signal_quality_strong": "Forte",
+  "signal_quality_medium": "Média",
+  "signal_quality_weak": "Fraca",
+  "signal_quality_very_weak": "Muito Fraca",
+  "signal_quality_unknown": "Desconhecida",
   "modelo": "Modelo",
   "estado": "Estado",
 
@@ -94,6 +101,8 @@
   "settings_confirm_clear": "Tem certeza que deseja limpar a seleção manual?",
   "settings_clear_success": "Seleção manual limpa.",
   "settings_clear_failed": "Erro ao limpar a seleção manual.",
+  "settings_restart_router_done": "O roteador principal foi reiniciado com sucesso.",
+  "settings_restart_mesh_done": "{name} foi reiniciado com sucesso.",
 
   "error_title": "❌ Erro",
   "error_not_found": "Página não encontrada.",

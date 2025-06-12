@@ -55,6 +55,13 @@
   "ip": "IP",
   "mac_address": "MAC Adresse",
   "signal": "Signal",
+  "signal_quality": "Signalqualität",
+  "signal_quality_very_strong": "Sehr stark",
+  "signal_quality_strong": "Stark",
+  "signal_quality_medium": "Mittel",
+  "signal_quality_weak": "Schwach",
+  "signal_quality_very_weak": "Sehr schwach",
+  "signal_quality_unknown": "Unbekannt",
   "modelo": "Modell",
   "estado": "Status",
 
@@ -94,6 +101,8 @@
   "settings_confirm_clear": "Möchten Sie die manuelle Auswahl wirklich löschen?",
   "settings_clear_success": "Manuelle Auswahl gelöscht.",
   "settings_clear_failed": "Fehler beim Löschen der manuellen Auswahl.",
+  "settings_restart_router_done": "Der Hauptrouter wurde erfolgreich neu gestartet.",
+  "settings_restart_mesh_done": "{name} wurde erfolgreich neu gestartet.",
 
   "error_title": "❌ Fehler",
   "error_not_found": "Seite nicht gefunden.",
