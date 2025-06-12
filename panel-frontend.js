@@ -203,10 +203,11 @@ _startAutoRefresh() {
     return html`
       <ha-app-layout>
         <ha-top-app-bar slot="header">
-          <div style="display: flex; align-items: center; gap: 10px; padding-left: 16px;">
+          <div class="header-content">
             <ha-menu-button .hass=${this.hass} .narrow=${this.narrow}></ha-menu-button>
             <img src="/local/miwifi/assets/logo.png" class="logo" alt="Logo" />
-            <div main-title>XiaoHack Edition</div>
+            <div class="center" main-title>XiaoHack Edition</div>
+            <span class="version-badge">v${MIWIFI_VERSION}</span>
           </div>
         </ha-top-app-bar>
 
@@ -277,9 +278,19 @@ _startAutoRefresh() {
   ha-top-app-bar {
     position: sticky;
     top: 0;
-    z-index: 1000;
+    left: 0;
+    right: 0;
+    width: 100%;
     background-color: var(--miwifi-primary-color);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  }
+
+  .header-content {
+    display: flex; 
+    align-items: center;
+    gap: 10px; 
+    padding-left: 16px;
+    padding-top: 10px;
   }
 
   .miwifi-button-group {
@@ -510,6 +521,10 @@ _startAutoRefresh() {
 
   .device-card.disconnected .device-info {
     color: #999;
+  }
+  
+  .center {
+    text-align: center;
   }
 
   .device-name {
@@ -771,15 +786,40 @@ _startAutoRefresh() {
     .config-header h2 {
       font-size: 18px;
     }
+
     .disabled-message {
       padding: 2rem;
       text-align: center;
       color: red;
       font-size: 1.2rem;
     }
+  }
+
+  @media (max-width: 849px) {
+    ha-top-app-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      width: 100%;
+      z-index: 99;
+      background-color: var(--miwifi-primary-color);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .content {
+      padding-top: 82px; /* Space for fixed header */
+    }
+    
+  }
+
 `;
 
   
 }
 
-customElements.define("miwifi-panel", MiWiFiPanel);
+if (!customElements.get("miwifi-panel")) {
+  customElements.define("miwifi-panel", MiWiFiPanel);
+}
+
