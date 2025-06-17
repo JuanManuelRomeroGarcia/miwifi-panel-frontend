@@ -58,7 +58,7 @@
   "signal_quality": "Signal Quality",
   "signal_quality_very_strong": "Very Strong",
   "signal_quality_strong": "Strong",
-  "signal_quality_medium": "Medium",
+  "signal_quality_fair": "Medium",
   "signal_quality_weak": "Weak",
   "signal_quality_very_weak": "Very Weak",
   "signal_quality_unknown": "Unknown",

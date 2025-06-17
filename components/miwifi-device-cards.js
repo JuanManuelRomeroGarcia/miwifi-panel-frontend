@@ -60,7 +60,7 @@ class MiWiFiDeviceCards extends LitElement {
     switch (quality) {
       case "very_strong": return localize("signal_quality_very_strong");
       case "strong": return localize("signal_quality_strong");
-      case "medium": return localize("signal_quality_medium");
+      case "fair": return localize("signal_quality_fair");
       case "weak": return localize("signal_quality_weak");
       case "very_weak": return localize("signal_quality_very_weak");
       default: return localize("signal_quality_unknown");
