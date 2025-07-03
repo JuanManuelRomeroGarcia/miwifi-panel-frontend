@@ -14,6 +14,7 @@ class MiWiFiPanel extends LitElement {
     _currentPage: { state: true },
     _router: { state: true },
     _pagePromise: { state: true },
+    _hasMesh: { state: true },
   };
 
   constructor() {
@@ -30,6 +31,15 @@ class MiWiFiPanel extends LitElement {
   }
 
   updated(changedProperties) {
+    if (changedProperties.has("hass") && this.hass) {
+      const main = Object.values(this.hass.states).find(
+        (s) => s.entity_id.startsWith("sensor.topologia_miwifi") &&
+              s.attributes?.graph?.is_main === true
+      );
+      this._hasMesh = Array.isArray(main?.attributes?.graph?.leafs) &&
+                      main.attributes.graph.leafs.length > 0;
+    }
+
     if (changedProperties.has("hass") && this.hass && !this._translationsLoaded) {
       this._translationsLoaded = true;
       loadTranslations(this.hass).then(() => this._loadRouter());
@@ -217,7 +227,11 @@ _startAutoRefresh() {
             <button class="miwifi-button" @click=${() => this._navigate("/status")}>${localize("nav_status")}</button>
             <button class="miwifi-button" @click=${() => this._navigate("/topologia")}>${localize("nav_topology")}</button>
             <button class="miwifi-button" @click=${() => this._navigate("/miwifi-devices")}>${localize("nav_devices")}</button>
-            <button class="miwifi-button" @click=${() => this._navigate("/mesh")}>${localize("nav_mesh")}</button>
+            ${this._hasMesh ? html`
+              <button class="miwifi-button" @click=${() => this._navigate("/mesh")}>
+                ${localize("nav_mesh")}
+              </button>
+            ` : ""}
             <button class="miwifi-button" @click=${() => this._navigate("/settings")}>${localize("nav_settings")}</button>
           </div>
 
