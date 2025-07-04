@@ -4,6 +4,7 @@
   "nav_devices": "🖥️ Miwifi 设备",
   "nav_mesh": "🛰️ Mesh 节点",
   "nav_settings": "⚙️ 设置",
+  "nav_portforwarding": "端口转发",
 
   "section_system": "🖥️ 系统",
   "section_internet": "🌐 互联网",
@@ -110,6 +111,9 @@
 
   "loading_panel": "正在加载 MiWiFi...",
   "loading_section": "正在加载模块...",
+  "panel.portforwarding_title": "端口转发",
+  "panel.error_no_hass": "无法加载面板：hass未定义。",
+  "panel.error_portforwarding": "加载端口转发面板时出错。",
 
   "button_back": "返回",
   "button_scroll_top": "回到顶部",
@@ -124,5 +128,34 @@
   "log.refreshing_section": "⟳ 正在刷新模块...",
   "log.page_reload_error": "❌ 重新加载模块时出错：",
   "log.manual_router_set": "已手动选择路由器：{mac}",
-  "log.manual_router_cleared": "已清除手动选择"
+  "log.manual_router_cleared": "已清除手动选择",
+
+  "nat_total": "总计",
+  "nat_ftype_1": "单个",
+  "nat_ftype_2": "范围",
+  "nat_source": "来源",
+
+  "portforwarding.individual_title": "单个规则",
+  "portforwarding.range_title": "端口范围",
+  "portforwarding.add_rule_button": "添加规则",
+  "portforwarding.column_name": "名称",
+  "portforwarding.column_proto": "协议",
+  "portforwarding.column_port": "端口",
+  "portforwarding.column_target_ip": "目标 IP",
+  "portforwarding.column_actions": "操作",
+  "portforwarding.delete_button": "删除",
+  "portforwarding.create_individual": "创建单个端口规则",
+  "portforwarding.create_range": "创建端口范围规则",
+  "portforwarding.external_port": "外部端口",
+  "portforwarding.internal_port": "内部端口",
+  "portforwarding.range_start_port": "起始端口",
+  "portforwarding.range_end_port": "结束端口",
+  "portforwarding.target_ip": "目标 IP",
+  "portforwarding.confirm_add": "添加",
+  "portforwarding.confirm_delete": "您确定要删除此规则吗？",
+
+  "state_attributes.total": "总计 NAT 规则",
+  "state_attributes.ftype_1": "单个规则 (ftype 1)",
+  "state_attributes.ftype_2": "范围规则 (ftype 2)",
+  "state_attributes.source": "主路由器 IP 地址"
 }

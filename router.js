@@ -13,6 +13,8 @@ export const router = {
   "/mesh": (hass) => loadPage("mesh").then((mod) => mod.renderMesh(hass)),
   "/settings": (hass) => loadPage("settings").then((mod) => mod.renderSettings(hass)),
   "/error": (hass) => loadPage("error").then((mod) => mod.renderError(hass)),
+  "/portforwarding": (hass) => loadPage("portforwarding").then((mod) => mod.renderPortForwarding(hass)),
+
 };
 
 let _currentPath = "/status";

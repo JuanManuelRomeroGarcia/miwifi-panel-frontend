@@ -4,6 +4,7 @@
   "nav_devices": "🖥️ Miwifi Devices",
   "nav_mesh": "🛰️ Mesh Nodes",
   "nav_settings": "⚙️ Settings",
+  "nav_portforwarding": "Port Forwarding",
 
   "section_system": "🖥️ System",
   "section_internet": "🌐 Internet",
@@ -110,6 +111,9 @@
 
   "loading_panel": "Loading MiWiFi...",
   "loading_section": "Loading section...",
+  "panel.portforwarding_title": "Port Forwarding",
+  "panel.error_no_hass": "Cannot load panel: hass is not defined.",
+  "panel.error_portforwarding": "Error loading port forwarding panel.",
 
   "button_back": "Go Back",
   "button_scroll_top": "Scroll to top",
@@ -124,5 +128,34 @@
   "log.refreshing_section": "⟳ Refreshing current section...",
   "log.page_reload_error": "❌ Error while reloading section:",
   "log.manual_router_set": "Manual router selected: {mac}",
-  "log.manual_router_cleared": "Manual router selection cleared"
+  "log.manual_router_cleared": "Manual router selection cleared",
+
+  "nat_total": "Total",
+  "nat_ftype_1": "Individual",
+  "nat_ftype_2": "Range",
+  "nat_source": "Source",
+
+  "portforwarding.individual_title": "Individual rules",
+  "portforwarding.range_title": "Port ranges",
+  "portforwarding.add_rule_button": "Add rule",
+  "portforwarding.column_name": "Name",
+  "portforwarding.column_proto": "Protocol",
+  "portforwarding.column_port": "Port",
+  "portforwarding.column_target_ip": "Target IP",
+  "portforwarding.column_actions": "Actions",
+  "portforwarding.delete_button": "Delete",
+  "portforwarding.create_individual": "Create individual port rule",
+  "portforwarding.create_range": "Create port range rule",
+  "portforwarding.external_port": "External port",
+  "portforwarding.internal_port": "Internal port",
+  "portforwarding.range_start_port": "Start port",
+  "portforwarding.range_end_port": "End port",
+  "portforwarding.target_ip": "Target IP",
+  "portforwarding.confirm_add": "Add",
+  "portforwarding.confirm_delete": "Are you sure you want to delete this rule?",
+
+  "state_attributes.total": "Total NAT rules",
+  "state_attributes.ftype_1": "Individual rules (ftype 1)",
+  "state_attributes.ftype_2": "Range rules (ftype 2)",
+  "state_attributes.source": "Main router IP address"
 }

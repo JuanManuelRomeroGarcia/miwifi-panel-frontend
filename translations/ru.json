@@ -4,6 +4,7 @@
   "nav_devices": "🖥️ Устройства Miwifi",
   "nav_mesh": "🛰️ Узлы Mesh",
   "nav_settings": "⚙️ Настройки",
+  "nav_portforwarding": "Переадресация портов",
 
   "section_system": "🖥️ Система",
   "section_internet": "🌐 Интернет",
@@ -110,6 +111,9 @@
 
   "loading_panel": "Загрузка MiWiFi...",
   "loading_section": "Загрузка секции...",
+  "panel.portforwarding_title": "Переадресация портов",
+  "panel.error_no_hass": "Не удается загрузить панель: hass не определен.",
+  "panel.error_portforwarding": "Ошибка загрузки панели переадресации портов.",
 
   "button_back": "Назад",
   "button_scroll_top": "Наверх",
@@ -124,5 +128,34 @@
   "log.refreshing_section": "⟳ Обновление секции...",
   "log.page_reload_error": "❌ Ошибка при перезагрузке секции:",
   "log.manual_router_set": "Выбран ручной роутер: {mac}",
-  "log.manual_router_cleared": "Ручной выбор очищен"
+  "log.manual_router_cleared": "Ручной выбор очищен",
+
+  "nat_total": "Всего",
+  "nat_ftype_1": "Индивидуальные",
+  "nat_ftype_2": "По диапазону",
+  "nat_source": "Источник",
+
+  "portforwarding.individual_title": "Индивидуальные правила",
+  "portforwarding.range_title": "Диапазоны портов",
+  "portforwarding.add_rule_button": "Добавить правило",
+  "portforwarding.column_name": "Имя",
+  "portforwarding.column_proto": "Протокол",
+  "portforwarding.column_port": "Порт",
+  "portforwarding.column_target_ip": "IP назначения",
+  "portforwarding.column_actions": "Действия",
+  "portforwarding.delete_button": "Удалить",
+  "portforwarding.create_individual": "Создать индивидуальное правило порта",
+  "portforwarding.create_range": "Создать правило диапазона портов",
+  "portforwarding.external_port": "Внешний порт",
+  "portforwarding.internal_port": "Внутренний порт",
+  "portforwarding.range_start_port": "Начальный порт",
+  "portforwarding.range_end_port": "Конечный порт",
+  "portforwarding.target_ip": "IP назначения",
+  "portforwarding.confirm_add": "Добавить",
+  "portforwarding.confirm_delete": "Вы уверены, что хотите удалить это правило?",
+
+  "state_attributes.total": "Всего NAT правил",
+  "state_attributes.ftype_1": "Индивидуальные правила (ftype 1)",
+  "state_attributes.ftype_2": "Правила диапазона (ftype 2)",
+  "state_attributes.source": "IP-адрес основного роутера"
 }

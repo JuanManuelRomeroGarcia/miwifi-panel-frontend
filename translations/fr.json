@@ -4,6 +4,7 @@
   "nav_devices": "🖥️ Appareils Miwifi",
   "nav_mesh": "🛰️ Nœuds Mesh",
   "nav_settings": "⚙️ Paramètres",
+  "nav_portforwarding": "Redirection de Ports",
 
   "section_system": "🖥️ Système",
   "section_internet": "🌐 Internet",
@@ -111,6 +112,9 @@
 
   "loading_panel": "Chargement MiWiFi...",
   "loading_section": "Chargement de la section...",
+  "panel.portforwarding_title": "Redirection de Ports",
+  "panel.error_no_hass": "Impossible de charger le panneau : hass non défini.",
+  "panel.error_portforwarding": "Erreur lors du chargement du panneau de redirection de ports.",
 
   "button_back": "Retour",
   "button_scroll_top": "Haut de page",
@@ -125,5 +129,34 @@
   "log.refreshing_section": "⟳ Rafraîchissement de la section...",
   "log.page_reload_error": "❌ Erreur de rechargement de section :",
   "log.manual_router_set": "Routeur manuel sélectionné : {mac}",
-  "log.manual_router_cleared": "Sélection manuelle effacée"
+  "log.manual_router_cleared": "Sélection manuelle effacée",
+
+  "nat_total": "Total",
+  "nat_ftype_1": "Individuels",
+  "nat_ftype_2": "Par plage",
+  "nat_source": "Source",
+
+  "portforwarding.individual_title": "Règles individuelles",
+  "portforwarding.range_title": "Plages de ports",
+  "portforwarding.add_rule_button": "Ajouter une règle",
+  "portforwarding.column_name": "Nom",
+  "portforwarding.column_proto": "Protocole",
+  "portforwarding.column_port": "Port",
+  "portforwarding.column_target_ip": "IP cible",
+  "portforwarding.column_actions": "Actions",
+  "portforwarding.delete_button": "Supprimer",
+  "portforwarding.create_individual": "Créer une règle de port individuelle",
+  "portforwarding.create_range": "Créer une règle de plage de ports",
+  "portforwarding.external_port": "Port externe",
+  "portforwarding.internal_port": "Port interne",
+  "portforwarding.range_start_port": "Port de début",
+  "portforwarding.range_end_port": "Port de fin",
+  "portforwarding.target_ip": "IP cible",
+  "portforwarding.confirm_add": "Ajouter",
+  "portforwarding.confirm_delete": "Êtes-vous sûr de vouloir supprimer cette règle ?",
+
+  "state_attributes.total": "Total des règles NAT",
+  "state_attributes.ftype_1": "Règles individuelles (ftype 1)",
+  "state_attributes.ftype_2": "Règles par plage (ftype 2)",
+  "state_attributes.source": "Adresse IP du routeur principal"
 }

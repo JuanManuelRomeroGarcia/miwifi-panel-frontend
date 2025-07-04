@@ -4,6 +4,7 @@
   "nav_devices": "🖥️ Dispositivos Miwifi",
   "nav_mesh": "🛰️ Nós Mesh",
   "nav_settings": "⚙️ Configurações",
+  "nav_portforwarding": "Reencaminhamento de Portas",
 
   "section_system": "🖥️ Sistema",
   "section_internet": "🌐 Internet",
@@ -110,6 +111,9 @@
 
   "loading_panel": "Carregando MiWiFi...",
   "loading_section": "Carregando seção...",
+  "panel.portforwarding_title": "Reencaminhamento de Portas",
+  "panel.error_no_hass": "ão é possível carregar o painel: hass não definido.",
+  "panel.error_portforwarding": "Erro ao carregar o painel de reencaminhamento de portas.",
 
   "button_back": "Voltar",
   "button_scroll_top": "Topo",
@@ -124,5 +128,34 @@
   "log.refreshing_section": "⟳ Atualizando seção...",
   "log.page_reload_error": "❌ Erro ao recarregar seção:",
   "log.manual_router_set": "Roteador manual selecionado: {mac}",
-  "log.manual_router_cleared": "Seleção manual limpa"
+  "log.manual_router_cleared": "Seleção manual limpa",
+
+  "nat_total": "Total",
+  "nat_ftype_1": "Individuais",
+  "nat_ftype_2": "Por faixa",
+  "nat_source": "Fonte",
+
+  "portforwarding.individual_title": "Regras Individuais",
+  "portforwarding.range_title": "Faixas de Portas",
+  "portforwarding.add_rule_button": "Adicionar Regra",
+  "portforwarding.column_name": "Nome",
+  "portforwarding.column_proto": "Protocolo",
+  "portforwarding.column_port": "Porta",
+  "portforwarding.column_target_ip": "IP de Destino",
+  "portforwarding.column_actions": "Ações",
+  "portforwarding.delete_button": "Excluir",
+  "portforwarding.create_individual": "Criar regra de porta individual",
+  "portforwarding.create_range": "Criar regra de faixa de portas",
+  "portforwarding.external_port": "Porta externa",
+  "portforwarding.internal_port": "Porta interna",
+  "portforwarding.range_start_port": "Porta de início",
+  "portforwarding.range_end_port": "Porta de fim",
+  "portforwarding.target_ip": "IP de Destino",
+  "portforwarding.confirm_add": "Adicionar",
+  "portforwarding.confirm_delete": "Tem certeza de que deseja excluir esta regra?",
+
+  "state_attributes.total": "Total de regras NAT",
+  "state_attributes.ftype_1": "Regras individuais (ftype 1)",
+  "state_attributes.ftype_2": "Regras por faixa (ftype 2)",
+  "state_attributes.source": "Endereço IP do roteador principal"
 }

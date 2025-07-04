@@ -4,6 +4,7 @@
   "nav_devices": "🖥️ Miwifi Cihazları",
   "nav_mesh": "🛰️ Mesh Düğümleri",
   "nav_settings": "⚙️ Ayarlar",
+  "nav_portforwarding": "Port Yönlendirme",
 
   "section_system": "🖥️ Sistem",
   "section_internet": "🌐 İnternet",
@@ -110,6 +111,9 @@
 
   "loading_panel": "MiWiFi Yükleniyor...",
   "loading_section": "Bölüm yükleniyor...",
+  "panel.portforwarding_title": "Port Yönlendirme",
+  "panel.error_no_hass": "Panel yüklenemiyor: hass tanımlı değil.",
+  "panel.error_portforwarding": "Port yönlendirme paneli yüklenirken hata oluştu.",
 
   "button_back": "Geri Dön",
   "button_scroll_top": "Yukarı Git",
@@ -124,5 +128,34 @@
   "log.refreshing_section": "⟳ Bölüm yenileniyor...",
   "log.page_reload_error": "❌ Bölüm yeniden yüklenirken hata oluştu:",
   "log.manual_router_set": "Manuel router seçildi: {mac}",
-  "log.manual_router_cleared": "Manuel seçim temizlendi"
+  "log.manual_router_cleared": "Manuel seçim temizlendi",
+  
+  "nat_total": "Toplam",
+  "nat_ftype_1": "Bireysel",
+  "nat_ftype_2": "Aralık",
+  "nat_source": "Kaynak",
+
+  "portforwarding.individual_title": "Bireysel kurallar",
+  "portforwarding.range_title": "Port aralıkları",
+  "portforwarding.add_rule_button": "Kural ekle",
+  "portforwarding.column_name": "İsim",
+  "portforwarding.column_proto": "Protokol",
+  "portforwarding.column_port": "Port",
+  "portforwarding.column_target_ip": "Hedef IP",
+  "portforwarding.column_actions": "Eylemler",
+  "portforwarding.delete_button": "Sil",
+  "portforwarding.create_individual": "Bireysel port kuralı oluştur",
+  "portforwarding.create_range": "Port aralığı kuralı oluştur",
+  "portforwarding.external_port": "Dış port",
+  "portforwarding.internal_port": "Dahili port",
+  "portforwarding.range_start_port": "Başlangıç portu",
+  "portforwarding.range_end_port": "Bitiş portu",
+  "portforwarding.target_ip": "Hedef IP",
+  "portforwarding.confirm_add": "Ekle",
+  "portforwarding.confirm_delete": "Bu kuralı silmek istediğinize emin misiniz?",
+
+  "state_attributes.total": "Toplam NAT kuralları",
+  "state_attributes.ftype_1": "Bireysel kurallar (ftype 1)",
+  "state_attributes.ftype_2": "Aralık kuralları (ftype 2)",
+  "state_attributes.source": "Ana router IP adresi"
 }
