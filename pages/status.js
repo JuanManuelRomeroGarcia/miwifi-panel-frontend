@@ -81,12 +81,12 @@ export function renderStatus(hass) {
   };
 
   const topoSensor = Object.values(hass.states).find((s) =>
-    s.entity_id.startsWith("sensor.topologia_miwifi") && s.attributes?.graph?.is_main === true
+    s.entity_id.startsWith("sensor.miwifi_topology") && s.attributes?.graph?.is_main === true
   );
 
   if (!topoSensor) {
-    logToBackend(hass, "debug", "⚠️ topoSensor is null – no sensor.topologia_miwifi marked as is_main (status.js)");
-    
+    logToBackend(hass, "debug", "⚠️ topoSensor is null – no sensor.miwifi_topology marked as is_main (status.js)");
+
     // Mostramos el mismo mensaje de selección manual como cuando no hay MAC detectada
     return html`
       <div style="text-align:center; padding:24px; color:white">
