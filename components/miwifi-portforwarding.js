@@ -133,8 +133,9 @@ class MiWiFiPortForwarding extends LitElement {
           <tr>
             <th>${localize("portforwarding.column_name")}</th>
             <th>${localize("portforwarding.column_proto")}</th>
-            <th>${localize("portforwarding.column_port")}</th>
-            <th>${localize("portforwarding.column_target_ip")}</th>
+            <th>${localize("portforwarding.external_port") || "Puerto externo"}</th>
+            <th>${localize("portforwarding.column_target_ip") || "IP de destino"}</th>
+            <th>${localize("portforwarding.internal_port") || "Puerto interno"}</th>
             <th>${localize("portforwarding.column_actions")}</th>
           </tr>
         </thead>
@@ -143,8 +144,9 @@ class MiWiFiPortForwarding extends LitElement {
             <tr>
               <td data-label="${localize('portforwarding.column_name')}">${rule.name}</td>
               <td data-label="${localize('portforwarding.column_proto')}">${protoText(rule.proto)}</td>
-              <td data-label="${localize('portforwarding.column_port')}">${rule.srcport}</td>
+              <td data-label="${localize('portforwarding.external_port')}">${rule.srcport}</td>
               <td data-label="${localize('portforwarding.column_target_ip')}">${rule.destip}</td>
+              <td data-label="${localize('portforwarding.internal_port')}">${rule.destport}</td>
               <td data-label="${localize('portforwarding.column_actions')}">
                 <button @click=${() => this._deleteRule(rule.proto, rule.srcport)}>
                   ${localize("portforwarding.delete_button")}
