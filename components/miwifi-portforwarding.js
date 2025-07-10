@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "https://unpkg.com/lit@2.7.5/index.js?module";
-import { localize } from "../translations/localize.js?v=__MIWIFI_VERSION__";
-import { logToBackend } from "../pages/utils.js?v=__MIWIFI_VERSION__";
+import { localize } from "../translations/localize.js?v=1.3.5";
+import { logToBackend } from "../pages/utils.js?v=1.3.5";
 
 
 class MiWiFiPortForwarding extends LitElement {
@@ -434,7 +434,30 @@ class MiWiFiPortForwarding extends LitElement {
         color: #ccc;
         margin-bottom: 4px;
       }
-    }
+
+      .modal {
+        position: fixed;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        color: black;
+        padding: 20px;
+        border-radius: 12px;
+        z-index: 1000;
+        width: 80%;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        animation: fadeIn 0.3s ease;
+      }
+
+      .modal-form input, .modal-form select {
+          display: block;
+          width: 90%;
+          margin-bottom: 12px;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+          font-size: 14px;
+      }
   `;
 }
 
