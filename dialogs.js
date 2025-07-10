@@ -8,7 +8,7 @@ function getCurrentMainMac() {
   const hass = document.querySelector("home-assistant")?.hass;
   const sensors = Object.values(hass?.states || {}).filter(
     (s) =>
-      s.entity_id.startsWith("sensor.topologia_miwifi") &&
+      s.entity_id.startsWith("sensor.miwifi_topology") &&
       s.attributes?.graph?.is_main === true
   );
   return sensors.length ? sensors[0].attributes.graph.mac : null;

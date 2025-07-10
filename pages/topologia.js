@@ -5,7 +5,7 @@ import { logToBackend } from "./utils.js?v=__MIWIFI_VERSION__";
 
 export function renderTopologia(hass) {
   const sensorIds = Object.keys(hass.states).filter((id) =>
-    id.startsWith("sensor.topologia_miwifi")
+    id.startsWith("sensor.miwifi_topology")
   );
 
   let mainGraph = null;
@@ -46,7 +46,7 @@ export function renderTopologia(hass) {
 
   const meshSensors = Object.values(hass.states).filter(
     (s) =>
-      s.entity_id.startsWith("sensor.topologia_miwifi") &&
+      s.entity_id.startsWith("sensor.miwifi_topology") &&
       s.attributes?.graph?.mode === 3
   );
   

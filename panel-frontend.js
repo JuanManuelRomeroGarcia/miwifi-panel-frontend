@@ -33,7 +33,7 @@ class MiWiFiPanel extends LitElement {
   updated(changedProperties) {
     if (changedProperties.has("hass") && this.hass) {
       const main = Object.values(this.hass.states).find(
-        (s) => s.entity_id.startsWith("sensor.topologia_miwifi") &&
+        (s) => s.entity_id.startsWith("sensor.miwifi_topology") &&
               s.attributes?.graph?.is_main === true
       );
       this._hasMesh = Array.isArray(main?.attributes?.graph?.leafs) &&

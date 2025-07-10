@@ -10,7 +10,7 @@ const DEFAULT_MESH_ICON = "https://cdn-icons-png.flaticon.com/512/1946/1946488.p
 
 export function renderMesh(hass) {
   const sensorIds = Object.keys(hass.states).filter((id) =>
-    id.startsWith("sensor.topologia_miwifi")
+    id.startsWith("sensor.miwifi_topology")
   );
 
   let mainGraph = null;
@@ -67,7 +67,7 @@ export function renderMesh(hass) {
 
   const meshSensors = Object.values(hass.states).filter(
     (s) =>
-      s.entity_id.startsWith("sensor.topologia_miwifi") &&
+      s.entity_id.startsWith("sensor.miwifi_topology") &&
       s.attributes?.graph?.mode === 3
   );
 
