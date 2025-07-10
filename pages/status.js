@@ -29,7 +29,7 @@ const SENSOR_SUFFIXES = {
 export function showRouterSelectionDialog(hass) {
   const candidates = Object.values(hass.states).filter(
     (s) =>
-      s.entity_id.startsWith("sensor.topologia_miwifi") &&
+      s.entity_id.startsWith("sensor.miwifi_topology") &&
       s.attributes?.graph?.mac
   );
 
