@@ -105,6 +105,14 @@
   "settings_clear_failed": "Erreur lors de l'effacement de la sélection manuelle.",
   "settings_restart_router_done": "Le routeur principal a été redémarré avec succès.",
   "settings_restart_mesh_done": "{name} a été redémarré avec succès.",
+  "settings_download_logs": "Télécharger les journaux",
+  "settings_clear_logs": "Supprimer les journaux",
+  "settings_confirm_clear_logs": "Voulez-vous vraiment supprimer tous les fichiers journaux ?",
+  "download_ready": "Journaux prêts",
+  "download_ready_msg": "Cliquez sur le lien pour télécharger le fichier ZIP.",
+  "clear_logs": "Journaux supprimés",
+  "clear_logs_done": "Tous les fichiers journaux ont été supprimés avec succès.",
+
 
   "error_title": "❌ Erreur",
   "error_not_found": "Page introuvable.",

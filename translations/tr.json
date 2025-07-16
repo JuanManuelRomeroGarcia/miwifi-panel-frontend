@@ -104,6 +104,13 @@
   "settings_clear_failed": "Manuel seçim temizlenirken hata oluştu.",
   "settings_restart_router_done": "Ana router başarıyla yeniden başlatıldı.",
   "settings_restart_mesh_done": "{name} başarıyla yeniden başlatıldı.",
+  "settings_download_logs": "Günlükleri indir",
+  "settings_clear_logs": "Günlükleri temizle",
+  "settings_confirm_clear_logs": "Tüm günlük dosyalarını silmek istediğinizden emin misiniz?",
+  "download_ready": "Günlükler hazır",
+  "download_ready_msg": "ZIP dosyasını indirmek için bağlantıya tıklayın.",
+  "clear_logs": "Günlükler temizlendi",
+  "clear_logs_done": "Tüm günlük dosyaları başarıyla silindi.",
 
   "error_title": "❌ Hata",
   "error_not_found": "Sayfa bulunamadı.",

@@ -104,6 +104,13 @@
   "settings_clear_failed": "Error al limpiar la selección manual.",
   "settings_restart_router_done": "El router principal ha sido reiniciado correctamente.",
   "settings_restart_mesh_done": "{name} ha sido reiniciado correctamente.",
+  "settings_download_logs": "Descargar registros",
+  "settings_clear_logs": "Borrar registros",
+  "settings_confirm_clear_logs": "¿Seguro que quieres eliminar todos los registros?",
+  "download_ready": "Registro listo",
+  "download_ready_msg": "Haz clic en el enlace para descargar el archivo ZIP.",
+  "clear_logs": "Registros eliminados",
+  "clear_logs_done": "Los registros fueron borrados correctamente.",
   
   "error_title": "❌ Error",
   "error_not_found": "Página no encontrada.",

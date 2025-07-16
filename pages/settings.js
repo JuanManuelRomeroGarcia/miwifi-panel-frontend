@@ -106,6 +106,40 @@ export function renderSettings(hass) {
               </button>
             `
           : ""}
+        
+        <button class="reboot-btn" @click=${() => {
+          hass.callService("miwifi", "download_logs")
+            .then(() => {
+              hass.callService("persistent_notification", "create", {
+                title: localize("download_ready"),
+                message: localize("download_ready_msg"),
+                notification_id: "miwifi_logs_ready",
+              });
+            })
+            .catch((err) => {
+              console.error("Failed to call download_logs:", err);
+            });
+        }}>
+          📥 ${localize("settings_download_logs")}
+        </button>
+
+        <button class="reboot-btn" @click=${() => {
+          const confirmClear = confirm(localize("settings_confirm_clear_logs") || "Are you sure you want to delete all logs?");
+          if (!confirmClear) return;
+          hass.callService("miwifi", "clear_logs")
+            .then(() => {
+              hass.callService("persistent_notification", "create", {
+                title: localize("clear_logs"),
+                message: localize("clear_logs_done"),
+                notification_id: "miwifi_logs_cleared",
+              });
+            })
+            .catch((err) => {
+              console.error("Failed to call clear_logs:", err);
+            });
+        }}>
+          🧹 ${localize("settings_clear_logs")}
+        </button>
       </div>
 
       <div class="config-header">

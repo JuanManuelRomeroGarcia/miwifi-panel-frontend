@@ -104,6 +104,13 @@
   "settings_clear_failed": "Erro ao limpar a seleção manual.",
   "settings_restart_router_done": "O roteador principal foi reiniciado com sucesso.",
   "settings_restart_mesh_done": "{name} foi reiniciado com sucesso.",
+  "settings_download_logs": "Baixar logs",
+  "settings_clear_logs": "Limpar logs",
+  "settings_confirm_clear_logs": "Tem certeza de que deseja excluir todos os arquivos de log?",
+  "download_ready": "Logs prontos",
+  "download_ready_msg": "Clique no link para baixar o arquivo ZIP.",
+  "clear_logs": "Logs limpos",
+  "clear_logs_done": "Todos os arquivos de log foram excluídos com sucesso.",
 
   "error_title": "❌ Erro",
   "error_not_found": "Página não encontrada.",

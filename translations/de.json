@@ -104,6 +104,13 @@
   "settings_clear_failed": "Fehler beim Löschen der manuellen Auswahl.",
   "settings_restart_router_done": "Der Hauptrouter wurde erfolgreich neu gestartet.",
   "settings_restart_mesh_done": "{name} wurde erfolgreich neu gestartet.",
+  "settings_download_logs": "Protokolle herunterladen",
+  "settings_clear_logs": "Protokolle löschen",
+  "settings_confirm_clear_logs": "Möchtest du wirklich alle Protokolldateien löschen?",
+  "download_ready": "Protokolle bereit",
+  "download_ready_msg": "Klicke auf den Link, um die ZIP-Datei herunterzuladen.",
+  "clear_logs": "Protokolle gelöscht",
+  "clear_logs_done": "Alle Protokolldateien wurden erfolgreich gelöscht.",
 
   "error_title": "❌ Fehler",
   "error_not_found": "Seite nicht gefunden.",

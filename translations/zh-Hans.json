@@ -104,6 +104,13 @@
   "settings_clear_failed": "清除手动选择时出错。",
   "settings_restart_router_done": "主路由器已成功重启。",
   "settings_restart_mesh_done": "{name} 已成功重启。",
+  "settings_download_logs": "下载日志",
+  "settings_clear_logs": "清除日志",
+  "settings_confirm_clear_logs": "您确定要删除所有日志文件吗？",
+  "download_ready": "日志已准备好",
+  "download_ready_msg": "点击链接下载 ZIP 文件。",
+  "clear_logs": "日志已清除",
+  "clear_logs_done": "所有日志文件已成功删除。",
 
   "error_title": "❌ 错误",
   "error_not_found": "页面未找到。",

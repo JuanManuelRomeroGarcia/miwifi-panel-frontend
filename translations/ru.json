@@ -104,6 +104,13 @@
   "settings_clear_failed": "Ошибка при очистке ручного выбора.",
   "settings_restart_router_done": "Основной роутер был успешно перезапущен.",
   "settings_restart_mesh_done": "{name} был успешно перезапущен.",
+  "settings_download_logs": "Скачать журналы",
+  "settings_clear_logs": "Очистить журналы",
+  "settings_confirm_clear_logs": "Вы уверены, что хотите удалить все файлы журналов?",
+  "download_ready": "Журналы готовы",
+  "download_ready_msg": "Нажмите на ссылку, чтобы скачать ZIP-файл.",
+  "clear_logs": "Журналы удалены",
+  "clear_logs_done": "Все журналы были успешно удалены.",
 
   "error_title": "❌ Ошибка",
   "error_not_found": "Страница не найдена.",

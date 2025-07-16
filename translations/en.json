@@ -104,6 +104,13 @@
   "settings_clear_failed": "Error clearing manual main router selection.",
   "settings_restart_router_done": "The main router has been restarted successfully.",
   "settings_restart_mesh_done": "{name} has been restarted successfully.",
+  "settings_download_logs": "Download logs",
+  "settings_clear_logs": "Clear logs",
+  "settings_confirm_clear_logs": "Are you sure you want to delete all log files?",
+  "download_ready": "Logs ready",
+  "download_ready_msg": "Click the link to download the ZIP file.",
+  "clear_logs": "Logs cleared",
+  "clear_logs_done": "All log files have been successfully deleted.",
 
   "error_title": "❌ Error",
   "error_not_found": "Page not found.",
