@@ -7,15 +7,25 @@ const MIWIFI_VERSION = "__MIWIFI_VERSION__";
 const REPOSITORY = "JuanManuelRomeroGarcia/hass-miwifi";
 const REPOSITORY_PANEL = "JuanManuelRomeroGarcia/miwifi-panel-frontend";
 
-export function renderSettings(hass) {
+
+async function findMainRouter(hass, retries = 3, delay = 500) {
+  for (let i = 0; i < retries; i++) {
+    const sensor = Object.values(hass.states).find((s) => {
+      const g = s.attributes?.graph;
+      return g?.is_main === true;
+    });
+    if (sensor) return sensor;
+    await new Promise((res) => setTimeout(res, delay));
+  }
+  return null;
+}
+
+export async function renderSettings(hass) {
   const version = MIWIFI_VERSION || "?.?.?";
   const config = hass.states["sensor.miwifi_config"]?.attributes || {};
 
-  const routerSensor = Object.values(hass.states).find((s) => {
-    const g = s.attributes?.graph;
-    return g?.is_main === true;
-  });
-
+  // Buscar el router principal con reintento
+  const routerSensor = await findMainRouter(hass);
   if (!routerSensor) {
     logToBackend(hass, "warning", "❌ [settings.js] No router found with is_main or fallback logic.");
     return html`
@@ -61,6 +71,7 @@ export function renderSettings(hass) {
         .catch((err) => console.error("Failed to clear main router:", err));
     }
   };
+
 
   const currentPanel = config.panel_activo ?? true;
   const currentUnit = config.speed_unit || "MB";

@@ -4,6 +4,17 @@ import { localize } from "../translations/localize.js?v=__MIWIFI_VERSION__";
 import { showDialog } from "../dialogs.js?v=__MIWIFI_VERSION__";
 
 
+async function findMainTopoSensor(hass, retries = 3, delay = 500) {
+  for (let i = 0; i < retries; i++) {
+    const sensor = Object.values(hass.states).find(
+      (s) => s.entity_id.startsWith("sensor.miwifi_topology") && s.attributes?.graph?.is_main === true
+    );
+    if (sensor) return sensor;
+    await new Promise((res) => setTimeout(res, delay));
+  }
+  return null;
+}
+
 const SENSOR_SUFFIXES = {
   temperature: "temperature",
   memory_usage: "memory_usage",
@@ -54,9 +65,10 @@ export function showRouterSelectionDialog(hass) {
   });
 }
 
-export function renderStatus(hass) {
-  const mac = getMainRouterMac(hass);
-    if (!mac) {
+export async function renderStatus(hass) {
+
+  const topoSensor = await findMainTopoSensor(hass);
+  if (!topoSensor) {
     logToBackend(hass, "warning", "❌ No main router MAC found – fallback not resolved (status.js)");
     return html`
       <div style="text-align:center; padding:24px; color:white">
@@ -70,6 +82,12 @@ export function renderStatus(hass) {
     `;
   }
 
+  const mac = getMainRouterMac(hass);
+  const graph = topoSensor?.attributes?.graph ?? {};
+  if (graph?.mac) {
+    logToBackend(hass, "debug", `✅ Main router detected: ${graph.name} (${graph.mac})`);
+  }
+
   const getSensorValue = (suffix) => {
     const sensorId = `sensor.miwifi_${mac}_${suffix}`;
     return hass.states[sensorId]?.state ?? "unavailable";
@@ -80,34 +98,7 @@ export function renderStatus(hass) {
     return hass.states[entityId]?.state ?? "unavailable";
   };
 
-  const topoSensor = Object.values(hass.states).find((s) =>
-    s.entity_id.startsWith("sensor.miwifi_topology") && s.attributes?.graph?.is_main === true
-  );
-
-  if (!topoSensor) {
-    logToBackend(hass, "debug", "⚠️ topoSensor is null – no sensor.miwifi_topology marked as is_main (status.js)");
-
-    // Mostramos el mismo mensaje de selección manual como cuando no hay MAC detectada
-    return html`
-      <div style="text-align:center; padding:24px; color:white">
-        ❌ ${localize("topology_main_not_found")}<br />
-        <mwc-button
-          raised
-          label="${localize("select_main_router")}"
-          @click=${() => showRouterSelectionDialog(hass)}
-        ></mwc-button>
-      </div>
-    `;
-  }
-
   
-  const graph = topoSensor?.attributes?.graph ?? {};
-
-  if (topoSensor && graph?.mac) {
-    logToBackend(hass, "debug", `✅ Main router detected: ${graph.name} (${graph.mac})`);
-  }
-
-
   const systemItems = [
     { label: localize("label_model"), value: graph.hardware || "unknown" },
     { label: localize("label_name"), value: graph.name || "unknown" },

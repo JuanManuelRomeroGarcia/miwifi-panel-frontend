@@ -8,38 +8,54 @@ const REPOSITORY = "JuanManuelRomeroGarcia/hass-miwifi";
 const REPOSITORY_PANEL = "JuanManuelRomeroGarcia/miwifi-panel-frontend";
 const DEFAULT_MESH_ICON = "https://cdn-icons-png.flaticon.com/512/1946/1946488.png";
 
-export function renderMesh(hass) {
-  const sensorIds = Object.keys(hass.states).filter((id) =>
-    id.startsWith("sensor.miwifi_topology")
-  );
+// New feature: retry to find the main router
+async function findMainGraph(hass, retries = 3, delay = 500) {
+  for (let i = 0; i < retries; i++) {
+    const sensor = Object.values(hass.states).find(
+      (s) => s.entity_id.startsWith("sensor.miwifi_topology") && s.attributes?.graph?.is_main === true
+    );
+    if (sensor?.attributes?.graph) return sensor.attributes.graph;
+    await new Promise((res) => setTimeout(res, delay));
+  }
+  return null;
+}
 
-  let mainGraph = null;
+export async function renderMesh(hass) {
+  let mainGraph = await findMainGraph(hass);
 
-  for (const id of sensorIds) {
-    const sensor = hass.states[id];
-    const graph = sensor?.attributes?.graph;
+  // Fallback si no hay mainGraph
+  if (!mainGraph) {
+    const sensorIds = Object.keys(hass.states).filter((id) =>
+      id.startsWith("sensor.miwifi_topology")
+    );
 
-    if (graph?.is_main === true) {
-      mainGraph = graph;
-      logToBackend(hass, "debug", `✅ [mesh.js] Main router detected: ${graph.name} (${graph.mac})`);
-      break;
-    }
+    for (const id of sensorIds) {
+      const sensor = hass.states[id];
+      const graph = sensor?.attributes?.graph;
 
-    if (graph?.show === 1 && graph?.assoc === 1) {
-      mainGraph = graph;
-      logToBackend(hass, "debug", `🧠 [mesh.js] Fallback router by show+assoc: ${graph.name} (${graph.mac})`);
-      break;
-    }
+      if (graph?.show === 1 && graph?.assoc === 1) {
+        mainGraph = graph;
+        logToBackend(hass, "debug", `🧠 [mesh.js] Fallback router by show+assoc: ${graph.name} (${graph.mac})`);
+        break;
+      }
 
-    if (graph?.mode === 0) {
-      mainGraph = graph;
-      logToBackend(hass, "debug", `⚠️ [mesh.js] Fallback router by mode=0 only: ${graph.name || id}`);
-      break;
+      if (graph?.mode === 0) {
+        mainGraph = graph;
+        logToBackend(hass, "debug", `⚠️ [mesh.js] Fallback router by mode=0 only: ${graph.name || id}`);
+        break;
+      }
     }
   }
 
-  if (!mainGraph) {
+  if (mainGraph) {
+    logToBackend(hass, "debug", `✅ [mesh.js] Main router detected: ${mainGraph.name} (${mainGraph.mac})`);
+  } else {
     logToBackend(hass, "warning", "❌ [mesh.js] No router found with is_main or fallback logic.");
+    return html`
+      <div class="content text-center" style="color: #ccc;">
+        ❗ ${localize("topology_main_not_found")}
+      </div>
+    `;
   }
 
   function handleMeshReboot(hass, name, mac, entity_id) {
@@ -54,15 +70,6 @@ export function renderMesh(hass) {
       message: localize("settings_restart_mesh_done").replace("{name}", name),
       notification_id: `miwifi_reboot_${mac.replace(/:/g, "_").toLowerCase()}`,
     }).catch((err) => console.error("callService error:", err));
-  }
-
-
-  if (!mainGraph) {
-    return html`
-      <div class="content text-center" style="color: #ccc;">
-        ❗ ${localize("topology_main_not_found")}
-      </div>
-    `;
   }
 
   const meshSensors = Object.values(hass.states).filter(
@@ -139,7 +146,7 @@ export function renderMesh(hass) {
                               <button
                                 class="reboot-btn"
                                 @click=${() =>
-                                  handleMeshReboot(hass, node.name, node.mac, reboot.entity_id)}
+                                  handleMeshReboot(hass, leaf.name, leaf.mac, reboot.entity_id)}
                               >
                                 ${localize("mesh_node_restart")}
                               </button>
