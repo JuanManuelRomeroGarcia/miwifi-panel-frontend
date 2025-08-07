@@ -111,6 +111,11 @@
   "download_ready_msg": "Klicke auf den Link, um die ZIP-Datei herunterzuladen.",
   "clear_logs": "Protokolle gelöscht",
   "clear_logs_done": "Alle Protokolldateien wurden erfolgreich gelöscht.",
+  "settings_generate_dump": "Router-Dump erstellen",
+  "settings_generate_dump_confirm": "Erstellen",
+  "settings_generate_dump_validation": "Wähle mindestens einen Block für den Dump aus.",
+  "settings_dump_in_progress": "Daten werden gesammelt, bitte warten...",
+  "common_cancel": "Abbrechen",
 
   "error_title": "❌ Fehler",
   "error_not_found": "Seite nicht gefunden.",
@@ -160,6 +165,14 @@
   "portforwarding.target_ip": "Ziel-IP",
   "portforwarding.confirm_add": "Hinzufügen",
   "portforwarding.confirm_delete": "Sind Sie sicher, dass Sie diese Regel löschen möchten?",
+
+  "service_fields.dump_router_data.system": "Systeminformationen",
+  "service_fields.dump_router_data.network": "Netzwerkkonfiguration",
+  "service_fields.dump_router_data.devices": "Verbundene Geräte",
+  "service_fields.dump_router_data.nat_rules": "NAT-Regeln",
+  "service_fields.dump_router_data.qos": "QoS-Einstellungen",
+  "service_fields.dump_router_data.wifi_config": "WLAN-Konfiguration",
+  "service_fields.dump_router_data.hide_sensitive": "Sensible Daten ausblenden",
 
   "state_attributes.total": "Gesamt NAT Regeln",
   "state_attributes.ftype_1": "Einzelne Regeln (ftype 1)",

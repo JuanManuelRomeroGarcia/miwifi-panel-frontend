@@ -53,7 +53,7 @@ export async function showDialog(hass, { title, options, onSelect }) {
         await logToBackend(hass, "info", `🖱️ Manual router ${selectedMac || "cleared"} selected from UI (dialogs.js)`);
 
       } catch (err) {
-        console.error("🛑 Error al llamar al servicio select_main_router:", err);
+        console.error("🛑 Error calling the select_main_router service:", err);
         await logToBackend(hass, "error", `❌ Failed to call select_main_router: ${err}`);
       }
 

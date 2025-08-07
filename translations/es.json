@@ -63,6 +63,7 @@
   "signal_quality_weak": "Débil",
   "signal_quality_very_weak": "Muy débil",
   "signal_quality_unknown": "Desconocida",
+
   "modelo": "Modelo",
   "estado": "Estado",
 
@@ -111,7 +112,12 @@
   "download_ready_msg": "Haz clic en el enlace para descargar el archivo ZIP.",
   "clear_logs": "Registros eliminados",
   "clear_logs_done": "Los registros fueron borrados correctamente.",
-  
+  "settings_generate_dump": "Generar dump del router",
+  "settings_generate_dump_confirm": "Generar",
+  "settings_generate_dump_validation": "Selecciona al menos un bloque para incluir en el dump.",
+  "settings_dump_in_progress": "Recopilando datos, por favor espere...",
+  "common_cancel": "Cancelar",
+
   "error_title": "❌ Error",
   "error_not_found": "Página no encontrada.",
   "error_suggestion": "Si tienes sugerencias, abre un issue en el repositorio.",
@@ -160,6 +166,14 @@
   "portforwarding.target_ip": "IP objetivo",
   "portforwarding.confirm_add": "Añadir",
   "portforwarding.confirm_delete": "¿Estás seguro de que deseas eliminar esta regla?",
+
+  "service_fields.dump_router_data.system": "Información del sistema",
+  "service_fields.dump_router_data.network": "Configuración de red",
+  "service_fields.dump_router_data.devices": "Dispositivos conectados",
+  "service_fields.dump_router_data.nat_rules": "Reglas NAT",
+  "service_fields.dump_router_data.qos": "Configuración QoS",
+  "service_fields.dump_router_data.wifi_config": "Configuración Wi-Fi",
+  "service_fields.dump_router_data.hide_sensitive": "Ocultar datos sensibles",
 
   "state_attributes.total": "Total de reglas NAT",
   "state_attributes.ftype_1": "Reglas individuales (ftype 1)",

@@ -687,6 +687,25 @@ _startAutoRefresh() {
     margin-right: 6px;
     filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3));
   }
+  
+  .miwifi-dump-modal-backdrop {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+  }
+  .miwifi-dump-modal-window {
+    background: #1a73e8;
+    color: white;
+    padding: 16px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
+    animation: fadeIn 0.5s ease;
+  }
 
   .version-badge {
     background: #1a73e8;

@@ -111,6 +111,11 @@
   "download_ready_msg": "Нажмите на ссылку, чтобы скачать ZIP-файл.",
   "clear_logs": "Журналы удалены",
   "clear_logs_done": "Все журналы были успешно удалены.",
+  "settings_generate_dump": "Создать дамп роутера",
+  "settings_generate_dump_confirm": "Создать",
+  "settings_generate_dump_validation": "Выберите как минимум один блок для включения в дамп.",
+  "settings_dump_in_progress": "Сбор данных, пожалуйста, подождите...",
+  "common_cancel": "Отмена",
 
   "error_title": "❌ Ошибка",
   "error_not_found": "Страница не найдена.",
@@ -160,6 +165,14 @@
   "portforwarding.target_ip": "IP назначения",
   "portforwarding.confirm_add": "Добавить",
   "portforwarding.confirm_delete": "Вы уверены, что хотите удалить это правило?",
+
+  "service_fields.dump_router_data.system": "Информация о системе",
+  "service_fields.dump_router_data.network": "Сетевые настройки",
+  "service_fields.dump_router_data.devices": "Подключённые устройства",
+  "service_fields.dump_router_data.nat_rules": "Правила NAT",
+  "service_fields.dump_router_data.qos": "Настройки QoS",
+  "service_fields.dump_router_data.wifi_config": "Настройки Wi-Fi",
+  "service_fields.dump_router_data.hide_sensitive": "Скрыть конфиденциальные данные",
 
   "state_attributes.total": "Всего NAT правил",
   "state_attributes.ftype_1": "Индивидуальные правила (ftype 1)",

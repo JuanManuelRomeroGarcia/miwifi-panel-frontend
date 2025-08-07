@@ -111,6 +111,11 @@
   "download_ready_msg": "ZIP dosyasını indirmek için bağlantıya tıklayın.",
   "clear_logs": "Günlükler temizlendi",
   "clear_logs_done": "Tüm günlük dosyaları başarıyla silindi.",
+  "settings_generate_dump": "Yönlendirici dökümü oluştur",
+  "settings_generate_dump_confirm": "Oluştur",
+  "settings_generate_dump_validation": "Lütfen döküm için en az bir blok seçin.",
+  "settings_dump_in_progress": "Veriler toplanıyor, lütfen bekleyin...",
+  "common_cancel": "İptal",
 
   "error_title": "❌ Hata",
   "error_not_found": "Sayfa bulunamadı.",
@@ -160,6 +165,14 @@
   "portforwarding.target_ip": "Hedef IP",
   "portforwarding.confirm_add": "Ekle",
   "portforwarding.confirm_delete": "Bu kuralı silmek istediğinize emin misiniz?",
+
+  "service_fields.dump_router_data.system": "Sistem bilgisi",
+  "service_fields.dump_router_data.network": "Ağ yapılandırması",
+  "service_fields.dump_router_data.devices": "Bağlı cihazlar",
+  "service_fields.dump_router_data.nat_rules": "NAT kuralları",
+  "service_fields.dump_router_data.qos": "QoS ayarları",
+  "service_fields.dump_router_data.wifi_config": "Wi-Fi yapılandırması",
+  "service_fields.dump_router_data.hide_sensitive": "Hassas verileri gizle",
 
   "state_attributes.total": "Toplam NAT kuralları",
   "state_attributes.ftype_1": "Bireysel kurallar (ftype 1)",

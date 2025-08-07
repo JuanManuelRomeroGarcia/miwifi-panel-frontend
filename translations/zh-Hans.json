@@ -111,6 +111,11 @@
   "download_ready_msg": "点击链接下载 ZIP 文件。",
   "clear_logs": "日志已清除",
   "clear_logs_done": "所有日志文件已成功删除。",
+  "settings_generate_dump": "生成路由器转储",
+  "settings_generate_dump_confirm": "生成",
+  "settings_generate_dump_validation": "请至少选择一个要包含的模块。",
+  "settings_dump_in_progress": "正在收集数据，请稍候...",
+  "common_cancel": "取消",
 
   "error_title": "❌ 错误",
   "error_not_found": "页面未找到。",
@@ -160,6 +165,14 @@
   "portforwarding.target_ip": "目标 IP",
   "portforwarding.confirm_add": "添加",
   "portforwarding.confirm_delete": "您确定要删除此规则吗？",
+
+  "service_fields.dump_router_data.system": "系统信息",
+  "service_fields.dump_router_data.network": "网络配置",
+  "service_fields.dump_router_data.devices": "已连接设备",
+  "service_fields.dump_router_data.nat_rules": "NAT 规则",
+  "service_fields.dump_router_data.qos": "QoS 设置",
+  "service_fields.dump_router_data.wifi_config": "Wi-Fi 配置",
+  "service_fields.dump_router_data.hide_sensitive": "隐藏敏感数据",
 
   "state_attributes.total": "总计 NAT 规则",
   "state_attributes.ftype_1": "单个规则 (ftype 1)",

@@ -16,6 +16,7 @@
     "pages/error.js",
     "components/miwifi-topologia.js",
     "components/miwifi-device-cards.js",
+    "components/miwifi-settings.js",
     "components/miwifi-device-node-card.js",
     "components/miwifi-portforwarding.js",
     "translations/localize.js",

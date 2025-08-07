@@ -30,12 +30,12 @@ class MiWiFiPortForwarding extends LitElement {
     if ((changedProps.has("hass") || !this.sensor) && this.hass?.states) {
       const s = this.hass.states["sensor.miwifi_nat_rules"];
       if (s && s !== this.sensor) {
-        logToBackend(this.hass, "debug", "[MiWiFi] Sensor NAT actualizado");
+        logToBackend(this.hass, "debug", "[MiWiFi] Sensor NAT updated");
         this.sensor = s;
         this.rules1 = s?.attributes?.ftype_1 || [];
         this.rules2 = s?.attributes?.ftype_2 || [];
       } else {
-        logToBackend(this.hass, "warning", "[MiWiFi] Sensor NAT no encontrado (willUpdate)");
+        logToBackend(this.hass, "warning", "[MiWiFi] Sensor NAT not found (willUpdate)");
       }
     }
   }
@@ -45,12 +45,12 @@ class MiWiFiPortForwarding extends LitElement {
       if (!this.sensor && this.hass?.states) {
         const s = this.hass.states["sensor.miwifi_nat_rules"];
         if (s) {
-          logToBackend(this.hass, "debug", "[MiWiFi] Sensor NAT encontrado (fallback)");
+          logToBackend(this.hass, "debug", "[MiWiFi] Sensor NAT found (fallback)");
           this.sensor = s;
           this.rules1 = s?.attributes?.ftype_1 || [];
           this.rules2 = s?.attributes?.ftype_2 || [];
         } else {
-          logToBackend(this.hass, "warning", "[MiWiFi] Sensor NAT aún no disponible (fallback)");
+          logToBackend(this.hass, "warning", "[MiWiFi] Sensor NAT not available (fallback)");
         }
       }
     }, 1000);
@@ -79,7 +79,7 @@ class MiWiFiPortForwarding extends LitElement {
   }
 
   async _deleteRule(proto, port) {
-    const confirmMsg = localize("portforwarding.confirm_delete") || "¿Estás seguro de que deseas eliminar esta regla?";
+    const confirmMsg = localize("portforwarding.confirm_delete") || "Are you sure you want to delete this rule?";
     if (!window.confirm(confirmMsg)) return;
 
     await this.hass.callService("miwifi", "delete_port", { proto, port });
@@ -103,7 +103,7 @@ class MiWiFiPortForwarding extends LitElement {
       this.rules1 = s.attributes.ftype_1 || [];
       this.rules2 = s.attributes.ftype_2 || [];
     } else {
-      logToBackend(this.hass, "warning", "[MiWiFi] No se pudo refrescar el sensor NAT");
+      logToBackend(this.hass, "warning", "[MiWiFi] Could not refresh NAT sensor");
     }
   }
 
@@ -117,15 +117,15 @@ class MiWiFiPortForwarding extends LitElement {
           <div class="nat-summary">
             <b>📊 Reglas NAT:</b><br />
             ${localize("state_attributes.total") || "Total"}: ${this.sensor.attributes.total || 0} |
-            ${localize("state_attributes.ftype_1") || "Individuales"}: ${this.sensor.attributes.ftype_1?.length || 0} |
-            ${localize("state_attributes.ftype_2") || "Por rango"}: ${this.sensor.attributes.ftype_2?.length || 0}<br />
-            ${localize("state_attributes.source") || "Fuente"}: ${this.sensor.attributes.source || "-"}
+            ${localize("state_attributes.ftype_1") || "Individuals"}: ${this.sensor.attributes.ftype_1?.length || 0} |
+            ${localize("state_attributes.ftype_2") || "By range"}: ${this.sensor.attributes.ftype_2?.length || 0}<br />
+            ${localize("state_attributes.source") || "Source"}: ${this.sensor.attributes.source || "-"}
           </div>
         ` : ""}
-        <h2>${localize("panel.portforwarding_title") || "Reenvío de Puertos"}</h2>
+        <h2>${localize("panel.portforwarding_title") || "Port Forwarding"}</h2>
 
-        <div class="section-title">📦 ${localize("portforwarding.individual_title") || "Normas individuales"}
-          <button class="miwifi-button small" @click=${() => this._openModal(1)}>${localize("portforwarding.add_rule_button") || "Añadir norma"}</button>
+        <div class="section-title">📦 ${localize("portforwarding.individual_title") || "Individual Rules"}
+          <button class="miwifi-button small" @click=${() => this._openModal(1)}>${localize("portforwarding.add_rule_button") || "Add Rule"}</button>
         </div>
 
         <table class="rules-table">
@@ -133,9 +133,9 @@ class MiWiFiPortForwarding extends LitElement {
           <tr>
             <th>${localize("portforwarding.column_name")}</th>
             <th>${localize("portforwarding.column_proto")}</th>
-            <th>${localize("portforwarding.external_port") || "Puerto externo"}</th>
-            <th>${localize("portforwarding.column_target_ip") || "IP de destino"}</th>
-            <th>${localize("portforwarding.internal_port") || "Puerto interno"}</th>
+            <th>${localize("portforwarding.external_port") || "External Port"}</th>
+            <th>${localize("portforwarding.column_target_ip") || "Target IP"}</th>
+            <th>${localize("portforwarding.internal_port") || "Internal Port"}</th>
             <th>${localize("portforwarding.column_actions")}</th>
           </tr>
         </thead>
@@ -158,8 +158,8 @@ class MiWiFiPortForwarding extends LitElement {
       </table>
 
 
-        <div class="section-title">📦 ${localize("portforwarding.range_title") || "Normas por rango"}
-          <button class="miwifi-button small" @click=${() => this._openModal(2)}>${localize("portforwarding.add_rule_button") || "Añadir norma"}</button>
+        <div class="section-title">📦 ${localize("portforwarding.range_title") || "Range Rules"}
+          <button class="miwifi-button small" @click=${() => this._openModal(2)}>${localize("portforwarding.add_rule_button") || "Add Rule"}</button>
         </div>
 
         <table class="rules-table">
