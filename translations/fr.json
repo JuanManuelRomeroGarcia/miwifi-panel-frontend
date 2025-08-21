@@ -178,5 +178,67 @@
   "state_attributes.total": "Total des règles NAT",
   "state_attributes.ftype_1": "Règles individuelles (ftype 1)",
   "state_attributes.ftype_2": "Règles par plage (ftype 2)",
-  "state_attributes.source": "Adresse IP du routeur principal"
+  "state_attributes.source": "Adresse IP du routeur principal",
+
+  "settings_guest_config_title": "Configuration du Wi-Fi invité",
+  "guest_enable": "Activer",
+  "guest_ssid": "SSID",
+  "guest_password": "Mot de passe (laisser vide pour conserver)",
+  "guest_encryption": "Chiffrement",
+  "guest_hidden": "Masquer le SSID",
+  "ui_loading": "Chargement…",
+  "ui_error": "Erreur",
+  "ui_reload": "Recharger",
+  "ui_apply": "Appliquer les modifications",
+  "ui_saved": "Modifications envoyées.",
+
+  "wifi_title_24g": "Wi-Fi 2.4G",
+  "wifi_title_5g": "Wi-Fi 5G",
+  "wifi_title_game": "5G Gaming",
+  "wifi_enable": "Activer",
+  "wifi_encryption": "Chiffrement",
+  "wifi_ssid": "SSID",
+  "wifi_channel": "Canal",
+  "wifi_hidden": "Masquer le SSID",
+  "ui_readonly": "Lecture seule pour l'instant",
+
+  
+  "title": "MiWiFi",
+  "ui_save": "Enregistrer",
+  "ui_cancel": "Annuler",
+  "ui_unavailable": "Entité non trouvée",
+  "ui_no_data": "Pas de données / masqué par les autorisations.",
+
+  "settings_wifi_config": "Paramètres Wi-Fi",
+  "settings_guest_switch_missing": "Entité de commutateur invité non trouvée. Vous pouvez toujours modifier via le formulaire ci-dessous.",
+  "settings_clear_logs_done_title": "Journaux effacés",
+  "settings_clear_logs_done_msg": "Les journaux du routeur ont été effacés avec succès.",
+  "settings_confirm_clear_main": "Supprimer la sélection manuelle du routeur principal ?",
+  "settings_integration": "Paramètres d'intégration",
+  "setting_panel_active_hint": "Afficher le panneau MiWiFi dans la barre latérale.",
+  "settings_saved_title": "Paramètres enregistrés",
+  "settings_saved_msg": "Votre configuration a été mise à jour.",
+  "settings_issue_title": "Avez-vous des suggestions ?",
+  "settings_issue_desc": "Dites-nous ce que nous devons améliorer ou corriger.",
+  "settings_integration_feedback_button": "Ouvrir un problème (Intégration)",
+  "dump_button": "Dump des données du routeur",
+  "dump_title": "Dump des données du routeur",
+  "dump_description": "Sélectionnez ce qu'il faut inclure :",
+  "dump_select_one": "Sélectionnez au moins une section à inclure.",
+  "dump_done_title": "Dump demandé",
+  "dump_done_msg": "Vous trouverez le fichier dans le dossier storage/logs de votre Home Assistant.",
+  "dump_error_title": "Erreur de dump",
+
+  "dump_system": "Informations système",
+  "dump_network": "Réseau",
+  "dump_devices": "Appareils",
+  "dump_nat_rules": "Règles NAT",
+  "dump_qos": "QoS",
+  "dump_wifi_config": "Configuration Wi-Fi",
+  "dump_hide_sensitive": "Masquer les données sensibles",
+
+  "wifi_password": "Mot de passe",
+  "guest_password_hint": "Le mot de passe actuel est affiché si vous êtes administrateur."
+
+
 }

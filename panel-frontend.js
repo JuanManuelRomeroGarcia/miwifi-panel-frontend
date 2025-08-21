@@ -308,6 +308,94 @@ _startAutoRefresh() {
     padding-top: 10px;
   }
 
+  .row{ 
+  display:grid; 
+  grid-template-columns:repeat(2,1fr); 
+  gap:12px; 
+  }
+
+  .switchline{ 
+  display:flex; 
+  align-items:center; 
+  gap:10px; 
+  }
+ 
+  .right { 
+  display:flex; 
+  gap:8px; 
+  justify-content:flex-end; 
+  }
+
+  .hidden { 
+  display:none; 
+  }
+  
+  mw-input{ 
+  display:flex; 
+  flex-direction:column; 
+  gap:6px;
+  }
+       
+  mw-input label{ 
+  font-size:12px; 
+  opacity:.8 
+  }
+  
+  mw-input input, mw-input select{ 
+  padding:8px; 
+  border:1px solid var(--divider-color); 
+  border-radius:8px; 
+  background:transparent; 
+  color:var(--primary-text-color) 
+  }
+
+  .wifi-block { 
+  border:1px solid var(--divider-color); 
+  border-radius:12px; 
+  margin-bottom:12px; 
+  }
+  
+  .wifi-block .header { 
+  padding:10px; 
+  }
+  
+  .wifi-block .body { 
+  border-top:1px solid var(--divider-color); 
+  padding:10px; 
+  }
+  
+  .wifi-card { 
+  display:grid; 
+  grid-template-columns: repeat(2, minmax(140px,1fr)); 
+  gap:6px; 
+  }
+  
+  .wifi-title { 
+  font-weight:600; 
+  margin-bottom:6px; 
+  grid-column: 1 / -1; 
+  }
+
+  .wifi-row b { 
+  opacity:.8; 
+  margin-right:6px; 
+  }
+
+  .hint { 
+  opacity:.7; font-size:12px; 
+  }
+
+  .dialog-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.35); display:flex; justify-content:center; align-items:center; z-index:1000; }
+  .dialog{ background:var(--card-background-color); padding:16px; border-radius:12px; max-width:520px; width:95%; }
+  .dump-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; margin-top:8px; }
+  .dump-check{ display:flex; align-items:center; gap:8px; }
+  .note{ font-size:12px; opacity:.7; }
+  .select-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; }
+  .select-block{ display:flex; flex-direction:column; gap:6px; }
+
+  .miwifi-issue { margin-top:12px; border-top:1px dashed var(--divider-color); padding-top:8px; display:flex; justify-content:space-between; align-items:center; }
+  .miwifi-issue-link { text-decoration:none; border:1px solid var(--divider-color); border-radius:8px; padding:6px 10px; }
+
   .miwifi-button-group {
     display: flex;
     flex-wrap: wrap;
@@ -846,6 +934,7 @@ _startAutoRefresh() {
       padding-top: 82px; /* Space for fixed header */
     }
     
+  
   }
 
 `;
