@@ -177,6 +177,67 @@
   "state_attributes.total": "Gesamt NAT Regeln",
   "state_attributes.ftype_1": "Einzelne Regeln (ftype 1)",
   "state_attributes.ftype_2": "Bereichsregeln (ftype 2)",
-  "state_attributes.source": "IP-Adresse des Hauptrouters"
+  "state_attributes.source": "IP-Adresse des Hauptrouters",
+
+  "settings_guest_config_title": "Gast-WLAN-Konfiguration",
+  "guest_enable": "Aktivieren",
+  "guest_ssid": "SSID",
+  "guest_password": "Passwort (leer lassen, um beizubehalten)",
+  "guest_encryption": "Verschlüsselung",
+  "guest_hidden": "SSID ausblenden",
+  "ui_loading": "Wird geladen…",
+  "ui_error": "Fehler",
+  "ui_reload": "Neu laden",
+  "ui_apply": "Änderungen anwenden",
+  "ui_saved": "Änderungen gesendet.",
+
+  "wifi_title_24g": "Wi-Fi 2.4G",
+  "wifi_title_5g": "Wi-Fi 5G",
+  "wifi_title_game": "5G Gaming",
+  "wifi_enable": "Aktivieren",
+  "wifi_encryption": "Verschlüsselung",
+  "wifi_ssid": "SSID",
+  "wifi_channel": "Kanal",
+  "wifi_hidden": "SSID ausblenden",
+  "ui_readonly": "Nur lesen für jetzt",
+
+  
+  "title": "MiWiFi",
+  "ui_save": "Speichern",
+  "ui_cancel": "Abbrechen",
+  "ui_unavailable": "Entity nicht gefunden",
+  "ui_no_data": "Keine Daten / durch Berechtigungen ausgeblendet.",
+
+  "settings_wifi_config": "Wi-Fi Einstellungen",
+  "settings_guest_switch_missing": "Gastschalter-Entity nicht gefunden. Sie können weiterhin über das Formular unten bearbeiten.",
+  "settings_clear_logs_done_title": "Logs gelöscht",
+  "settings_clear_logs_done_msg": "Router-Logs wurden erfolgreich gelöscht.",
+  "settings_confirm_clear_main": "Die manuelle Auswahl des Hauptrouters entfernen?",
+  "settings_integration": "Integrations-Einstellungen",
+  "setting_panel_active_hint": "Das MiWiFi-Panel in der Seitenleiste anzeigen.",
+  "settings_saved_title": "Einstellungen gespeichert",
+  "settings_saved_msg": "Ihre Konfiguration wurde aktualisiert.",
+  "settings_issue_title": "Haben Sie Vorschläge?",
+  "settings_issue_desc": "Teilen Sie uns mit, was wir verbessern oder beheben sollen.",
+  "settings_integration_feedback_button": "Issue öffnen (Integration)",
+  "dump_button": "Router-Daten exportieren",
+  "dump_title": "Router-Daten exportieren",
+  "dump_description": "Wählen Sie aus, was enthalten sein soll:",
+  "dump_select_one": "Wählen Sie mindestens einen Abschnitt aus, der enthalten sein soll.",
+  "dump_done_title": "Export angefordert",
+  "dump_done_msg": "Sie finden die Datei in Ihrem Home Assistant storage/logs-Ordner.",
+  "dump_error_title": "Dump-Fehler",
+
+  "dump_system": "Systeminformationen",
+  "dump_network": "Netzwerkinformationen",
+  "dump_devices": "Geräte",
+  "dump_nat_rules": "NAT-Regeln",
+  "dump_qos": "QoS",
+  "dump_wifi_config": "Wi-Fi-Konfiguration",
+  "dump_hide_sensitive": "Sensible Daten ausblenden",
+
+  "wifi_password": "Passwort",
+  "guest_password_hint": "Aktuelles Passwort wird angezeigt, wenn Sie Admin sind."
+
 
 }

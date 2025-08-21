@@ -177,5 +177,67 @@
   "state_attributes.total": "总计 NAT 规则",
   "state_attributes.ftype_1": "单个规则 (ftype 1)",
   "state_attributes.ftype_2": "范围规则 (ftype 2)",
-  "state_attributes.source": "主路由器 IP 地址"
+  "state_attributes.source": "主路由器 IP 地址",
+
+  "settings_guest_config_title": "访客 Wi-Fi 配置",
+  "guest_enable": "启用",
+  "guest_ssid": "SSID",
+  "guest_password": "密码（留空以保持不变）",
+  "guest_encryption": "加密",
+  "guest_hidden": "隐藏 SSID",
+  "ui_loading": "加载中…",
+  "ui_error": "错误",
+  "ui_reload": "重新加载",
+  "ui_apply": "应用更改",
+  "ui_saved": "更改已发送。",
+
+  "wifi_title_24g": "Wi-Fi 2.4G",
+  "wifi_title_5g": "Wi-Fi 5G",
+  "wifi_title_game": "5G Gaming",
+  "wifi_enable": "启用",
+  "wifi_encryption": "加密",
+  "wifi_ssid": "SSID",
+  "wifi_channel": "频道",
+  "wifi_hidden": "隐藏 SSID",
+  "ui_readonly": "当前仅可读",
+
+  
+  "title": "MiWiFi",
+  "ui_save": "保存",
+  "ui_cancel": "取消",
+  "ui_unavailable": "实体未找到",
+  "ui_no_data": "无数据 / 被权限隐藏。",
+
+  "settings_wifi_config": "Wi-Fi 设置",
+  "settings_guest_switch_missing": "未找到访客开关实体。您仍然可以通过下面的表单进行编辑。",
+  "settings_clear_logs_done_title": "日志已清除",
+  "settings_clear_logs_done_msg": "路由器日志已成功清除。",
+  "settings_confirm_clear_main": "删除手动选择的主路由器？",
+  "settings_integration": "集成设置",
+  "setting_panel_active_hint": "在侧边栏中显示 MiWiFi 面板。",
+  "settings_saved_title": "设置已保存",
+  "settings_saved_msg": "您的配置已更新。",
+  "settings_issue_title": "有建议吗？",
+  "settings_issue_desc": "告诉我们需要改进或修复的内容。",
+  "settings_integration_feedback_button": "打开问题（集成）",
+  "dump_button": "导出路由器数据",
+  "dump_title": "导出路由器数据",
+  "dump_description": "选择要包含的内容：",
+  "dump_select_one": "至少选择一个部分以包含。",
+  "dump_done_title": "导出请求",
+  "dump_done_msg": "您将在 Home Assistant 的 storage/logs 文件夹中找到该文件。",
+  "dump_error_title": "导出错误",
+
+  "dump_system": "系统信息",
+  "dump_network": "网络",
+  "dump_devices": "设备",
+  "dump_nat_rules": "NAT 规则",
+  "dump_qos": "QoS",
+  "dump_wifi_config": "Wi-Fi 配置",
+  "dump_hide_sensitive": "隐藏敏感数据",
+
+  "wifi_password": "密码",
+  "guest_password_hint": "如果您是管理员，则当前密码将显示。"
+
+
 }

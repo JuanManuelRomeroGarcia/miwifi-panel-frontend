@@ -177,5 +177,67 @@
   "state_attributes.total": "Toplam NAT kuralları",
   "state_attributes.ftype_1": "Bireysel kurallar (ftype 1)",
   "state_attributes.ftype_2": "Aralık kuralları (ftype 2)",
-  "state_attributes.source": "Ana router IP adresi"
+  "state_attributes.source": "Ana router IP adresi",
+
+  "settings_guest_config_title": "Misafir Wi-Fi yapılandırması",
+  "guest_enable": "Etkinleştir",
+  "guest_ssid": "SSID",
+  "guest_password": "Şifre (korumak için boş bırakın)",
+  "guest_encryption": "Şifreleme",
+  "guest_hidden": "SSID'yi Gizle",
+  "ui_loading": "Yükleniyor…",
+  "ui_error": "Hata",
+  "ui_reload": "Yenile",
+  "ui_apply": "Değişiklikleri Uygula",
+  "ui_saved": "Değişiklikler gönderildi.",
+
+  "wifi_title_24g": "Wi-Fi 2.4G",
+  "wifi_title_5g": "Wi-Fi 5G",
+  "wifi_title_game": "5G Gaming",
+  "wifi_enable": "Etkinleştir",
+  "wifi_encryption": "Şifreleme",
+  "wifi_ssid": "SSID",
+  "wifi_channel": "Kanal",
+  "wifi_hidden": "SSID'yi Gizle",
+  "ui_readonly": "Şu anda yalnızca okunabilir",
+
+  
+  "title": "MiWiFi",
+  "ui_save": "Kaydet",
+  "ui_cancel": "İptal",
+  "ui_unavailable": "Varlık bulunamadı",
+  "ui_no_data": "Veri yok / izinler tarafından gizlendi.",
+
+  "settings_wifi_config": "Wi-Fi Ayarları",
+  "settings_guest_switch_missing": "Misafir anahtarı varlığı bulunamadı. Aşağıdaki form aracılığıyla yine de düzenleyebilirsiniz.",
+  "settings_clear_logs_done_title": "Loglar temizlendi",
+  "settings_clear_logs_done_msg": "Router logları başarıyla temizlendi.",
+  "settings_confirm_clear_main": "Manuel ana router seçimini kaldırmak istiyor musunuz?",
+  "settings_integration": "Entegrasyon Ayarları",
+  "setting_panel_active_hint": "MiWiFi panelini yan menüde göster.",
+  "settings_saved_title": "Ayarlar kaydedildi",
+  "settings_saved_msg": "Yapılandırmanız güncellendi.",
+  "settings_issue_title": "Önerileriniz var mı?",
+  "settings_issue_desc": "Geliştirilmesi veya düzeltilmesi gerekenleri bize bildirin.",
+  "settings_integration_feedback_button": "Sorun aç (Entegrasyon)",
+  "dump_button": "Router verilerini dök",
+  "dump_title": "Router verilerini dök",
+  "dump_description": "Dahil edilecekleri seçin:",
+  "dump_select_one": "Dahil edilecek en az bir bölüm seçin.",
+  "dump_done_title": "Döküm talep edildi",
+  "dump_done_msg": "Dosyayı Home Assistant storage/logs klasöründe bulacaksınız.",
+  "dump_error_title": "Döküm hatası",
+
+  "dump_system": "Sistem bilgisi",
+  "dump_network": "Ağ bilgisi",
+  "dump_devices": "Cihazlar",
+  "dump_nat_rules": "NAT kuralları",
+  "dump_qos": "QoS",
+  "dump_wifi_config": "Wi-Fi yapılandırması",
+  "dump_hide_sensitive": "Hassas verileri gizle",
+
+  "wifi_password": "Şifre",
+  "guest_password_hint": "Mevcut, admin iseniz gösterilir."
+
+
 }

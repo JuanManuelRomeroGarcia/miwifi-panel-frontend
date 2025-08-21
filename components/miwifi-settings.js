@@ -4,19 +4,38 @@ import { localize } from "../translations/localize.js?v=__MIWIFI_VERSION__";
 
 const MIWIFI_VERSION = "__MIWIFI_VERSION__";
 const REPOSITORY = "JuanManuelRomeroGarcia/hass-miwifi";
+const REPOSITORY_PANEL = "JuanManuelRomeroGarcia/miwifi-panel-frontend";
 
 export class MiWiFiSettingsPanel extends LitElement {
   static properties = {
     hass: {},
     routerSensor: { state: true },
+
     showDumpModal: { state: true },
     dumpOptions: { state: true },
     isDumpLoading: { state: true },
+
+    // Guest Wi-Fi
+    guestLoading: { state: true },
+    guestError: { state: true },
+    guestForm: { state: true },   // { enable, ssid, password, encryption, hidden }
+    guestOrig: { state: true },   // original values for diff
+    guestDirty: { state: true },
+    guestApplying: { state: true },
+    guestShowPwd: { state: true },
+
+    // Radios (read-only form + working enable switch)
+    radios: { state: true },      // { twoG, fiveG, game }
+    _wifisLoaded: { state: true },
+
+    // Show/Hide password per radio
+    radioShowPwd: { state: true }, // { twoG:false, fiveG:false, game:false }
   };
 
   constructor() {
     super();
     this.routerSensor = null;
+
     this.showDumpModal = false;
     this.isDumpLoading = false;
     this.dumpOptions = {
@@ -28,12 +47,348 @@ export class MiWiFiSettingsPanel extends LitElement {
       wifi_config: false,
       hide_sensitive: true,
     };
+
+    this.guestLoading = false;
+    this.guestError = null;
+    this.guestForm = null;
+    this.guestOrig = null;
+    this.guestDirty = false;
+    this.guestApplying = false;
+    this.guestShowPwd = false;
+
+    this.radios = { twoG: null, fiveG: null, game: null };
+    this._wifisLoaded = false;
+
+    this.radioShowPwd = { twoG: false, fiveG: false, game: false };
   }
 
-  createRenderRoot() {
-    return this;
+  createRenderRoot() { return this; }
+
+  // ------------------ Wi-Fis (Guest + radios) ------------------
+  async _fetchWifis() {
+    this.guestLoading = true;
+    this.guestError = null;
+    this.requestUpdate();
+
+    const isAdmin = !!(this.hass?.user?.is_admin);
+    try {
+      const res = await this.hass.callWS({
+        type: "miwifi/get_wifis",
+        hide_sensitive: !isAdmin,
+      });
+      const w = res?.wifis;
+      if (!w) throw new Error("invalid_response");
+
+      const g = w.guest || {};
+      const two = w["2g"] || null;
+      const five = w["5g"] || null;
+      const game = w["game"] || null;
+
+      const hiddenRaw = g.hidden;
+      const hidden = hiddenRaw === 1 || hiddenRaw === "1" || hiddenRaw === true;
+      const safePwd = isAdmin && typeof g.password === "string" ? g.password : "";
+
+      this.guestOrig = {
+        enabled: !!g.enabled,
+        ssid: g.ssid || "",
+        encryption: g.encryption || "psk2",
+        hidden,
+        password: safePwd,
+      };
+      this.guestForm = {
+        enable: this.guestOrig.enabled,
+        ssid: this.guestOrig.ssid,
+        password: this.guestOrig.password,
+        encryption: this.guestOrig.encryption,
+        hidden: this.guestOrig.hidden,
+      };
+      this.guestDirty = false;
+
+      this.radios = { twoG: two, fiveG: five, game: game };
+      this._wifisLoaded = true;
+    } catch (err) {
+      try {
+        const mainMac = this.routerSensor?.attributes?.graph?.mac?.toLowerCase()?.replace(/:/g, "_") || "";
+        const guestSwitch = Object.values(this.hass.states).find(
+          (sw) => sw.entity_id === `switch.miwifi_${mainMac}_wifi_guest`
+        );
+        const fallbackEnabled = guestSwitch ? guestSwitch.state === "on" : false;
+
+        this.guestOrig = { enabled: fallbackEnabled, ssid: "", encryption: "psk2", hidden: false, password: "" };
+        this.guestForm = { ...this.guestOrig, enable: fallbackEnabled };
+        this.guestDirty = false;
+
+        this.guestError = "Este HA no devuelve respuesta de miwifi/get_wifis. Modo básico.";
+      } catch (e2) {
+        this.guestError = String(err?.message || err) || "Unknown error";
+      }
+    } finally {
+      this.guestLoading = false;
+      this.requestUpdate();
+    }
   }
 
+  _guestIsDirty() {
+    if (!this.guestForm || !this.guestOrig) return false;
+    if (!!this.guestForm.enable !== !!this.guestOrig.enabled) return true;
+    if ((this.guestForm.ssid || "") !== (this.guestOrig.ssid || "")) return true;
+    if ((this.guestForm.encryption || "psk2") !== (this.guestOrig.encryption || "psk2")) return true;
+    if (!!this.guestForm.hidden !== !!this.guestOrig.hidden) return true;
+
+    const isAdmin = !!(this.hass?.user?.is_admin);
+    if (isAdmin && (this.guestForm.password || "") !== (this.guestOrig.password || "")) return true;
+
+    return false;
+  }
+
+  _onGuestChange(key, val) {
+    const f = { ...(this.guestForm || {}) };
+    f[key] = val;
+    this.guestForm = f;
+    this.guestDirty = this._guestIsDirty();
+    this.requestUpdate();
+  }
+
+  async _applyGuest() {
+    if (!this._guestIsDirty()) return;
+    this.guestApplying = true;
+    this.requestUpdate();
+
+    try {
+      const f = this.guestForm;
+      const o = this.guestOrig;
+
+      const body = {
+        enable: !!f.enable,
+        ...(f.ssid !== (o.ssid || "") ? { ssid: f.ssid } : {}),
+        ...(f.encryption !== (o.encryption || "psk2") ? { encryption: f.encryption } : {}),
+        ...(f.hidden !== !!o.hidden ? { hidden: !!f.hidden } : {}),
+      };
+
+      const isAdmin = !!(this.hass?.user?.is_admin);
+      if (isAdmin) {
+        body.password = f.password || "";
+      }
+
+      await this.hass.callService("miwifi", "set_guest_wifi", body);
+
+      this.hass.callService("persistent_notification", "create", {
+        title: localize("title") || "MiWiFi",
+        message: localize("ui_saved") || "Changes sent.",
+        notification_id: "miwifi_guest_saved",
+      });
+
+      await this._fetchWifis();
+    } catch (e) {
+      this.hass.callService("persistent_notification", "create", {
+        title: localize("title") || "MiWiFi",
+        message: (localize("ui_error") || "Error") + ": " + (e?.message || e),
+        notification_id: "miwifi_guest_error",
+      });
+    } finally {
+      this.guestApplying = false;
+      this.guestDirty = false;
+      this.requestUpdate();
+    }
+  }
+
+  // ------------------ Dump modal ------------------
+  _openDumpModal() {
+    this.showDumpModal = true;
+    this.requestUpdate();
+  }
+
+  _closeDumpModal() {
+    this.showDumpModal = false;
+    this.requestUpdate();
+  }
+
+  _toggleDumpOption(key) {
+    this.dumpOptions = { ...this.dumpOptions, [key]: !this.dumpOptions[key] };
+    this.requestUpdate();
+  }
+
+  _renderDumpModal() {
+    if (!this.showDumpModal) return "";
+    return html`
+      <div class="dialog-backdrop" @click=${(e)=>{ if (e.target.classList.contains("dialog-backdrop")) this._closeDumpModal(); }}>
+        <div class="dialog">
+          <h3>${localize("dump_title") || "Dump router data"}</h3>
+          <p>${localize("dump_description") || "Select what to include:"}</p>
+
+          <div class="dump-grid">
+            ${Object.entries(this.dumpOptions).map(([k, v]) => html`
+              <label class="dump-check">
+                <input type="checkbox" .checked=${!!v} @change=${()=>this._toggleDumpOption(k)} />
+                <span>${localize("dump_"+k) || k}</span>
+              </label>
+            `)}
+          </div>
+
+          <div class="right" style="margin-top:12px;">
+            <button class="miwifi-button" @click=${()=>this._closeDumpModal()}>${localize("ui_cancel") || "Cancelar"}</button>
+            <button class="miwifi-button" @click=${()=>this._sendDump()}>${localize("ui_apply") || "Aplicar"}</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  async _sendDump() {
+    try {
+      this.isDumpLoading = true;
+      const opts = { ...this.dumpOptions };
+      await this.hass.callService("miwifi", "dump_router_data", opts);
+      this.isDumpLoading = false;
+      this._closeDumpModal();
+
+      this.hass.callService("persistent_notification", "create", {
+        title: localize("dump_done_title") || "Dump requested",
+        message: localize("dump_done_msg") || "You will find the file in your Home Assistant storage/logs folder.",
+        notification_id: "miwifi_dump_ok",
+      });
+    } catch (e) {
+      this.isDumpLoading = false;
+      this._closeDumpModal();
+      this.hass.callService("persistent_notification", "create", {
+        title: localize("dump_error_title") || "Dump error",
+        message: (localize("ui_error") || "Error") + ": " + (e?.message || e),
+        notification_id: "miwifi_dump_err",
+      });
+    }
+  }
+
+  // ------------------ Helpers ------------------
+  _getMainRouter() {
+    if (!this.hass) return null;
+    const main = Object.values(this.hass.states).find(
+      (s) => s.entity_id.startsWith("sensor.topologia_miwifi") &&
+             s.attributes?.graph?.is_main === true
+    );
+    return main || null;
+  }
+
+  _getRouterIcon(model) {
+    return "/local/miwifi/assets/router.svg";
+  }
+
+  _switchForRadioFromList(key, switches) {
+    const byName = (sw) => (sw?.attributes?.friendly_name || sw?.entity_id || "").toLowerCase();
+    const findGame = () =>
+      switches.find((sw) =>
+        sw.entity_id.endsWith("_wifi_5g_game") ||
+        (/5g/.test(byName(sw)) && /game/.test(byName(sw)))
+      );
+    const find5G = () =>
+      switches.find((sw) =>
+        (sw.entity_id.endsWith("_wifi_5g") && !sw.entity_id.endsWith("_wifi_5g_game")) ||
+        (/5g/.test(byName(sw)) && !/game/.test(byName(sw)))
+      );
+    const find24G = () =>
+      switches.find((sw) =>
+        sw.entity_id.endsWith("_wifi_2g") ||
+        sw.entity_id.endsWith("_wifi_24g") ||
+        (/2\.?4|2g/.test(byName(sw)) && !/guest/.test(byName(sw)) && !/5g/.test(byName(sw)))
+      );
+
+    if (key === "game") return findGame() || null;
+    if (key === "fiveG") return find5G() || null;
+    return find24G() || null; // twoG
+  }
+
+  _renderReadonlyWifiForm(w, key) {
+    if (!w) {
+      return html`<div class="wifi-row"><i>${localize("ui_loading") || "Loading…"}</i></div>`;
+    }
+    const hidden = String(w.hidden) === "1" || w.hidden === true;
+    const showPwd = !!this.radioShowPwd[key];
+    const hasPwd = typeof w.password === "string" && w.password.length > 0;
+
+    return html`
+      <div class="row">
+        <mw-input>
+          <label>${localize("wifi_encryption") || "Encryption"}</label>
+          <input type="text" .value=${w.encryption || "-"} readonly />
+        </mw-input>
+
+        <mw-input>
+          <label>${localize("wifi_ssid") || "SSID"}</label>
+          <input type="text" .value=${w.ssid || "-"} readonly />
+        </mw-input>
+
+        <mw-input>
+          <label>${localize("wifi_channel") || "Channel"}</label>
+          <input type="text" .value=${w.channel ?? "-"} readonly />
+        </mw-input>
+
+        <div class="switchline">
+          <label>${localize("wifi_hidden") || "Hidden"}</label>
+          <ha-switch .checked=${hidden} disabled></ha-switch>
+        </div>
+
+        <mw-input style="grid-column: 1 / -1;">
+          <label>${localize("wifi_password") || "Password"}</label>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <input
+              .type=${showPwd ? "text" : "password"}
+              .value=${hasPwd ? w.password : ""}
+              readonly
+              style="flex:1;"
+            />
+            <button class="miwifi-button" @click=${()=>{
+              this.radioShowPwd = { ...this.radioShowPwd, [key]: !showPwd };
+              this.requestUpdate();
+            }}>
+              ${showPwd ? "🙈" : "👁"}
+            </button>
+          </div>
+          ${!hasPwd ? html`<div class="hint">${localize("ui_no_data") || "No data / hidden by permissions."}</div>` : ""}
+        </mw-input>
+      </div>
+    `;
+  }
+
+  _renderRadioBlock(key, swEntity, w) {
+    const cfg = {
+      twoG:  { title: localize("wifi_title_24g") || "2.4G Wi-Fi" },
+      fiveG: { title: localize("wifi_title_5g")  || "5G Wi-Fi" },
+      game:  { title: localize("wifi_title_game")|| "5G Gaming" },
+    }[key];
+
+    const checked = swEntity ? swEntity.state === "on" : !!w?.enabled;
+
+    const handleToggle = (e) => {
+      if (!swEntity) return;
+      const entity_id = swEntity.entity_id;
+      if (e.target.checked) {
+        this.hass.callService("switch", "turn_on", { entity_id }).catch(console.error);
+      } else {
+        this.hass.callService("switch", "turn_off", { entity_id }).catch(console.error);
+      }
+
+    };
+
+    return html`
+      <div class="wifi-block">
+        <div class="header" style="display:flex; align-items:center; justify-content:space-between;">
+          <div class="wifi-title">${cfg.title}</div>
+          <div class="switchline" title="${swEntity ? "" : (localize("ui_unavailable") || "Entity not found")}">
+            <label>${localize("wifi_enable") || "Enable"}</label>
+            <ha-switch
+              .checked=${checked}
+              ?disabled=${!swEntity}
+              @change=${handleToggle}
+            ></ha-switch>
+          </div>
+        </div>
+        <div class="body">
+          ${this._renderReadonlyWifiForm(w, key)}
+        </div>
+      </div>
+    `;
+  }
+
+  // ------------------ Render ------------------
   render() {
     if (!this.routerSensor) {
       return html`
@@ -44,16 +399,16 @@ export class MiWiFiSettingsPanel extends LitElement {
       `;
     }
 
-    const config = this.hass.states["sensor.miwifi_config"]?.attributes || {};
-    const version = MIWIFI_VERSION || "?.?.?";
-    const mac = this.routerSensor.attributes.graph.mac.toLowerCase().replace(/:/g, "_");
+    const version = MIWIFI_VERSION;
     const mainGraph = this.routerSensor.attributes.graph;
     const routerIcon = `https://raw.githubusercontent.com/${REPOSITORY}/main/images/${mainGraph.hardware || "default"}.png`;
+
+    const mac = (mainGraph?.mac || "").toLowerCase().replace(/:/g, "_");
+    const config = this.hass?.states?.["sensor.miwifi_integration_config"]?.attributes || {};
 
     const switches = Object.values(this.hass.states).filter((e) =>
       e.entity_id.startsWith("switch.miwifi_" + mac)
     );
-
     const selects = Object.values(this.hass.states).filter((e) =>
       e.entity_id.startsWith("select.miwifi_" + mac)
     );
@@ -81,29 +436,31 @@ export class MiWiFiSettingsPanel extends LitElement {
     const handleDumpService = () => {
       const selected = Object.entries(this.dumpOptions).filter(([k, v]) => v && k !== "hide_sensitive");
       if (selected.length === 0) {
-        alert(localize("settings_generate_dump_validation"));
+        alert(localize("dump_select_one") || "Select at least one section to include.");
         return;
       }
-
-      this.isDumpLoading = true;
-
-      this.hass.callService("miwifi", "dump_router_data", this.dumpOptions)
-        .then(() => {
-          this.isDumpLoading = false;
-          this.showDumpModal = false;
-        })
-        .catch(err => {
-          this.isDumpLoading = false;
-          alert("Error: " + err);
-          console.error(err);
-        });
+      this._openDumpModal();
     };
 
     const currentPanel = config.panel_activo ?? true;
     const currentUnit = config.speed_unit || "MB";
     const currentLog = config.log_level || "info";
 
+    const guestSwitch = switches.find((sw) => sw.entity_id.endsWith("_wifi_guest"));
+
+   
+    const sw24 = this._switchForRadioFromList("twoG", switches);
+    const sw5  = this._switchForRadioFromList("fiveG", switches);
+    const swG  = this._switchForRadioFromList("game", switches);
+
+  
+    if (!this._wifisLoaded && !this.guestLoading) {
+      this._fetchWifis();
+    }
+
     return html`
+
+
       <div class="content">
         <div class="config-header">
           <img src="/local/miwifi/assets/logo.png" class="logo" alt="Logo" />
@@ -122,9 +479,83 @@ export class MiWiFiSettingsPanel extends LitElement {
           </div>
         </div>
 
+        <!-- Configuración Wi-Fi: tarjetas con switch activo + info solo lectura -->
         <div class="section">
-          <h3>${localize("settings_wifi_switches")}</h3>
-          ${switches.map((sw) => renderToggle(this.hass, sw))}
+          <h3>${localize("settings_wifi_config") || "Configuración Wi-Fi"}</h3>
+          ${this._renderRadioBlock("twoG", sw24, this.radios.twoG)}
+          ${this._renderRadioBlock("fiveG", sw5, this.radios.fiveG)}
+          ${this._renderRadioBlock("game", swG, this.radios.game)}
+        </div>
+
+        <!-- Guest (editable) -->
+        <div class="section">
+          <h3>${localize("settings_guest_config_title") || "Configuración Wi-Fi de invitados"}</h3>
+
+          ${guestSwitch ? "" : html`
+            <div class="note">
+              ${localize("settings_guest_switch_missing") || "Guest switch entity not found. You can still edit via form below."}
+            </div>
+          `}
+
+          ${this.guestLoading ? html`<div>${localize("ui_loading") || "Loading…"} </div>` : ""}
+          ${this.guestError ? html`<div style="color:var(--error-color)">${localize("ui_error") || "Error"}: ${this.guestError}</div>` : ""}
+
+          ${this.guestForm ? html`
+            <div class="switchline" style="margin-bottom:12px;">
+              <label>${localize("guest_enable") || "Activar"}</label>
+              <ha-switch .checked=${this.guestForm.enable}
+                @change=${(e)=>this._onGuestChange("enable", e.target.checked)}></ha-switch>
+            </div>
+
+            ${this.guestForm.enable ? html`
+              <div class="row">
+                <mw-input>
+                  <label>${localize("guest_encryption") || "Cifrado"}</label>
+                  <select @change=${(e)=>this._onGuestChange("encryption", e.target.value)}>
+                    <option value="psk2" ?selected=${this.guestForm.encryption==="psk2"}>psk2 (WPA2-PSK)</option>
+                    <option value="none" ?selected=${this.guestForm.encryption==="none"}>none (open)</option>
+                  </select>
+                </mw-input>
+
+                <mw-input>
+                  <label>${localize("guest_ssid") || "SSID"}</label>
+                  <input type="text" .value=${this.guestForm.ssid}
+                    @input=${(e)=>this._onGuestChange("ssid", e.target.value)} />
+                </mw-input>
+
+                <mw-input>
+                  <label>
+                    ${localize("guest_password") || "Contraseña (vacío = mantener)"} 
+                    <span class="hint">(${localize("guest_password_hint") || "Se muestra la actual si eres admin."})</span>
+                  </label>
+                  <input
+                    .type=${this.guestShowPwd ? "text" : "password"}
+                    .value=${this.guestForm.password}
+                    @input=${(e)=>this._onGuestChange("password", e.target.value)} />
+                  <button class="miwifi-button" style="margin-top:6px"
+                    @click=${()=>{ this.guestShowPwd = !this.guestShowPwd; this.requestUpdate(); }}>
+                    ${this.guestShowPwd ? "🙈 Ocultar" : "👁 Mostrar"}
+                  </button>
+                </mw-input>
+
+                <div class="switchline">
+                  <label>${localize("guest_hidden") || "Ocultar SSID"}</label>
+                  <ha-switch .checked=${!!this.guestForm.hidden}
+                    @change=${(e)=>this._onGuestChange("hidden", e.target.checked)}></ha-switch>
+                </div>
+              </div>
+            ` : ""}
+
+            <div class="right" style="margin-top:8px;">
+              <button class="miwifi-button" @click=${()=>this._fetchWifis()}>
+                ${localize("ui_reload") || "Recargar"}
+              </button>
+              <button class="miwifi-button ${this.guestDirty && !this.guestApplying ? "" : "hidden"}"
+                      @click=${()=>this._applyGuest()}>
+                ${localize("ui_apply") || "Aplicar cambios"}
+              </button>
+            </div>
+          ` : ""}
         </div>
 
         <div class="section">
@@ -144,44 +575,96 @@ export class MiWiFiSettingsPanel extends LitElement {
               this.hass.callService("miwifi", "clear_logs")
                 .then(() => {
                   this.hass.callService("persistent_notification", "create", {
-                    title: localize("clear_logs"),
-                    message: localize("clear_logs_done"),
-                    notification_id: "miwifi_logs_cleared",
+                    title: localize("settings_clear_logs_done_title"),
+                    message: localize("settings_clear_logs_done_msg"),
+                    notification_id: "miwifi_clear_logs_done",
                   });
                 });
             }
-          }}>🧹 ${localize("settings_clear_logs")}</button>
-          <button class="reboot-btn" @click=${() => this.showDumpModal = true}>📄 ${localize("settings_generate_dump")}</button>
+          }}>
+            🧹 ${localize("settings_clear_logs")}
+          </button>
+
+          <button class="reboot-btn" @click=${handleDumpService}>
+            🧰 ${localize("dump_button") || "Dump router data"}
+          </button>
+          ${this._renderDumpModal()}
         </div>
 
-        ${this.showDumpModal ? html`
-          <div class="miwifi-dump-modal-backdrop" @click=${() => !this.isDumpLoading && (this.showDumpModal = false)}>
-            <div class="miwifi-dump-modal-window" @click=${(e) => e.stopPropagation()}>
-              <h3>${localize("settings_generate_dump")}</h3>
-              <div class="modal-form">
-                ${this.isDumpLoading
-                  ? html`
-                      <div class="spinner"></div>
-                      <div class="loading-text">${localize("settings_dump_in_progress") || "Collecting data, please wait..."}</div>
-                    `
-                  : html`
-                      ${Object.keys(this.dumpOptions).map((key) => html`
-                        <label style="display:block; margin-bottom:6px;">
-                          <input type="checkbox"
-                            .checked=${this.dumpOptions[key]}
-                            @change=${(e) => this.dumpOptions = { ...this.dumpOptions, [key]: e.target.checked }} />
-                          ${localize(`service_fields.dump_router_data.${key}`) || key}
-                        </label>
-                      `)}
-                      <button class="miwifi-button" @click=${handleDumpService}>
-                        ${localize("settings_generate_dump_confirm")}
-                      </button>
-                    `
-                }
-              </div>
+        <div class="section">
+          <h3>${localize("settings_integration")}</h3>
+
+          <div class="config-grid">
+            <div>
+              <b>${localize("setting_panel_active")}</b><br/>
+              <span class="note">${localize("setting_panel_active_hint")}</span>
             </div>
+            <div class="switchline">
+              <label class="switch">
+                <input type="checkbox" id="panel_active" .checked=${currentPanel} />
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="select-block">
+          <label>${localize("setting_speed_unit")}</label>
+          <select id="speed_unit">
+            ${["Mbps", "B/s"].map(unit => html`
+              <option value="${unit}" ?selected=${unit === currentUnit}>${unit}</option>
+            `)}
+          </select>
+        </div>
+
+        <div class="select-block">
+          <label>${localize("setting_log_level")}</label>
+          <select id="log_level">
+            ${["debug", "info", "warning"].map(level => html`
+              <option value="${level}" ?selected=${level === currentLog}>${level}</option>
+            `)}
+          </select>
+        </div>
           </div>
-        ` : ""}
+
+          <div class="right" style="margin-top:12px;">
+            <button class="miwifi-button" @click=${() => {
+              const body = {
+                panel_activo: this.querySelector("#panel_active").checked,
+                speed_unit: this.querySelector("#speed_unit").value,
+                log_level: this.querySelector("#log_level").value,
+              };
+              this.hass.callService("miwifi", "panel_config", body)
+                .then(() => {
+                  this.hass.callService("persistent_notification", "create", {
+                    title: localize("settings_saved_title"),
+                    message: localize("settings_saved_msg"),
+                    notification_id: "miwifi_settings_saved",
+                  });
+                });
+            }}>
+              ${localize("ui_save")}
+            </button>
+          </div>
+        </div>
+
+         
+          
+        <div class="section">
+          <h2>${localize("settings_integration_title")}</h2>
+           <div>
+            <b>${localize("settings_issue_title") || "¿Tienes sugerencias?"}</b><br/>
+            <span class="note">${localize("settings_issue_desc") || "Cuéntanos qué mejorar o corregir."}</span>
+          </div>
+          <div style="margin-top: 16px;">
+            <a
+              class="miwifi-issue-link"
+              href="https://github.com/${REPOSITORY_PANEL}/issues/new?title=[MiWiFi%20Panel%20Feedback]"
+              target="_blank"
+              rel="noopener"
+            >
+              💬 ${localize("settings_feedback_button")}
+            </a>
+          </div>
+        </div>
       </div>
     `;
   }
