@@ -199,6 +199,7 @@
   "wifi_encryption": "Chiffrement",
   "wifi_ssid": "SSID",
   "wifi_channel": "Canal",
+  "wifi_signal_strength": "Intensité de signal",
   "wifi_hidden": "Masquer le SSID",
   "ui_readonly": "Lecture seule pour l'instant",
 

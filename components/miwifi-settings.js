@@ -296,6 +296,26 @@ export class MiWiFiSettingsPanel extends LitElement {
     return find24G() || null; // twoG
   }
 
+    _findSelectEntityId(suffixes) {
+    try {
+      const mac = this.routerSensor?.attributes?.graph?.mac || "";
+      const macKey = mac.toLowerCase().replace(/:/g, "_");
+      if (!macKey) return null;
+      const prefix = `select.miwifi_${macKey}`;
+      const all = Object.values(this.hass.states).filter((e) => e.entity_id.startsWith(prefix));
+      const found = all.find((e) => suffixes.some((suf) => e.entity_id.endsWith(suf)));
+      return found ? found.entity_id : null;
+    } catch {
+      return null;
+    }
+  }
+
+  _selectOption(entity_id, option) {
+    if (!entity_id) return;
+    this.hass.callService("select", "select_option", { entity_id, option }).catch(console.error);
+  }
+
+
   _renderReadonlyWifiForm(w, key) {
     if (!w) {
       return html`<div class="wifi-row"><i>${localize("ui_loading") || "Loading…"}</i></div>`;
@@ -303,6 +323,28 @@ export class MiWiFiSettingsPanel extends LitElement {
     const hidden = String(w.hidden) === "1" || w.hidden === true;
     const showPwd = !!this.radioShowPwd[key];
     const hasPwd = typeof w.password === "string" && w.password.length > 0;
+
+    const channelEntity = key === "twoG"
+      ? this._findSelectEntityId(["_wifi_24g_channel","_wifi_2g_channel"])
+      : key === "fiveG"
+        ? this._findSelectEntityId(["_wifi_5g_channel"])
+        : this._findSelectEntityId(["_wifi_5g_game_channel"]);
+
+    const powerEntity = key === "twoG"
+      ? this._findSelectEntityId(["_wifi_24g_signal_strength","_wifi_2g_signal_strength","_txpower"])
+      : key === "fiveG"
+        ? this._findSelectEntityId(["_wifi_5g_signal_strength","_txpower"])
+        : this._findSelectEntityId(["_wifi_5g_game_signal_strength","_txpower"]);
+
+    const chState = channelEntity ? this.hass.states[channelEntity] : null;
+    const pwState = powerEntity ? this.hass.states[powerEntity] : null;
+    const chVal = chState?.state || "";
+    const chOpts = chState?.attributes?.options || [];
+    const pwVal = pwState?.state || "";
+    const pwOpts = pwState?.attributes?.options || [];
+
+    const onChan = (e) => this._selectOption(channelEntity, e.target.value);
+    const onPow  = (e) => this._selectOption(powerEntity, e.target.value);
 
     return html`
       <div class="row">
@@ -318,7 +360,20 @@ export class MiWiFiSettingsPanel extends LitElement {
 
         <mw-input>
           <label>${localize("wifi_channel") || "Channel"}</label>
-          <input type="text" .value=${w.channel ?? "-"} readonly />
+          ${channelEntity ? html`
+            <select @change=${onChan}>
+              ${chOpts.map((o) => html`<option value=${o} ?selected=${o===chVal}>${o}</option>`)}
+            </select>
+          ` : html`<input type="text" .value=${w.channel ?? "-"} readonly />`}
+        </mw-input>
+
+        <mw-input>
+          <label>${localize("wifi_signal_strength") || "Signal strength"}</label>
+          ${powerEntity ? html`
+            <select @change=${onPow}>
+              ${pwOpts.map((o) => html`<option value=${o} ?selected=${o===pwVal}>${o}</option>`)}
+            </select>
+          ` : html`<input type="text" .value=${w.txpower ?? "-"} readonly />`}
         </mw-input>
 
         <div class="switchline">
@@ -447,6 +502,7 @@ export class MiWiFiSettingsPanel extends LitElement {
     const currentLog = config.log_level || "info";
 
     const guestSwitch = switches.find((sw) => sw.entity_id.endsWith("_wifi_guest"));
+    const guestEnabled = guestSwitch ? guestSwitch.state === "on" : this.guestForm?.enable;
 
    
     const sw24 = this._switchForRadioFromList("twoG", switches);
@@ -479,15 +535,14 @@ export class MiWiFiSettingsPanel extends LitElement {
           </div>
         </div>
 
-        <!-- Configuración Wi-Fi: tarjetas con switch activo + info solo lectura -->
+       
         <div class="section">
           <h3>${localize("settings_wifi_config") || "Configuración Wi-Fi"}</h3>
           ${this._renderRadioBlock("twoG", sw24, this.radios.twoG)}
           ${this._renderRadioBlock("fiveG", sw5, this.radios.fiveG)}
-          ${this._renderRadioBlock("game", swG, this.radios.game)}
+          ${(swG || this.radios.game) ? this._renderRadioBlock("game", swG, this.radios.game) : ""}
         </div>
 
-        <!-- Guest (editable) -->
         <div class="section">
           <h3>${localize("settings_guest_config_title") || "Configuración Wi-Fi de invitados"}</h3>
 
@@ -503,11 +558,17 @@ export class MiWiFiSettingsPanel extends LitElement {
           ${this.guestForm ? html`
             <div class="switchline" style="margin-bottom:12px;">
               <label>${localize("guest_enable") || "Activar"}</label>
-              <ha-switch .checked=${this.guestForm.enable}
-                @change=${(e)=>this._onGuestChange("enable", e.target.checked)}></ha-switch>
+              <ha-switch .checked=${guestEnabled}
+                @change=${(e)=>{ 
+                  const on = e.target.checked; 
+                  if (guestSwitch) {
+                    this.hass.callService("switch", on ? "turn_on" : "turn_off", { entity_id: guestSwitch.entity_id });
+                  }
+                  this._onGuestChange("enable", on);
+                }}></ha-switch>
             </div>
 
-            ${this.guestForm.enable ? html`
+            ${guestEnabled ? html`
               <div class="row">
                 <mw-input>
                   <label>${localize("guest_encryption") || "Cifrado"}</label>
@@ -525,8 +586,8 @@ export class MiWiFiSettingsPanel extends LitElement {
 
                 <mw-input>
                   <label>
-                    ${localize("guest_password") || "Contraseña (vacío = mantener)"} 
-                    <span class="hint">(${localize("guest_password_hint") || "Se muestra la actual si eres admin."})</span>
+                    ${localize("guest_password") } 
+                    <span class="hint">(${localize("guest_password_hint")})</span>
                   </label>
                   <input
                     .type=${this.guestShowPwd ? "text" : "password"}
@@ -556,11 +617,6 @@ export class MiWiFiSettingsPanel extends LitElement {
               </button>
             </div>
           ` : ""}
-        </div>
-
-        <div class="section">
-          <h3>${localize("settings_channels")}</h3>
-          ${renderSelects(this.hass, selects)}
         </div>
 
         <div class="section">

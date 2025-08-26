@@ -63,6 +63,7 @@
   "signal_quality_weak": "Weak",
   "signal_quality_very_weak": "Very Weak",
   "signal_quality_unknown": "Unknown",
+  
   "modelo": "Model",
   "estado": "Status",
 
@@ -198,6 +199,7 @@
   "wifi_encryption": "Encryption",
   "wifi_ssid": "SSID",
   "wifi_channel": "Channel",
+  "wifi_signal_strength": "Signal strength",
   "wifi_hidden": "Hidden",
   "ui_readonly": "Read-only for now",
   

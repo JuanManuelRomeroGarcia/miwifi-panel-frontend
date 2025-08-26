@@ -63,6 +63,7 @@
   "signal_quality_weak": "Fraca",
   "signal_quality_very_weak": "Muito Fraca",
   "signal_quality_unknown": "Desconhecida",
+  
   "modelo": "Modelo",
   "estado": "Estado",
 
@@ -198,6 +199,7 @@
   "wifi_encryption": "Criptografia",
   "wifi_ssid": "SSID",
   "wifi_channel": "Canal",
+  "wifi_signal_strength": "Intensidade do sinal",
   "wifi_hidden": "Ocultar SSID",
   "ui_readonly": "Somente leitura por enquanto",
 

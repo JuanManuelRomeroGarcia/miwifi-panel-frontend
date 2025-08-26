@@ -63,6 +63,7 @@
   "signal_quality_weak": "Schwach",
   "signal_quality_very_weak": "Sehr schwach",
   "signal_quality_unknown": "Unbekannt",
+  
   "modelo": "Modell",
   "estado": "Status",
 
@@ -198,10 +199,10 @@
   "wifi_encryption": "Verschlüsselung",
   "wifi_ssid": "SSID",
   "wifi_channel": "Kanal",
+  "wifi_signal_strength": "Signalstärke",
   "wifi_hidden": "SSID ausblenden",
   "ui_readonly": "Nur lesen für jetzt",
 
-  
   "title": "MiWiFi",
   "ui_save": "Speichern",
   "ui_cancel": "Abbrechen",
@@ -238,6 +239,5 @@
 
   "wifi_password": "Passwort",
   "guest_password_hint": "Aktuelles Passwort wird angezeigt, wenn Sie Admin sind."
-
 
 }

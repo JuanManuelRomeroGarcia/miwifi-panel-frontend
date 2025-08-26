@@ -63,6 +63,7 @@
   "signal_quality_weak": "Слабый",
   "signal_quality_very_weak": "Очень слабый",
   "signal_quality_unknown": "Неизвестно",
+  
   "modelo": "Модель",
   "estado": "Статус",
 
@@ -198,6 +199,7 @@
   "wifi_encryption": "Шифрование",
   "wifi_ssid": "SSID",
   "wifi_channel": "Канал",
+  "wifi_signal_strength": "Интенсивность сигнала",
   "wifi_hidden": "Скрыть SSID",
   "ui_readonly": "Только для чтения на данный момент",
 

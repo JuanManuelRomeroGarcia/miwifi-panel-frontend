@@ -63,6 +63,7 @@
   "signal_quality_weak": "Zayıf",
   "signal_quality_very_weak": "Çok Zayıf",
   "signal_quality_unknown": "Bilinmiyor",
+  
   "modelo": "Model",
   "estado": "Durum",
 
@@ -198,6 +199,7 @@
   "wifi_encryption": "Şifreleme",
   "wifi_ssid": "SSID",
   "wifi_channel": "Kanal",
+  "wifi_signal_strength": "Sinyal Gücü",
   "wifi_hidden": "SSID'yi Gizle",
   "ui_readonly": "Şu anda yalnızca okunabilir",
 
