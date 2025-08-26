@@ -347,18 +347,15 @@ _startAutoRefresh() {
     padding:8px; 
     border:1px solid var(--divider-color); 
     border-radius:8px; 
-    background:#3b3b3b; 
     color:var(--primary-text-color); 
     width:100%; 
     box-sizing:border-box;
   }
 
-  /* Fila de contraseña: input + botón 👁 en línea, sin desbordes */
   mw-input > div{ display:flex; align-items:center; gap:8px; }
   mw-input > div > input{ flex:1 1 auto; min-width:0; width:auto; }
   mw-input > div > .miwifi-button{ flex:0 0 auto; }
 
-  /* Botón 👁 compacto */
   mw-input .miwifi-button{
     min-width: auto;
     width: auto;
