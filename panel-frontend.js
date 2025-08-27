@@ -26,7 +26,8 @@ class MiWiFiPanel extends LitElement {
     this._translationsLoaded = false;
     this._startAutoRefresh();
     window.addEventListener("miwifi-apply-settings", () => this._applySettings());
-    logToBackend(this.hass, "info", "🚀 [panel-frontend.js] MiWiFi panel loaded.");
+    const lvl = this.hass?.states?.["sensor.miwifi_config"]?.attributes?.log_level || "info";
+    logToBackend(this.hass, lvl, "🚀 [panel-frontend.js] MiWiFi panel loaded.");
 
   }
 
@@ -93,8 +94,7 @@ class MiWiFiPanel extends LitElement {
       log_level: logLevel,
     }).then(() => {
       this._showToast(localize("settings.success"));
-      logToBackend(this.hass, "info", "✅ [panel-frontend.js] Settings applied successfully.");
-
+      logToBackend(this.hass, logLevel, "✅ [panel-frontend.js] Settings applied successfully.");
       setTimeout(() => {
         this._loadPage("/settings");
       }, 4000);

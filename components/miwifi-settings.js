@@ -287,7 +287,7 @@ export class MiWiFiSettingsPanel extends LitElement {
     const find24G = () =>
       switches.find((sw) =>
         sw.entity_id.endsWith("_wifi_2g") ||
-        sw.entity_id.endsWith("_wifi_24g") ||
+        sw.entity_id.endsWith("_wifi_2_4g") ||
         (/2\.?4|2g/.test(byName(sw)) && !/guest/.test(byName(sw)) && !/5g/.test(byName(sw)))
       );
 
@@ -296,7 +296,29 @@ export class MiWiFiSettingsPanel extends LitElement {
     return find24G() || null; // twoG
   }
 
-    _findSelectEntityId(suffixes) {
+  _getSelectEntity(selects, suffixes, fuzzy = []) {
+    try {
+
+      const exact = selects.find(e => suffixes.some(suf => e.entity_id.endsWith(suf)));
+      if (exact) return exact.entity_id;
+
+    
+      const norm = (s) => (s || "").toLowerCase();
+      for (const e of selects) {
+        const name = norm(e.attributes?.friendly_name);
+        if (!name) continue;
+        for (const tokens of fuzzy) {
+          if (tokens.every(t => name.includes(norm(t)))) {
+            return e.entity_id;
+          }
+        }
+      }
+    } catch {/* ignore */}
+    return null;
+  }
+
+  
+  _findSelectEntityId(suffixes) {
     try {
       const mac = this.routerSensor?.attributes?.graph?.mac || "";
       const macKey = mac.toLowerCase().replace(/:/g, "_");
@@ -315,8 +337,7 @@ export class MiWiFiSettingsPanel extends LitElement {
     this.hass.callService("select", "select_option", { entity_id, option }).catch(console.error);
   }
 
-
-  _renderReadonlyWifiForm(w, key) {
+  _renderReadonlyWifiForm(w, key, selects) {
     if (!w) {
       return html`<div class="wifi-row"><i>${localize("ui_loading") || "Loading…"}</i></div>`;
     }
@@ -324,17 +345,56 @@ export class MiWiFiSettingsPanel extends LitElement {
     const showPwd = !!this.radioShowPwd[key];
     const hasPwd = typeof w.password === "string" && w.password.length > 0;
 
+    // CHANNEL
     const channelEntity = key === "twoG"
-      ? this._findSelectEntityId(["_wifi_24g_channel","_wifi_2g_channel"])
+      ? this._getSelectEntity(
+          selects,
+          ["_wifi_2_4g_channel","_wifi_2g_channel"],
+          [["2.4","channel"],["2g","channel"]]
+        )
       : key === "fiveG"
-        ? this._findSelectEntityId(["_wifi_5g_channel"])
-        : this._findSelectEntityId(["_wifi_5g_game_channel"]);
+        ? this._getSelectEntity(
+            selects,
+            ["_wifi_5g_channel"],
+            [["5g","channel"]]
+          )
+        : this._getSelectEntity(
+            selects,
+            ["_wifi_5g_game_channel"],
+            [["5g","game","channel"]]
+          );
 
+    // POWER / SIGNAL STRENGTH
     const powerEntity = key === "twoG"
-      ? this._findSelectEntityId(["_wifi_24g_signal_strength","_wifi_2g_signal_strength","_txpower"])
+      ? this._getSelectEntity(
+          selects,
+          [
+            "_wifi_2_4g_signal_strength",
+            "_wifi_2g_signal_strength",
+            "_wifi_2_4g_power",
+            "_wifi_2g_power",
+            "_wifi_2_4g_txpower",
+            "_wifi_2g_txpower",
+            "_wifi_2_4g_tx_power",
+            "_wifi_2g_tx_power",
+          ],
+          [
+            ["2.4","signal"],["2g","signal"],
+            ["2.4","power"], ["2g","power"],
+            ["2.4","tx"],    ["2g","tx"],
+          ]
+        )
       : key === "fiveG"
-        ? this._findSelectEntityId(["_wifi_5g_signal_strength","_txpower"])
-        : this._findSelectEntityId(["_wifi_5g_game_signal_strength","_txpower"]);
+        ? this._getSelectEntity(
+            selects,
+            ["_wifi_5g_signal_strength","_wifi_5g_power","_wifi_5g_txpower","_wifi_5g_tx_power"],
+            [["5g","signal"],["5g","power"],["5g","tx"]]
+          )
+        : this._getSelectEntity(
+            selects,
+            ["_wifi_5g_game_signal_strength","_wifi_5g_game_power","_wifi_5g_game_txpower","_wifi_5g_game_tx_power"],
+            [["5g","game","signal"],["5g","game","power"],["5g","game","tx"]]
+          );
 
     const chState = channelEntity ? this.hass.states[channelEntity] : null;
     const pwState = powerEntity ? this.hass.states[powerEntity] : null;
@@ -403,7 +463,7 @@ export class MiWiFiSettingsPanel extends LitElement {
     `;
   }
 
-  _renderRadioBlock(key, swEntity, w) {
+  _renderRadioBlock(key, swEntity, w, selects) {
     const cfg = {
       twoG:  { title: localize("wifi_title_24g") || "2.4G Wi-Fi" },
       fiveG: { title: localize("wifi_title_5g")  || "5G Wi-Fi" },
@@ -420,7 +480,6 @@ export class MiWiFiSettingsPanel extends LitElement {
       } else {
         this.hass.callService("switch", "turn_off", { entity_id }).catch(console.error);
       }
-
     };
 
     return html`
@@ -437,7 +496,7 @@ export class MiWiFiSettingsPanel extends LitElement {
           </div>
         </div>
         <div class="body">
-          ${this._renderReadonlyWifiForm(w, key)}
+          ${this._renderReadonlyWifiForm(w, key, selects)}
         </div>
       </div>
     `;
@@ -459,7 +518,7 @@ export class MiWiFiSettingsPanel extends LitElement {
     const routerIcon = `https://raw.githubusercontent.com/${REPOSITORY}/main/images/${mainGraph.hardware || "default"}.png`;
 
     const mac = (mainGraph?.mac || "").toLowerCase().replace(/:/g, "_");
-    const config = this.hass?.states?.["sensor.miwifi_integration_config"]?.attributes || {};
+    const config = this.hass?.states?.["sensor.miwifi_config"]?.attributes || {};
 
     const switches = Object.values(this.hass.states).filter((e) =>
       e.entity_id.startsWith("switch.miwifi_" + mac)
@@ -471,13 +530,19 @@ export class MiWiFiSettingsPanel extends LitElement {
     const led = this.hass.states[`light.miwifi_${mac}_led`];
     const reboot = this.hass.states[`button.miwifi_${mac}_reboot`];
 
-    const handleReboot = () => {
-      this.hass.callService("button", "press", { entity_id: reboot.entity_id }).catch(console.error);
+    const handleReboot = (ev) => {
+      const root = ev?.currentTarget?.getRootNode?.() || document;
+      const selectedLog = root.querySelector("#log_level")?.value || (config.log_level || "info");
+
+      this.hass.callService("button", "press", { entity_id: reboot.entity_id }).catch((err) =>
+        console.error("callService error:", err)
+      );
+      logToBackend(this.hass, selectedLog, `🔄 [settings.js] Reboot requested for router: ${mainGraph.name} (${mainGraph.mac})`);
       this.hass.callService("persistent_notification", "create", {
         title: localize("settings_restart_router"),
         message: localize("settings_restart_router_done"),
         notification_id: "miwifi_reboot_done",
-      });
+      }).catch((err) => console.error("callService error:", err));
     };
 
     const clearMain = () => {
@@ -497,26 +562,22 @@ export class MiWiFiSettingsPanel extends LitElement {
       this._openDumpModal();
     };
 
-    const currentPanel = config.panel_activo ?? true;
-    const currentUnit = config.speed_unit || "MB";
+    const currentPanel = config.panel_active ?? true;
+    const currentUnit = config.speed_unit || "Mbps";
     const currentLog = config.log_level || "info";
 
     const guestSwitch = switches.find((sw) => sw.entity_id.endsWith("_wifi_guest"));
     const guestEnabled = guestSwitch ? guestSwitch.state === "on" : this.guestForm?.enable;
 
-   
     const sw24 = this._switchForRadioFromList("twoG", switches);
     const sw5  = this._switchForRadioFromList("fiveG", switches);
     const swG  = this._switchForRadioFromList("game", switches);
 
-  
     if (!this._wifisLoaded && !this.guestLoading) {
       this._fetchWifis();
     }
 
     return html`
-
-
       <div class="content">
         <div class="config-header">
           <img src="/local/miwifi/assets/logo.png" class="logo" alt="Logo" />
@@ -535,12 +596,11 @@ export class MiWiFiSettingsPanel extends LitElement {
           </div>
         </div>
 
-       
         <div class="section">
           <h3>${localize("settings_wifi_config") || "Configuración Wi-Fi"}</h3>
-          ${this._renderRadioBlock("twoG", sw24, this.radios.twoG)}
-          ${this._renderRadioBlock("fiveG", sw5, this.radios.fiveG)}
-          ${(swG || this.radios.game) ? this._renderRadioBlock("game", swG, this.radios.game) : ""}
+          ${this._renderRadioBlock("twoG", sw24, this.radios.twoG, selects)}
+          ${this._renderRadioBlock("fiveG", sw5, this.radios.fiveG, selects)}
+          ${(swG || this.radios.game) ? this._renderRadioBlock("game", swG, this.radios.game, selects) : ""}
         </div>
 
         <div class="section">
@@ -648,7 +708,7 @@ export class MiWiFiSettingsPanel extends LitElement {
         </div>
 
         <div class="section">
-          <h3>${localize("settings_integration")}</h3>
+          <h3>${localize("settings_integration_options")}</h3>
 
           <div class="config-grid">
             <div>
@@ -663,50 +723,46 @@ export class MiWiFiSettingsPanel extends LitElement {
             </div>
 
             <div class="select-block">
-          <label>${localize("setting_speed_unit")}</label>
-          <select id="speed_unit">
-            ${["Mbps", "B/s"].map(unit => html`
-              <option value="${unit}" ?selected=${unit === currentUnit}>${unit}</option>
-            `)}
-          </select>
-        </div>
+              <label>${localize("setting_speed_unit")}</label>
+              <select id="speed_unit">
+                ${["Mbps", "B/s"].map(unit => html`
+                  <option value="${unit}" ?selected=${unit === currentUnit}>${unit}</option>
+                `)}
+              </select>
+            </div>
 
-        <div class="select-block">
-          <label>${localize("setting_log_level")}</label>
-          <select id="log_level">
-            ${["debug", "info", "warning"].map(level => html`
-              <option value="${level}" ?selected=${level === currentLog}>${level}</option>
-            `)}
-          </select>
-        </div>
+            <div class="select-block">
+              <label>${localize("setting_log_level")}</label>
+              <select id="log_level">
+                ${["debug", "info", "warning"].map(level => html`
+                  <option value="${level}" ?selected=${level === currentLog}>${level}</option>
+                `)}
+              </select>
+            </div>
           </div>
 
           <div class="right" style="margin-top:12px;">
-            <button class="miwifi-button" @click=${() => {
-              const body = {
-                panel_activo: this.querySelector("#panel_active").checked,
-                speed_unit: this.querySelector("#speed_unit").value,
-                log_level: this.querySelector("#log_level").value,
-              };
-              this.hass.callService("miwifi", "panel_config", body)
-                .then(() => {
-                  this.hass.callService("persistent_notification", "create", {
-                    title: localize("settings_saved_title"),
-                    message: localize("settings_saved_msg"),
-                    notification_id: "miwifi_settings_saved",
-                  });
-                });
+            <button class="miwifi-button" @click=${(ev) => {
+              const confirmMsg = localize("settings_confirm_restart") 
+                || "Are you sure you want to apply the changes? This will temporarily restart the MiWiFi integration.";
+              if (!confirm(confirmMsg)) return;
+
+              const root = ev?.currentTarget?.getRootNode?.() || document;
+              const selectedLog = root.querySelector("#log_level")?.value || "info";
+
+              const event = new CustomEvent("miwifi-apply-settings", { bubbles: true, composed: true });
+              window.dispatchEvent(event);
+
+              logToBackend(this.hass, selectedLog, "⚙️ [settings.js] User clicked 'Apply changes' in panel.");
             }}>
               ${localize("ui_save")}
             </button>
           </div>
         </div>
 
-         
-          
         <div class="section">
           <h2>${localize("settings_integration_title")}</h2>
-           <div>
+          <div>
             <b>${localize("settings_issue_title") || "¿Tienes sugerencias?"}</b><br/>
             <span class="note">${localize("settings_issue_desc") || "Cuéntanos qué mejorar o corregir."}</span>
           </div>
