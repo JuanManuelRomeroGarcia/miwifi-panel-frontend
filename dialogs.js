@@ -30,13 +30,15 @@ export async function showDialog(hass, { title, options, onSelect }) {
 
   options.forEach((opt) => {
     const isSelected = currentMain === opt.mac;
-    const btn = document.createElement("mwc-button");
+    const btn = document.createElement("button");
+      btn.className = "miwifi-button";
+      btn.style.display = "block";
+      btn.style.width = "100%";
+      btn.style.margin = "8px 0";
 
-    btn.innerText = isSelected
-      ? `✅ ${opt.name} (${localize("button_selected")})`
-      : opt.name;
-
-    btn.style.margin = "4px";
+      btn.textContent = isSelected
+        ? `✅ ${opt.name} (${localize("button_selected")})`
+        : opt.name;
 
     btn.addEventListener("click", async () => {
       const isDeselect = isSelected;

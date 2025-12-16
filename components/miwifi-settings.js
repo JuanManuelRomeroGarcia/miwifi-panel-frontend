@@ -262,7 +262,7 @@ export class MiWiFiSettingsPanel extends LitElement {
   _getMainRouter() {
     if (!this.hass) return null;
     const main = Object.values(this.hass.states).find(
-      (s) => s.entity_id.startsWith("sensor.topologia_miwifi") &&
+      (s) => s.entity_id.startsWith("sensor.miwifi_topology") &&
              s.attributes?.graph?.is_main === true
     );
     return main || null;

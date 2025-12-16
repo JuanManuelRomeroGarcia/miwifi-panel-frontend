@@ -73,11 +73,13 @@ export async function renderStatus(hass) {
     return html`
       <div style="text-align:center; padding:24px; color:white">
         ❌ ${localize("topology_main_not_found")}<br />
-        <mwc-button
-          raised
-          label="${localize("select_main_router")}"
+        <button
+          class="miwifi-button"
+          style="margin-top:16px"
           @click=${() => showRouterSelectionDialog(hass)}
-        ></mwc-button>
+        >
+          ${localize("select_main_router")}
+        </button>
       </div>
     `;
   }
