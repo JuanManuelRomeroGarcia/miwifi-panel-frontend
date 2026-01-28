@@ -2,17 +2,17 @@ import { html } from "https://unpkg.com/lit@2.7.5/index.js?module";
 import { renderToggle, renderSelects } from "./utils.js?v=__MIWIFI_VERSION__";
 import { localize } from "../translations/localize.js?v=__MIWIFI_VERSION__";
 import { logToBackend } from "./utils.js?v=__MIWIFI_VERSION__";
-import "../components/miwifi-device-node-card.js?v=__MIWIFI_VERSION__";
 
 const REPOSITORY = "JuanManuelRomeroGarcia/hass-miwifi";
-const REPOSITORY_PANEL = "JuanManuelRomeroGarcia/miwifi-panel-frontend";
 const DEFAULT_MESH_ICON = "https://cdn-icons-png.flaticon.com/512/1946/1946488.png";
 
 // New feature: retry to find the main router
 async function findMainGraph(hass, retries = 3, delay = 500) {
   for (let i = 0; i < retries; i++) {
     const sensor = Object.values(hass.states).find(
-      (s) => s.entity_id.startsWith("sensor.miwifi_topology") && s.attributes?.graph?.is_main === true
+      (s) =>
+        s.entity_id.startsWith("sensor.miwifi_topology") &&
+        s.attributes?.graph?.is_main === true
     );
     if (sensor?.attributes?.graph) return sensor.attributes.graph;
     await new Promise((res) => setTimeout(res, delay));
@@ -35,20 +35,32 @@ export async function renderMesh(hass) {
 
       if (graph?.show === 1 && graph?.assoc === 1) {
         mainGraph = graph;
-        logToBackend(hass, "debug", `🧠 [mesh.js] Fallback router by show+assoc: ${graph.name} (${graph.mac})`);
+        logToBackend(
+          hass,
+          "debug",
+          `🧠 [mesh.js] Fallback router by show+assoc: ${graph.name} (${graph.mac})`
+        );
         break;
       }
 
       if (graph?.mode === 0) {
         mainGraph = graph;
-        logToBackend(hass, "debug", `⚠️ [mesh.js] Fallback router by mode=0 only: ${graph.name || id}`);
+        logToBackend(
+          hass,
+          "debug",
+          `⚠️ [mesh.js] Fallback router by mode=0 only: ${graph.name || id}`
+        );
         break;
       }
     }
   }
 
   if (mainGraph) {
-    logToBackend(hass, "debug", `✅ [mesh.js] Main router detected: ${mainGraph.name} (${mainGraph.mac})`);
+    logToBackend(
+      hass,
+      "debug",
+      `✅ [mesh.js] Main router detected: ${mainGraph.name} (${mainGraph.mac})`
+    );
   } else {
     logToBackend(hass, "warning", "❌ [mesh.js] No router found with is_main or fallback logic.");
     return html`
@@ -59,26 +71,32 @@ export async function renderMesh(hass) {
   }
 
   function handleMeshReboot(hass, name, mac, entity_id) {
-    hass.callService("button", "press", { entity_id }).catch((err) =>
-      console.error("callService error:", err)
+    hass
+      .callService("button", "press", { entity_id })
+      .catch((err) => console.error("callService error:", err));
+
+    logToBackend(
+      hass,
+      "info",
+      `🔄 [mesh.js] Reboot requested for mesh node: ${name} (${mac})`
     );
 
-    logToBackend(hass, "info", `🔄 [mesh.js] Reboot requested for mesh node: ${name} (${mac})`);
-
-    hass.callService("persistent_notification", "create", {
-      title: localize("settings_restart_router"),
-      message: localize("settings_restart_mesh_done").replace("{name}", name),
-      notification_id: `miwifi_reboot_${mac.replace(/:/g, "_").toLowerCase()}`,
-    }).catch((err) => console.error("callService error:", err));
+    hass
+      .callService("persistent_notification", "create", {
+        title: localize("settings_restart_router"),
+        message: localize("settings_restart_mesh_done").replace("{name}", name),
+        notification_id: `miwifi_reboot_${mac.replace(/:/g, "_").toLowerCase()}`,
+      })
+      .catch((err) => console.error("callService error:", err));
   }
 
+  // sensores de nodos mesh (mode=3)
   const meshSensors = Object.values(hass.states).filter(
     (s) =>
       s.entity_id.startsWith("sensor.miwifi_topology") &&
       s.attributes?.graph?.mode === 3
   );
 
-  const normalizeMac = (mac) => mac?.toLowerCase().replace(/[:\-]/g, "");
   const leafs = Array.isArray(mainGraph.leafs) ? mainGraph.leafs : [];
 
   return html`
@@ -86,9 +104,11 @@ export async function renderMesh(hass) {
       <div class="miwifi-mesh-group">
         ${leafs.map((leaf) => {
           try {
-            const sensor = meshSensors.find((s) => s.attributes.graph.ip === leaf.ip);
-            const leafMac = leaf.mac || sensor?.attributes.graph.mac || "";
-            const mac = sensor?.attributes.graph.mac?.toLowerCase().replace(/:/g, "_");
+            const sensor = meshSensors.find((s) => s.attributes?.graph?.ip === leaf.ip);
+
+            const mac = (sensor?.attributes?.graph?.mac || leaf.mac || "")
+              .toLowerCase()
+              .replace(/:/g, "_");
 
             const icon = leaf.hardware
               ? `https://raw.githubusercontent.com/${REPOSITORY}/main/images/${leaf.hardware}.png`
@@ -108,13 +128,6 @@ export async function renderMesh(hass) {
 
             const led = mac ? hass.states[`light.miwifi_${mac}_led`] : null;
             const reboot = mac ? hass.states[`button.miwifi_${mac}_reboot`] : null;
-
-            const connectedDevices = Object.values(hass.states).filter(
-              (e) =>
-                e.entity_id.startsWith("device_tracker.miwifi_") &&
-                e.state === "home" &&
-                normalizeMac(e.attributes.router_mac) === normalizeMac(leafMac)
-            );
 
             return html`
               <div class="mesh-card">
@@ -140,7 +153,9 @@ export async function renderMesh(hass) {
 
                       <div class="section">
                         <h3>${localize("settings_extra")}</h3>
-                        ${led ? html`<div>${localize("label_led")} ${renderToggle(hass, led)}</div>` : ""}
+                        ${led
+                          ? html`<div>${localize("label_led")} ${renderToggle(hass, led)}</div>`
+                          : ""}
                         ${reboot
                           ? html`
                               <button
@@ -150,12 +165,9 @@ export async function renderMesh(hass) {
                               >
                                 ${localize("mesh_node_restart")}
                               </button>
-
                             `
                           : ""}
                       </div>
-
-                      <miwifi-device-node-card .hass=${hass} .devices=${connectedDevices}></miwifi-device-node-card>
                     `
                   : html`
                       <div class="section">
@@ -165,7 +177,11 @@ export async function renderMesh(hass) {
               </div>
             `;
           } catch (err) {
-            logToBackend(hass, "error", `❌ [mesh.js] Error rendering mesh node '${leaf.name}': ${err.message}`);
+            logToBackend(
+              hass,
+              "error",
+              `❌ [mesh.js] Error rendering mesh node '${leaf.name}': ${err.message}`
+            );
             return html`
               <div class="mesh-card">
                 <div class="mesh-name">${leaf.name}</div>

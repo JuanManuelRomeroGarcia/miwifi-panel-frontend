@@ -15,6 +15,7 @@
   "section_5G Game": "5G Oyun Cihazları",
   "section_Guest": "Misafir Cihazları",
   "section_Unknown": "Bilinmeyen Ağ",
+  "section_mesh_devices": "Mesh Cihazları",
 
   "label_model": "Model",
   "label_name": "Ad",
@@ -37,6 +38,7 @@
   "label_devices_5g": "5G Cihazları",
   "label_devices_guest": "Misafir Cihazları",
   "label_devices_5g_game": "Oyun Cihazları",
+  "label_devices_mesh": "Mesh Cihazları",
   "label_led": "LED",
 
   "devices_connected_title": "🖥️ Bağlı Cihazlar",
@@ -80,6 +82,8 @@
   "select_main_router": "Ana Router Seç",
   "mesh_node_not_found": "❗ Bu düğüm için yapılandırma bulunamadı.",
   "mesh_node_restart": "🔁 Mesh Düğümünü Yeniden Başlat",
+  "mesh_total": "Toplam Mesh",
+  "mesh_no_nodes": "Hiçbir Mesh düğümü bulunamadı.",
 
   "settings_router_config": "⚙️ Ana Router Ayarları",
   "settings_wifi_switches": "📶 WiFi Anahtarları",

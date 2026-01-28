@@ -15,6 +15,7 @@
   "section_5G Game": "Dispositivos 5G Gaming",
   "section_Guest": "Dispositivos de Convidado",
   "section_Unknown": "Rede Desconhecida",
+  "section_mesh_devices": "Dispositivos Mesh",
 
   "label_model": "Modelo",
   "label_name": "Nome",
@@ -37,6 +38,7 @@
   "label_devices_5g": "Dispositivos 5G",
   "label_devices_guest": "Dispositivos de Convidado",
   "label_devices_5g_game": "Dispositivos Gaming",
+  "label_devices_mesh": "Dispositivos Mesh",
   "label_led": "LED",
 
   "devices_connected_title": "🖥️ Dispositivos Conectados",
@@ -80,6 +82,8 @@
   "select_main_router": "Selecionar Roteador Principal",
   "mesh_node_not_found": "❗ Nenhuma configuração encontrada para este nó.",
   "mesh_node_restart": "🔁 Reiniciar nó mesh",
+  "mesh_total": "Total de nós Mesh",
+  "mesh_no_nodes": "Nenhum nó Mesh encontrado.",
 
   "settings_router_config": "⚙️ Configuração do Roteador Principal",
   "settings_wifi_switches": "📶 Chaves WiFi",

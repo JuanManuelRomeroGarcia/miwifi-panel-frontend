@@ -8,13 +8,14 @@
 
   "section_system": "🖥️ Sistema",
   "section_internet": "🌐 Internet",
-  "section_devices": "📡 Dispositivos",
+  "section_devices": "📡 Dispositivos ",
   "section_LAN": "Dispositivos LAN",
   "section_2.4G": "Dispositivos 2.4G",
   "section_5G": "Dispositivos 5G",
   "section_5G Game": "Dispositivos 5G Gaming",
   "section_Guest": "Dispositivos Invitados",
   "section_Unknown": "Red desconocida",
+  "section_mesh_devices": "Dispositivos en Mesh",
 
   "label_model": "Modelo",
   "label_name": "Nombre",
@@ -37,6 +38,7 @@
   "label_devices_5g": "Dispositivos 5G",
   "label_devices_guest": "Dispositivos invitados",
   "label_devices_5g_game": "Dispositivos gaming",
+  "label_devices_mesh": "Dispositivos mesh",
   "label_led": "LED",
 
   "devices_connected_title": "🖥️ Dispositivos conectados",
@@ -80,6 +82,8 @@
   "select_main_router": "Seleccionar router principal",
   "mesh_node_not_found": "❗ No se encontró configuración para este nodo.",
   "mesh_node_restart": "🔁 Reiniciar nodo mesh",
+  "mesh_total": "Total Mesh",
+  "mesh_no_nodes": "No se detectaron nodos Mesh integrados.",
   
   "settings_router_config": "⚙️ Ajustes del router principal",
   "settings_wifi_switches": "📶 Interruptores WiFi",

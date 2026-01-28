@@ -15,6 +15,7 @@
   "section_5G Game": "Appareils 5G Gaming",
   "section_Guest": "Appareils Invités",
   "section_Unknown": "Réseau Inconnu",
+  "section_mesh_devices": "Appareils Mesh",
 
   "label_model": "Modèle",
   "label_name": "Nom",
@@ -37,6 +38,7 @@
   "label_devices_5g": "Appareils 5G",
   "label_devices_guest": "Appareils invités",
   "label_devices_5g_game": "Appareils gaming",
+  "label_devices_mesh": "Appareils Mesh",
   "label_led": "LED",
 
   "devices_connected_title": "🖥️ Appareils connectés",
@@ -80,6 +82,8 @@
   "select_main_router": "Sélectionner le routeur principal",
   "mesh_node_not_found": "❗ Aucune configuration trouvée pour ce nœud.",
   "mesh_node_restart": "🔁 Redémarrer le nœud mesh",
+    "mesh_total": "Total des nœuds Mesh",
+  "mesh_no_nodes": "Aucun nœud Mesh trouvé.",
 
   "settings_router_config": "⚙️ Paramètres du routeur principal",
   "settings_wifi_switches": "📶 Commutateurs WiFi",

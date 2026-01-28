@@ -1,4 +1,3 @@
-// ✅ miwifi-topologia.js actualizado con conteo desde sensores
 import { LitElement, html, css } from "https://unpkg.com/lit@2.7.5/index.js?module";
 import { localize } from "../translations/localize.js?v=__MIWIFI_VERSION__";
 import { navigate } from "../router.js?v=__MIWIFI_VERSION__";
@@ -15,16 +14,78 @@ export class MiwifiTopologia extends LitElement {
     hass: { type: Object },
   };
 
-  _getMacForNode(ip) {
-    return this.nodes?.find((s) => s.attributes?.graph?.ip === ip)?.attributes?.graph?.mac ?? null;
+  _cleanIp(ip) {
+    return (ip ?? "").toString().trim().replace(/\s+/g, "");
   }
 
-  _getDeviceCountFromSensor(mac) {
-    if (!mac) return "0";
-    const id = `sensor.miwifi_${mac.toLowerCase().replace(/:/g, "_")}_devices`;
-    return this.hass?.states?.[id]?.state ?? "0";
+  _normalizeMac(mac) {
+    if (!mac) return "";
+    return String(mac).trim().toLowerCase();
   }
 
+  _normalizeMacForEntity(mac) {
+    const m = this._normalizeMac(mac);
+    return m ? m.replace(/:/g, "_") : "";
+  }
+
+  _getSensorState(entityId) {
+    return this.hass?.states?.[entityId]?.state ?? "unavailable";
+  }
+
+  _safeNum(v) {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  _getDevicesCountForRouterMac(macNorm) {
+    if (!macNorm) return 0;
+    const eid = `sensor.miwifi_${macNorm}_devices`;
+    return this._safeNum(this._getSensorState(eid));
+  }
+
+  /**
+   * Construye:
+   * - mainMacNorm (del topology MAIN)
+   * - mainGraph
+   * - meshByIp: ip -> { macNorm, graph }
+   */
+  _getTopologyMaps() {
+    const states = Object.values(this.hass?.states || {});
+    const topoSensors = states.filter((s) =>
+      String(s?.entity_id || "").startsWith("sensor.miwifi_topology")
+    );
+
+    let mainGraph = null;
+
+    // 1) mainGraph
+    for (const s of topoSensors) {
+      const g = s?.attributes?.graph;
+      if (g?.is_main === true) {
+        mainGraph = g;
+        break;
+      }
+    }
+
+    // 2) mesh map by IP (topology sensors que NO son main)
+    const meshByIp = new Map();
+
+    for (const s of topoSensors) {
+      const g = s?.attributes?.graph;
+      if (!g) continue;
+      if (g.is_main === true) continue;
+
+      const ip = this._cleanIp(g.ip);
+      const macNorm = this._normalizeMacForEntity(g.mac);
+
+      // clave principal: IP (que sí la tenemos en leafs)
+      if (ip && !meshByIp.has(ip)) {
+        meshByIp.set(ip, { macNorm, graph: g });
+      }
+    }
+
+    const mainMacNorm = this._normalizeMacForEntity(mainGraph?.mac);
+    return { mainGraph, mainMacNorm, meshByIp };
+  }
 
   render() {
     if (!this.data) {
@@ -37,6 +98,11 @@ export class MiwifiTopologia extends LitElement {
 
     const internetIcon = `https://raw.githubusercontent.com/${REPOSITORY_PANEL}/main/assets/icon_internet.png`;
 
+    const { mainMacNorm, meshByIp } = this._getTopologyMaps();
+
+    // ✅ MAIN badge = sensor.miwifi_<mainMac>_devices
+    const mainCount = this._getDevicesCountForRouterMac(mainMacNorm);
+
     return html`
       <h2>${localize("topology_router_network")}</h2>
       <div class="tree">
@@ -46,23 +112,25 @@ export class MiwifiTopologia extends LitElement {
               <img src="${internetIcon}" class="topo-icon" />
               <div class="topo-name">${localize("network")}</div>
             </div>
+
             <div class="line-pulse-vertical"></div>
+
             <ul>
               <li>
                 <div class="topo-box" style="cursor: pointer;" @click=${() => navigate("/settings")}>
                   <div class="topo-icon-container">
                     <img src="${routerIcon}" class="topo-icon-lg" />
-                    <div class="device-count-badge">
-                      ${this._getDeviceCountFromSensor(this.data.mac)}
-                    </div>
+                    <div class="device-count-badge">${mainCount}</div>
                   </div>
                   <div class="topo-name">${this.data.name} ${localize("gateway")}</div>
-                  <div class="topo-ip">${this.data.ip}</div>
+                  <div class="topo-ip">${this._cleanIp(this.data.ip)}</div>
                 </div>
+
                 <div class="line-pulse-vertical"></div>
+
                 ${this.data.leafs?.length
                   ? html`<ul>
-                      ${this.data.leafs.map((child) => this._renderNode(child))}
+                      ${this.data.leafs.map((child) => this._renderLeaf(child, meshByIp))}
                     </ul>`
                   : ""}
               </li>
@@ -73,22 +141,26 @@ export class MiwifiTopologia extends LitElement {
     `;
   }
 
-  _renderNode(node) {
+  _renderLeaf(node, meshByIp) {
     const icon = node.hardware
       ? `https://raw.githubusercontent.com/${REPOSITORY}/main/images/${node.hardware}.png`
       : DEFAULT_MESH_ICON;
+
+    const nodeIp = this._cleanIp(node.ip);
+
+    // ✅ Leaf badge = buscar su topology (no-main) por IP -> sacar macNorm -> sensor.miwifi_<mac>_devices
+    const meshInfo = nodeIp ? meshByIp.get(nodeIp) : null;
+    const leafCount = meshInfo?.macNorm ? this._getDevicesCountForRouterMac(meshInfo.macNorm) : 0;
 
     return html`
       <li>
         <div class="topo-box" style="cursor: pointer;" @click=${() => navigate("/mesh")}>
           <div class="topo-icon-container">
             <img src="${icon}" class="topo-icon" />
-            <div class="device-count-badge">
-              ${this._getDeviceCountFromSensor(this._getMacForNode(node.ip))}
-            </div>
+            <div class="device-count-badge">${leafCount}</div>
           </div>
           <div class="topo-name">${node.name}</div>
-          <div class="topo-ip">${node.ip}</div>
+          <div class="topo-ip">${nodeIp}</div>
         </div>
       </li>
     `;
@@ -130,6 +202,7 @@ export class MiwifiTopologia extends LitElement {
     .topo-ip {
       font-size: 0.9rem;
       color: #e0e0e0;
+      white-space: nowrap;
     }
     .message {
       color: #eee;
@@ -209,14 +282,12 @@ export class MiwifiTopologia extends LitElement {
       border-radius: 50%;
       padding: 4px 7px;
       box-shadow: 0 0 4px rgba(0,0,0,0.3);
+      min-width: 24px;
+      text-align: center;
     }
     @keyframes pulse {
-      0%, 100% {
-        background-color: #0f3;
-      }
-      50% {
-        background-color: #0b0;
-      }
+      0%, 100% { background-color: #0f3; }
+      50% { background-color: #0b0; }
     }
     @media (max-width: 600px) {
       .tree ul {

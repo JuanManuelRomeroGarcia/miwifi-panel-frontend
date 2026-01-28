@@ -15,6 +15,7 @@
   "section_5G Game": "5G Gaming Geräte",
   "section_Guest": "Gastgeräte",
   "section_Unknown": "Unbekanntes Netzwerk",
+   "section_mesh_devices": "Mesh Geräte",
 
   "label_model": "Modell",
   "label_name": "Name",
@@ -38,6 +39,7 @@
   "label_devices_guest": "Gastgeräte",
   "label_devices_5g_game": "Gaming Geräte",
   "label_led": "LED",
+  "label_devices_mesh": "Mesh Geräte",
 
   "devices_connected_title": "🖥️ Verbundene Geräte",
   "devices_total_connected": "Gesamt",
@@ -80,6 +82,8 @@
   "select_main_router": "Hauptrouter auswählen",
   "mesh_node_not_found": "❗ Keine Konfiguration für diesen Knoten gefunden.",
   "mesh_node_restart": "🔁 Mesh Knoten neu starten",
+  "mesh_total": "Gesamt Mesh",
+  "mesh_no_nodes": "Keine Mesh Knoten gefunden.",
 
   "settings_router_config": "⚙️ Hauptrouter Einstellungen",
   "settings_wifi_switches": "📶 WiFi Schalter",

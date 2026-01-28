@@ -15,6 +15,7 @@
   "section_5G Game": "5G 游戏设备",
   "section_Guest": "访客设备",
   "section_Unknown": "未知网络",
+  "section_mesh_devices": "Mesh 设备",
 
   "label_model": "型号",
   "label_name": "名称",
@@ -37,6 +38,7 @@
   "label_devices_5g": "5G 设备",
   "label_devices_guest": "访客设备",
   "label_devices_5g_game": "游戏设备",
+  "label_devices_mesh": "Mesh 设备",
   "label_led": "LED",
 
   "devices_connected_title": "🖥️ 已连接设备",
@@ -80,6 +82,8 @@
   "select_main_router": "选择主路由器",
   "mesh_node_not_found": "❗ 未找到此节点的配置。",
   "mesh_node_restart": "🔁 重启 Mesh 节点",
+  "mesh_total": "Mesh 节点总数",
+  "mesh_no_nodes": "未找到 Mesh 节点。",
 
   "settings_router_config": "⚙️ 主路由器设置",
   "settings_wifi_switches": "📶 WiFi 开关",
