@@ -46,7 +46,12 @@
   "devices_connected": "Connected",
   "toggle_offline_show": "🔼 Show offline",
   "toggle_offline_hide": "🔽 Hide offline",
-
+  "badge_mesh": "Mesh",
+  "badge_guest": "Guest",
+  "badge_main": "Main",
+  "connected_via_mesh": "Connected via Mesh",
+  "connected_via_main": "Connected via Main Router",
+  
   "status_connected": "🟢 Connected",
   "status_disconnected": "🔴 Disconnected",
   "status_unavailable": "Network unavailable",

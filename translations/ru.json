@@ -46,6 +46,11 @@
   "devices_connected": "Подключено",
   "toggle_offline_show": "🔼 Показать оффлайн",
   "toggle_offline_hide": "🔽 Скрыть оффлайн",
+  "badge_mesh": "Mesh",
+  "badge_guest": "Гость",
+  "badge_main": "Основной",
+  "connected_via_mesh": "Подключено через Mesh",
+  "connected_via_main": "Подключено через основной роутер",
 
   "status_connected": "🟢 Подключено",
   "status_disconnected": "🔴 Отключено",

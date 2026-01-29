@@ -46,6 +46,11 @@
   "devices_connected": "已连接",
   "toggle_offline_show": "🔼 显示离线",
   "toggle_offline_hide": "🔽 隐藏离线",
+  "badge_mesh": "Mesh",
+  "badge_guest": "访客",
+  "badge_main": "主路由器",
+  "connected_via_mesh": "通过 Mesh 连接",
+  "connected_via_main": "通过主路由器连接",
 
   "status_connected": "🟢 已连接",
   "status_disconnected": "🔴 已断开",

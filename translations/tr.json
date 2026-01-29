@@ -46,6 +46,11 @@
   "devices_connected": "Bağlı",
   "toggle_offline_show": "🔼 Çevrimdışı Göster",
   "toggle_offline_hide": "🔽 Çevrimdışı Gizle",
+  "badge_mesh": "Mesh",
+  "badge_guest": "Misafir",
+  "badge_main": "Ana",
+  "connected_via_mesh": "Mesh üzerinden bağlı",
+  "connected_via_main": "Ana router üzerinden bağlı",
 
   "status_connected": "🟢 Bağlı",
   "status_disconnected": "🔴 Bağlantı Yok",

@@ -46,7 +46,12 @@
   "devices_connected": "Verbunden",
   "toggle_offline_show": "🔼 Offline anzeigen",
   "toggle_offline_hide": "🔽 Offline ausblenden",
-
+  "badge_mesh": "Mesh",
+  "badge_guest": "Gast",
+  "badge_main": "Haupt",
+  "connected_via_mesh": "Über Mesh verbunden",
+  "connected_via_main": "Über Hauptrouter verbunden",
+  
   "status_connected": "🟢 Verbunden",
   "status_disconnected": "🔴 Getrennt",
   "status_unavailable": "Netzwerk nicht verfügbar",
