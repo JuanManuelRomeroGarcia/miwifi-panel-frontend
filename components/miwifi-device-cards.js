@@ -298,9 +298,14 @@ class MiWiFiDeviceCards extends LitElement {
 
   async _toggleWAN(device, checked) {
     try {
-      const deviceId = device.attributes?.device_id;
+      if (!device?.entity_id) {
+        // eslint-disable-next-line no-console
+        console.warn("[MiWiFi] Missing entity_id for device:", device);
+        return;
+      }
+
       await this.hass.callService("miwifi", "block_device", {
-        device_id: deviceId,
+        entity_id: device.entity_id,
         allow: !checked,
       });
     } catch (err) {
@@ -308,6 +313,7 @@ class MiWiFiDeviceCards extends LitElement {
       console.error("[MiWiFi] Failed toggling WAN:", err);
     }
   }
+
 
   static styles = css`
     .content { text-align: center; }
