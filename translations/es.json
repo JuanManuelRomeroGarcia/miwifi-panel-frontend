@@ -70,6 +70,7 @@
   "signal_quality_weak": "Débil",
   "signal_quality_very_weak": "Muy débil",
   "signal_quality_unknown": "Desconocida",
+  "signal_quality_no_signal": "Sin señal",
 
   "modelo": "Modelo",
   "estado": "Estado",

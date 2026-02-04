@@ -44,7 +44,7 @@ class MiWiFiDeviceCards extends LitElement {
         <h2>${localize("devices_connected_title")}</h2>
 
         <div class="counts">
-          ${localize("devices_total") || localize("devices_total_connected")}: <strong>${totalDevices}</strong>
+          ${localize("label_devices_total") || localize("devices_total_connected")}: <strong>${totalDevices}</strong>
           &nbsp;|&nbsp; ${localize("devices_connected")}: <strong>${totalConnected}</strong>
           &nbsp;|&nbsp; ${localize("badge_main")}: <strong>${breakdown.mainCount}</strong>
           &nbsp;|&nbsp; ${localize("badge_mesh")}: <strong>${breakdown.meshCount}</strong>
@@ -94,25 +94,98 @@ class MiWiFiDeviceCards extends LitElement {
     let mainMac = "";
     let mainName = "";
 
-    const states = Object.values(this.hass?.states || {});
+    const statesObj = this.hass?.states || {};
+    const states = Object.values(statesObj);
+
+    const setName = (macRaw, nameRaw) => {
+      const mac = this._normalizeMac(macRaw);
+      if (!mac) return;
+
+      const name = (nameRaw || "").toString().trim();
+      if (!name) return;
+
+      // Solo sobreescribe si no había nada o si antes solo teníamos el MAC como "nombre"
+      const prev = routersByMac[mac];
+      if (!prev || prev === mac) {
+        routersByMac[mac] = name;
+      }
+    };
+
+    // 1) Sensores/topología (graph + leafs)
     for (const s of states) {
       const eid = String(s?.entity_id || "");
-      if (!eid.startsWith("sensor.miwifi_topology")) continue;
+      if (!eid.startsWith("sensor.miwifi_")) continue;
 
-      const g = s.attributes?.graph;
+      const a = s.attributes || {};
+
+      // Buscar graph en múltiples formatos
+      let g =
+        a.graph ||
+        a.topo_graph?.graph ||
+        a.topo_graph ||
+        a.topology?.graph ||
+        a.topology ||
+        null;
+
       if (!g) continue;
+      if (g.graph && typeof g.graph === "object") g = g.graph;
 
-      const gMac = this._normalizeMac(g.mac);
-      if (gMac) routersByMac[gMac] = (g.name || g.locale || gMac);
+      const gMac = g?.mac;
+      const gName = (g?.name || g?.locale || g?.model || gMac || "").toString().trim();
 
-      if (g.is_main === true) {
-        mainMac = gMac || mainMac;
-        mainName = (g.name || g.locale || mainName || "Main");
+      setName(gMac, gName);
+
+      // is_main tolerante a tipos
+      const isMain =
+        g?.is_main === true ||
+        g?.is_main === 1 ||
+        g?.is_main === "1" ||
+        String(g?.is_main || "").toLowerCase() === "true";
+
+      if (isMain) {
+        mainMac = this._normalizeMac(gMac) || mainMac;
+        mainName = gName || mainName || "Main";
       }
+
+      const leafs =
+        (Array.isArray(g?.leafs) && g.leafs) ||
+        (Array.isArray(g?.leaves) && g.leaves) ||
+        (Array.isArray(g?.leaf) && g.leaf) ||
+        [];
+
+      for (const leaf of leafs) {
+        setName(
+          leaf?.mac,
+          (leaf?.name || leaf?.locale || leaf?.model || leaf?.mac || "").toString().trim()
+        );
+      }
+    }
+
+    // 2) ✅ Extra: mapear nombres desde TODOS los device_tracker del scanner miwifi (incluye routers/nodos)
+    for (const s of states) {
+      const eid = String(s?.entity_id || "");
+      if (!eid.startsWith("device_tracker.")) continue;
+
+      const a = s.attributes || {};
+
+      const isMiWiFi =
+        String(a.scanner || "").toLowerCase() === "miwifi" ||
+        String(a.device_class || "").toLowerCase().includes("miwifi") ||
+        String(a.attribution || "").toLowerCase().includes("miwifi");
+
+      if (!isMiWiFi) continue;
+
+      // Mapear el MAC del propio device_tracker (esto cubre device_tracker.ax9000_salon)
+      setName(a.mac || a.mac_address, a.friendly_name || a.name || a.hostname || "");
+
+      // Opcional: si algún tracker trae nombres del "via", también los aprovechamos
+      setName(a.connected_via_router_mac, a.connected_via_router_name || "");
+      setName(a.router_mac, a.router_name || "");
     }
 
     return { mainMac, mainName, routersByMac };
   }
+
 
   _getViaMac(device) {
     const a = device?.attributes || {};
@@ -125,58 +198,42 @@ class MiWiFiDeviceCards extends LitElement {
   }
 
   _buildNodeBreakdown(connectedDevices, topo) {
-    const counts = new Map(); // entryId -> count
-    const entryIdToViaMac = new Map(); // entryId -> viaMac (primero que encontremos)
+      const counts = new Map(); // viaMac -> count
 
-    for (const dev of connectedDevices) {
-      const entryId = this._getViaEntryId(dev) || "unknown";
-      counts.set(entryId, (counts.get(entryId) || 0) + 1);
-
-      if (!entryIdToViaMac.has(entryId)) {
-        entryIdToViaMac.set(entryId, this._getViaMac(dev));
+      for (const dev of connectedDevices) {
+        const viaMac = this._getViaMac(dev) || "unknown";
+        counts.set(viaMac, (counts.get(viaMac) || 0) + 1);
       }
-    }
 
-    const sorted = Array.from(counts.entries()).sort((a, b) => b[1] - a[1]);
+      const sorted = Array.from(counts.entries()).sort((a, b) => b[1] - a[1]);
 
-    // 1) MAIN por mac real del router (topo.mainMac) si se puede
-    let mainEntryId = "";
-    if (topo?.mainMac) {
-      for (const [entryId] of sorted) {
-        const viaMac = entryIdToViaMac.get(entryId);
-        if (viaMac && viaMac === topo.mainMac) {
-          mainEntryId = entryId;
-          break;
+      // MAIN por topo.mainMac (fiable). Si no existe, fallback al más frecuente (si no es unknown)
+      const mainMac =
+        topo?.mainMac ||
+        (sorted[0]?.[0] && sorted[0][0] !== "unknown" ? sorted[0][0] : "");
+
+      let mainCount = 0;
+      let meshCount = 0;
+
+      const perNode = sorted.map(([viaMac, count], idx) => {
+        const isMain = Boolean(mainMac && viaMac === mainMac);
+        if (isMain) mainCount += count;
+        else meshCount += count;
+
+        let name = topo?.routersByMac?.[viaMac] || viaMac;
+        if (isMain) {
+          name = topo?.mainName || topo?.routersByMac?.[viaMac] || "Main";
+        } else if (viaMac === "unknown") {
+          name = "Unknown";
+        } else if (!topo?.routersByMac?.[viaMac]) {
+          name = `Mesh ${idx}`;
         }
-      }
+
+        return { viaMac, count, name, isMain };
+      });
+
+      return { mainMac, mainCount, meshCount, perNode };
     }
-
-    // 2) fallback: el más frecuente
-    if (!mainEntryId) mainEntryId = sorted[0]?.[0] || "";
-
-    let mainCount = 0;
-    let meshCount = 0;
-
-    const perNode = sorted.map(([entryId, count], idx) => {
-      const isMain = mainEntryId && entryId === mainEntryId;
-      if (isMain) mainCount += count;
-      else meshCount += count;
-
-      // Nombre de nodo:
-      // - main => topo.mainName
-      // - mesh => por mac del nodo si la tenemos, o fallback Mesh N
-      const viaMac = entryIdToViaMac.get(entryId) || "";
-      const viaName = (topo?.routersByMac && viaMac && topo.routersByMac[viaMac]) ? topo.routersByMac[viaMac] : "";
-
-      const name = isMain
-        ? (topo?.mainName || "Main")
-        : (viaName || `Mesh ${Math.max(1, idx)}`);
-
-      return { entryId, count, name, isMain, viaMac };
-    });
-
-    return { mainEntryId, mainCount, meshCount, perNode };
-  }
 
   _getConnectionKey(connection) {
     const c = String(connection || "").toLowerCase().trim();
@@ -233,21 +290,25 @@ class MiWiFiDeviceCards extends LitElement {
     const isOffline = String(device.state).toLowerCase() === "not_home";
     const a = device.attributes || {};
 
-    const viaEntryId = this._getViaEntryId(device);
-    const mainEntryId = breakdown?.mainEntryId || "";
+    const viaMac = this._getViaMac(device);
+    const mainMac = breakdown?.mainMac || topo?.mainMac || "";
 
-    const isMesh = mainEntryId && viaEntryId && viaEntryId !== mainEntryId;
-    const badge = viaEntryId ? (isMesh ? localize("badge_mesh") || "MESH" : localize("badge_main") || "MAIN") : "";
+    const isMesh = Boolean(mainMac && viaMac && viaMac !== mainMac);
+    const badge = viaMac
+      ? (isMesh ? localize("badge_mesh") || "Mesh" : localize("badge_main") || "Principal")
+      : "";
 
     let viaLabel = "";
-    if (viaEntryId) {
-      const node = (breakdown?.perNode || []).find((n) => n.entryId === viaEntryId);
-      const viaName = node?.name || viaEntryId;
+    if (viaMac) {
+      const node = (breakdown?.perNode || []).find((n) => n.viaMac === viaMac);
+      const viaName = node?.name || topo?.routersByMac?.[viaMac] || viaMac;
 
-      viaLabel = isMesh
-        ? `${localize("connected_via_mesh")}: ${viaName}`
-        : `${localize("connected_via_main")}: ${viaName}`;
+      const viaMeshLabel = localize("connected_via_mesh") || "Connected via (Mesh)";
+      const viaMainLabel = localize("connected_via_main") || "Connected via (Main)";
+
+      viaLabel = isMesh ? `${viaMeshLabel}: ${viaName}` : `${viaMainLabel}: ${viaName}`;
     }
+
 
     return html`
       <div class="device-card ${isOffline ? "disconnected" : ""}">

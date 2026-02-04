@@ -70,6 +70,7 @@
   "signal_quality_weak": "Fraca",
   "signal_quality_very_weak": "Muito Fraca",
   "signal_quality_unknown": "Desconhecida",
+  "signal_quality_no_signal": "Sem Sinal",
   
   "modelo": "Modelo",
   "estado": "Estado",

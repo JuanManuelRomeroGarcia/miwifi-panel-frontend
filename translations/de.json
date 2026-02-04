@@ -70,6 +70,7 @@
   "signal_quality_weak": "Schwach",
   "signal_quality_very_weak": "Sehr schwach",
   "signal_quality_unknown": "Unbekannt",
+  "signal_quality_no_signal": "Kein Signal",
   
   "modelo": "Modell",
   "estado": "Status",

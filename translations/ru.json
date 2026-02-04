@@ -70,6 +70,7 @@
   "signal_quality_weak": "Слабый",
   "signal_quality_very_weak": "Очень слабый",
   "signal_quality_unknown": "Неизвестно",
+  "signal_quality_no_signal": "Нет сигнала",
   
   "modelo": "Модель",
   "estado": "Статус",

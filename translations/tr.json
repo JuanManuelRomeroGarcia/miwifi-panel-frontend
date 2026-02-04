@@ -70,6 +70,7 @@
   "signal_quality_weak": "Zayıf",
   "signal_quality_very_weak": "Çok Zayıf",
   "signal_quality_unknown": "Bilinmiyor",
+  "signal_quality_no_signal": "Sinyal Yok",
   
   "modelo": "Model",
   "estado": "Durum",

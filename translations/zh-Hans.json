@@ -70,6 +70,7 @@
   "signal_quality_weak": "弱",
   "signal_quality_very_weak": "非常弱",
   "signal_quality_unknown": "未知",
+  "signal_quality_no_signal": "无信号",
 
   "modelo": "型号",
   "estado": "状态",
