@@ -16,6 +16,7 @@
   "section_Guest": "访客设备",
   "section_Unknown": "未知网络",
   "section_mesh_devices": "Mesh 设备",
+  "section_IoT": "IoT 设备",
 
   "label_model": "型号",
   "label_name": "名称",
@@ -38,6 +39,7 @@
   "label_devices_5g": "5G 设备",
   "label_devices_guest": "访客设备",
   "label_devices_5g_game": "游戏设备",
+  "label_devices_iot": "IoT 设备",
   "label_devices_mesh": "Mesh 设备",
   "label_led": "LED",
 

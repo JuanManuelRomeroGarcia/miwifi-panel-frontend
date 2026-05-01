@@ -237,18 +237,21 @@ class MiWiFiDeviceCards extends LitElement {
 
   _getConnectionKey(connection) {
     const c = String(connection || "").toLowerCase().trim();
+
     if (c === "lan") return "lan";
+    if (c === "iot" || c.includes("iot")) return "iot";
     if (c === "2.4g" || c === "2.4" || c.includes("2.4")) return "g24";
     if (c === "5g game" || c === "game" || c.includes("game")) return "g5_game";
     if (c === "5g" || c.includes("5g")) return "g5";
     if (c === "guest") return "guest";
+
     return "unknown";
   }
 
   _getConnectionTitle(key) {
-    // Keys nuevas (las añadimos al i18n luego)
     const map = {
       lan: localize("section_LAN") || "LAN",
+      iot: localize("section_IoT") || "IoT",
       g24: localize("section_2.4G") || "2.4G",
       g5: localize("section_5G") || "5G",
       g5_game: localize("section_5G Game") || "5G Game",

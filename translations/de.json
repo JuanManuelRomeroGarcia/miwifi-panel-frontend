@@ -15,7 +15,8 @@
   "section_5G Game": "5G Gaming Geräte",
   "section_Guest": "Gastgeräte",
   "section_Unknown": "Unbekanntes Netzwerk",
-   "section_mesh_devices": "Mesh Geräte",
+  "section_IoT": "IoT Geräte",
+  "section_mesh_devices": "Mesh Geräte",
 
   "label_model": "Modell",
   "label_name": "Name",
@@ -38,6 +39,7 @@
   "label_devices_5g": "5G Geräte",
   "label_devices_guest": "Gastgeräte",
   "label_devices_5g_game": "Gaming Geräte",
+  "label_devices_iot": "IoT Geräte",
   "label_led": "LED",
   "label_devices_mesh": "Mesh Geräte",
 

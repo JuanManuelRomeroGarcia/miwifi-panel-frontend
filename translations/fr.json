@@ -16,6 +16,7 @@
   "section_Guest": "Appareils Invités",
   "section_Unknown": "Réseau Inconnu",
   "section_mesh_devices": "Appareils Mesh",
+  "section_IoT": "Appareils IoT",
 
   "label_model": "Modèle",
   "label_name": "Nom",
@@ -38,6 +39,7 @@
   "label_devices_5g": "Appareils 5G",
   "label_devices_guest": "Appareils invités",
   "label_devices_5g_game": "Appareils gaming",
+  "label_devices_iot": "Appareils IoT",
   "label_devices_mesh": "Appareils Mesh",
   "label_led": "LED",
 

@@ -16,6 +16,7 @@
   "section_Guest": "Misafir Cihazları",
   "section_Unknown": "Bilinmeyen Ağ",
   "section_mesh_devices": "Mesh Cihazları",
+  "section_IoT": "IoT Cihazları",
 
   "label_model": "Model",
   "label_name": "Ad",
@@ -38,6 +39,7 @@
   "label_devices_5g": "5G Cihazları",
   "label_devices_guest": "Misafir Cihazları",
   "label_devices_5g_game": "Oyun Cihazları",
+  "label_devices_iot": "IoT Cihazları",
   "label_devices_mesh": "Mesh Cihazları",
   "label_led": "LED",
 

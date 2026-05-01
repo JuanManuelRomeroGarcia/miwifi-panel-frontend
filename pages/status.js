@@ -46,6 +46,7 @@ const SENSOR_SUFFIXES = {
   devices_5g: "devices_5g",
   devices_guest: "devices_guest",
   devices_5g_game: "devices_5g_game",
+  devices_iot: "devices_iot",
 };
 
 export function showRouterSelectionDialog(hass) {
@@ -201,6 +202,7 @@ export async function renderStatus(hass) {
     const g5 = getSensorValueForMac(macNorm, SENSOR_SUFFIXES.devices_5g);
     const guest = getSensorValueForMac(macNorm, SENSOR_SUFFIXES.devices_guest);
     const gaming = getSensorValueForMac(macNorm, SENSOR_SUFFIXES.devices_5g_game);
+    const iot = getSensorValueForMac(macNorm, SENSOR_SUFFIXES.devices_iot);
 
     return {
       total,
@@ -209,6 +211,7 @@ export async function renderStatus(hass) {
       g5,
       guest,
       gaming,
+      iot,
     };
   };
 
@@ -218,8 +221,9 @@ export async function renderStatus(hass) {
       { label: localize("label_devices_lan") || "Dispositivos LAN", value: counts.lan },
       { label: localize("label_devices_2g") || "Dispositivos 2.4G", value: counts.g24 },
       { label: localize("label_devices_5g") || "Dispositivos 5G", value: counts.g5 },
-      { label: localize("label_devices_guest") || "Dispositivos invitados", value: counts.guest },
       { label: localize("label_devices_5g_game") || "Dispositivos gaming", value: counts.gaming },
+      { label: localize("label_devices_iot") || "Dispositivos IoT", value: counts.iot },
+      { label: localize("label_devices_guest") || "Dispositivos invitados", value: counts.guest },
     ];
 
     return html`
@@ -254,9 +258,10 @@ export async function renderStatus(hass) {
       acc.g5 += safeNum(counts.g5);
       acc.guest += safeNum(counts.guest);
       acc.gaming += safeNum(counts.gaming);
+      acc.iot += safeNum(counts.iot);
       return acc;
     },
-    { total: 0, lan: 0, g24: 0, g5: 0, guest: 0, gaming: 0 }
+    { total: 0, lan: 0, g24: 0, g5: 0, guest: 0, gaming: 0, iot: 0 }
   );
 
 

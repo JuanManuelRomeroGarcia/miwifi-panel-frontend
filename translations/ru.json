@@ -16,6 +16,7 @@
   "section_Guest": "Гостевые устройства",
   "section_Unknown": "Неизвестная сеть",
   "section_mesh_devices": "Устройства Mesh",
+  "section_IoT": "Устройства IoT",
 
   "label_model": "Модель",
   "label_name": "Имя",
@@ -39,6 +40,7 @@
   "label_devices_guest": "Гостевые устройства",
   "label_devices_5g_game": "Игровые устройства",
   "label_devices_mesh": "Устройства Mesh",
+  "label_devices_iot": "Устройства IoT",
   "label_led": "LED",
 
   "devices_connected_title": "🖥️ Подключенные устройства",
